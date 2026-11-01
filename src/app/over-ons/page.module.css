@@ -1,0 +1,11 @@
+.support {
+  display: grid;
+  gap: 16px;
+  max-width: 62ch;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.support p {
+  margin: 0;
+}

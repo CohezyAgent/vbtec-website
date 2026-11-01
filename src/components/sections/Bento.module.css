@@ -1,0 +1,321 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  grid-auto-rows: calc(566 * var(--u));
+  grid-auto-flow: row dense;
+  gap: var(--gap-cards);
+  margin-top: calc(76 * var(--u));
+}
+
+.tile {
+  position: relative;
+  grid-column: span 4;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+  border-radius: var(--radius);
+}
+
+.wide {
+  grid-column: span 8;
+}
+
+.tall {
+  grid-row: span 2;
+}
+
+/* Stat tile (Mission card 1) */
+.stat {
+  justify-content: space-between;
+  padding: calc(38 * var(--u)) calc(37 * var(--u)) calc(37 * var(--u)) calc(39 * var(--u));
+  background: var(--c-green);
+  color: #fff;
+}
+
+.onD .stat {
+  background: var(--c-green-card);
+}
+
+.top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.statLabel {
+  margin-top: calc(6 * var(--u));
+  font-size: max(16px, calc(20.4 * var(--u)));
+  line-height: 1.3;
+  color: var(--c-on-green-2);
+}
+
+.statBottom {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.pill {
+  display: flex;
+  align-items: center;
+  height: max(36px, calc(47 * var(--u)));
+  padding: 0 calc(24 * var(--u));
+  border-radius: 999px;
+  box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, 0.28);
+  font-size: max(15px, calc(20.7 * var(--u)));
+  color: var(--c-on-green-2);
+}
+
+.statNumber {
+  margin-top: calc(35 * var(--u));
+  font-size: var(--fs-stat);
+  line-height: 1;
+}
+
+.statCaption {
+  margin-top: calc(30 * var(--u));
+  font-size: var(--fs-h4);
+  line-height: 1.2;
+  color: var(--c-on-green-2);
+}
+
+.statNote {
+  margin-top: 14px;
+}
+
+.placeholderNote {
+  margin-top: 8px;
+  font-size: 12.5px;
+  color: var(--c-on-green-3);
+}
+
+/* Photo tile (Mission card 2) */
+.photo {
+  justify-content: flex-end;
+  padding: 0 calc(39 * var(--u)) calc(38 * var(--u));
+  background: var(--c-slate);
+  color: #fff;
+}
+
+.photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(0deg, rgba(6, 20, 16, 0.6), rgba(6, 20, 16, 0) 55%);
+  pointer-events: none;
+}
+
+.photoImg {
+  z-index: 0;
+}
+
+.photoImg img {
+  transition: transform var(--dur-settle) var(--ease-out) 0.75s;
+}
+
+.photoIcon {
+  position: absolute;
+  top: calc(38 * var(--u));
+  right: calc(38 * var(--u));
+  z-index: 2;
+}
+
+.photoText {
+  position: relative;
+  z-index: 1;
+}
+
+.photoTitle {
+  font-size: var(--fs-h3);
+  font-weight: 400;
+  line-height: 1.2;
+}
+
+.photoBody {
+  margin-top: calc(18 * var(--u));
+  font-size: var(--fs-body-lg);
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Grey tile (Mission card 3) */
+.grey,
+.t_grey {
+  justify-content: space-between;
+  padding: calc(39 * var(--u));
+  background: var(--c-grey-100);
+  color: var(--c-ink-deep);
+}
+
+.t_dark {
+  background: var(--c-green-card);
+  color: #fff;
+}
+
+.t_lime {
+  background: var(--c-lime);
+  color: var(--c-ink);
+}
+
+.greyTitle {
+  font-size: calc(38.3 * var(--u));
+  line-height: calc(48 * var(--u));
+  font-weight: 400;
+}
+
+.greyBody {
+  margin-top: calc(18 * var(--u));
+  font-size: var(--fs-body);
+  line-height: 1.55;
+  color: var(--c-grey-600);
+}
+
+.t_dark .greyBody {
+  color: var(--c-on-green-2);
+}
+
+.t_lime .greyBody {
+  color: var(--c-ink);
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: calc(13 * var(--u));
+  max-width: calc(420 * var(--u));
+  margin: auto 0 0;
+  padding: calc(24 * var(--u)) 0 0;
+  list-style: none;
+}
+
+.review {
+  padding: 0;
+}
+
+.review > figure {
+  height: 100%;
+}
+
+.wide,
+.tall {
+  flex-direction: row;
+  padding: 0;
+}
+
+.tall {
+  flex-direction: column;
+}
+
+.wideMedia {
+  position: relative;
+  flex: 1 1 50%;
+  min-height: 240px;
+}
+
+.wideText {
+  display: flex;
+  flex: 1 1 50%;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  padding: calc(39 * var(--u));
+}
+
+/* Mission-style entrance extras (the wipe itself comes from Reveal mode="wipe") */
+[data-ready]:not([data-visible]) .photoImg img {
+  transform: scale(1.2);
+}
+
+[data-ready]:not([data-visible]) .pop {
+  transform: scale(0) rotate(-120deg);
+}
+
+[data-visible] .pop {
+  transition: transform 0.7s var(--ease-back);
+  transition-delay: calc(1.3s + var(--c) * 0.15s);
+}
+
+[data-ready]:not([data-visible]) .tagPop {
+  opacity: 0;
+  transform: translateY(calc(14 * var(--u))) scale(0.6);
+}
+
+[data-visible] .tagPop {
+  transition:
+    opacity 0.4s ease,
+    transform 0.6s var(--ease-back);
+  transition-delay: calc(1.6s + var(--t) * 90ms);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-ready]:not([data-visible]) .photoImg img,
+  [data-ready]:not([data-visible]) .pop,
+  [data-ready]:not([data-visible]) .tagPop {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (max-width: 1100px) and (min-width: 901px) {
+  .grid {
+    grid-auto-rows: minmax(calc(566 * var(--u)), auto);
+  }
+}
+
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: 1fr;
+    grid-auto-rows: auto;
+    gap: 16px;
+    margin-top: 40px;
+  }
+  .tile,
+  .wide,
+  .tall {
+    grid-column: auto;
+    grid-row: auto;
+    min-height: 420px;
+  }
+  .stat,
+  .grey,
+  .t_grey,
+  .t_dark,
+  .t_lime {
+    padding: 28px;
+  }
+  .grey,
+  .review {
+    min-height: 0;
+  }
+  .photo {
+    min-height: 480px;
+    padding: 0 28px 28px;
+  }
+  .photoIcon {
+    top: 28px;
+    right: 28px;
+  }
+  .wide {
+    flex-direction: column;
+  }
+  .wideText {
+    padding: 28px;
+  }
+  .statNumber {
+    margin-top: 28px;
+  }
+  .greyTitle {
+    font-size: 28px;
+    line-height: 1.3;
+  }
+  .photoTitle {
+    font-size: 30px;
+  }
+  .tags {
+    max-width: none;
+    margin-top: 32px;
+  }
+}

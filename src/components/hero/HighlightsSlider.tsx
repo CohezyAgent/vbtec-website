@@ -1,33 +1,21 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { PlayIcon } from "./icons";
+import { getImage, type ImageKey } from "@/content/images";
+import { routes } from "@/lib/routes";
+import { ArrowUpRight } from "./icons";
 import styles from "./Hero.module.css";
 
-const INTERVAL_MS = 2000;
+const INTERVAL_MS = 4000;
 
-const slides = [
-  {
-    title: ["Professional Journey", "Highlights"],
-    image: "/images/journey-thumb.jpg",
-    alt: "Two engineers in hard hats talking at a solar farm",
-  },
-  {
-    title: ["Inside Our Solar", "Farm Projects"],
-    image: "/images/slide-panels.jpg",
-    alt: "Rows of solar panels on a ground-mounted solar farm",
-  },
-  {
-    title: ["Powering Rail", "With Clean Energy"],
-    image: "/images/slide-train.jpg",
-    alt: "A red freight train passing a solar farm",
-  },
-  {
-    title: ["From Open Fields", "to Clean Power"],
-    image: "/images/slide-fields.jpg",
-    alt: "Green fields behind a row of solar panels",
-  },
+// Slides per docs/spec/05-pages.md §1 row 1 (Builder 1 may move them to content/home.ts).
+const slides: { title: [string, string]; image: ImageKey; href: string; cta: string }[] = [
+  { title: ["Gezin in Gent:", "van gasfactuur naar bijna niets"], image: "journey-thumb", href: routes.project("gezinswoning-gent-warmtepomp-pvt"), cta: "Bekijk project" },
+  { title: ["PVT-panelen:", "stroom én warm water"], image: "slide-panels", href: routes.service("pvt-panelen"), cta: "Ontdek PVT" },
+  { title: ["Waarom we in Kortrijk", "géén batterij plaatsten"], image: "slide-fields", href: routes.project("gezin-kortrijk-geen-batterij-advies"), cta: "Lees waarom" },
+  { title: ["Zon, warmte en opslag:", "hoe het samenwerkt"], image: "service-solar", href: routes.hoeHetWerkt(), cta: "Bekijk" },
 ];
 
 export default function HighlightsSlider() {
@@ -43,6 +31,8 @@ export default function HighlightsSlider() {
 
   const restartTimer = useCallback(() => {
     if (timer.current) clearInterval(timer.current);
+    // Reduced motion: no auto-advance (the bars stay usable).
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     timer.current = setInterval(() => {
       setSlide((s) => ({ active: (s.active + 1) % slides.length, previous: s.active }));
     }, INTERVAL_MS);
@@ -64,52 +54,50 @@ export default function HighlightsSlider() {
   return (
     <div className={styles.side}>
       <div className={styles.cardStack}>
-        <span className={`${styles.ghost} ${styles.ghost3}`} />
-        <span className={`${styles.ghost} ${styles.ghost2}`} />
-        <span className={`${styles.ghost} ${styles.ghost1}`} />
+        <span className={`${styles.ghostCard} ${styles.ghost3}`} />
+        <span className={`${styles.ghostCard} ${styles.ghost2}`} />
+        <span className={`${styles.ghostCard} ${styles.ghost1}`} />
 
         <div className={styles.cardViewport}>
-          {slides.map((slide, i) => (
-            <article
-              key={slide.image}
-              className={`${styles.card} ${slideState(i)}`}
-              aria-hidden={i !== active}
-              id={`highlight-${i}`}
-            >
-              <Image
-                src={slide.image}
-                alt={slide.alt}
-                width={193}
-                height={171}
-                quality={90}
-                loading="eager"
-                className={styles.thumb}
-              />
-              <div className={styles.cardBody}>
-                <h2 className={styles.cardTitle}>
-                  {slide.title[0]}
-                  <br />
-                  {slide.title[1]}
-                </h2>
-                <button type="button" className={styles.play} tabIndex={i === active ? 0 : -1}>
-                  <PlayIcon className={styles.playIcon} />
-                  Play Now
-                </button>
-              </div>
-            </article>
-          ))}
+          {slides.map((slide, i) => {
+            const img = getImage(slide.image);
+            return (
+              <article
+                key={slide.href}
+                className={`${styles.card} ${slideState(i)}`}
+                aria-hidden={i !== active}
+                id={`highlight-${i}`}
+                inert={i !== active}
+              >
+                <Image src={img.src} alt={img.alt} width={193} height={171} quality={90} loading="eager" className={styles.thumb} />
+                <div className={styles.cardBody}>
+                  <h2 className={styles.cardTitle}>
+                    {slide.title[0]}
+                    <br />
+                    {slide.title[1]}
+                  </h2>
+                  <Link href={slide.href} className={styles.play}>
+                    {slide.cta}
+                    <span className={styles.playIcon} aria-hidden="true">
+                      <ArrowUpRight />
+                    </span>
+                  </Link>
+                </div>
+              </article>
+            );
+          })}
         </div>
       </div>
 
-      <div className={styles.bars} role="tablist" aria-label="Highlights">
+      <div className={styles.bars} role="tablist" aria-label="Uitgelicht">
         {slides.map((slide, i) => (
           <button
-            key={slide.image}
+            key={slide.href}
             type="button"
             role="tab"
             aria-selected={i === active}
             aria-controls={`highlight-${i}`}
-            aria-label={`${slide.title.join(" ")}`}
+            aria-label={slide.title.join(" ")}
             className={i === active ? `${styles.bar} ${styles.barActive}` : styles.bar}
             onClick={() => {
               goTo(i);

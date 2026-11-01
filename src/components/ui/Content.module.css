@@ -1,0 +1,163 @@
+/* ---------- Callout ---------- */
+.callout {
+  margin: 2em 0;
+  padding: 28px 30px;
+  border-radius: 20px;
+  background: var(--c-grey-100);
+  color: var(--c-ink);
+}
+
+.callout_rekenvoorbeeld {
+  background: var(--c-green);
+  color: #fff;
+}
+
+.callout_mythe {
+  background: #fff;
+  box-shadow: inset 0 0 0 1.5px rgba(6, 20, 16, 0.12);
+}
+
+.callout_eerlijk {
+  background: var(--c-lime-pale);
+}
+
+.calloutLabel {
+  font-family: var(--font-label);
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.02em;
+  opacity: 0.75;
+}
+
+.callout_rekenvoorbeeld .calloutLabel {
+  color: var(--c-lime);
+  opacity: 1;
+}
+
+.calloutTitle {
+  margin-top: 8px;
+  font-size: 22px;
+  line-height: 1.3;
+}
+
+.calloutBody {
+  margin-top: 10px;
+  font-size: 17px;
+  line-height: 1.6;
+}
+
+.calloutBody > * + * {
+  margin-top: 0.7em;
+}
+
+.callout_rekenvoorbeeld .calloutBody {
+  color: var(--c-on-green-2);
+}
+
+.callout > p:last-child:not(.calloutLabel) {
+  margin-top: 14px;
+}
+
+/* ---------- InlineCta ---------- */
+.inlineCta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin: 2em 0;
+  padding: 24px 24px 24px 30px;
+  border-radius: 20px;
+  background: var(--c-lime-pale);
+  color: var(--c-ink);
+}
+
+.inlineCtaDark {
+  background: var(--c-green-card);
+  color: #fff;
+}
+
+.inlineCtaTitle {
+  font-size: 21px;
+  line-height: 1.3;
+}
+
+.inlineCtaBody {
+  margin-top: 6px;
+  font-size: 16px;
+  line-height: 1.5;
+  opacity: 0.8;
+}
+
+@media (max-width: 700px) {
+  .inlineCta {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 20px;
+  }
+}
+
+/* ---------- AuthorBox ---------- */
+.author {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.authorAvatar {
+  position: relative;
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  overflow: hidden;
+  border-radius: 50%;
+  background: var(--c-green);
+  font-family: var(--font-label);
+  font-weight: 600;
+  font-size: 22px;
+  color: var(--c-lime);
+}
+
+.authorText {
+  font-size: 15px;
+  line-height: 1.45;
+}
+
+.authorName a {
+  color: var(--c-ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.authorRole,
+.authorDate {
+  color: var(--c-grey-600);
+}
+
+.authorBio {
+  margin-top: 4px;
+  color: var(--c-grey-600);
+}
+
+.authorDate {
+  margin-top: 4px;
+  font-size: 14px;
+}
+
+.authorCompact .authorAvatar {
+  width: 44px;
+  height: 44px;
+  font-size: 18px;
+}
+
+/* ---------- UpdatedAt ---------- */
+.updated {
+  font-size: var(--fs-small);
+  color: var(--c-grey-600);
+}
+
+.updatedDark {
+  color: var(--c-on-green-3);
+}

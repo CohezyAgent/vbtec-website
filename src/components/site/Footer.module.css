@@ -1,0 +1,285 @@
+.footer {
+  position: relative;
+  overflow: hidden;
+  overflow: clip;
+  padding: var(--pad-top) var(--side) 0;
+  background: var(--c-ink-deep);
+  color: #fff;
+  font-family: var(--font-text);
+}
+
+.top {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 32px;
+  padding-bottom: calc(90 * var(--u));
+  border-bottom: var(--hairline-dark);
+}
+
+.promise {
+  max-width: calc(1140 * var(--ux));
+  font-size: var(--fs-h2);
+  line-height: var(--lh-h2);
+}
+
+.columns {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) minmax(0, 1.4fr);
+  gap: calc(40 * var(--u));
+  padding: calc(80 * var(--u)) 0;
+}
+
+.colTitle {
+  margin-bottom: calc(22 * var(--u));
+  font-size: var(--fs-eyebrow);
+  color: var(--c-on-green-3);
+}
+
+.links {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.link {
+  display: inline-block;
+  padding: 6px 0;
+  font-size: var(--fs-body);
+  color: #fff;
+  text-decoration: none;
+  background: linear-gradient(var(--c-lime), var(--c-lime)) no-repeat 0 90% / 0% 1.5px;
+  transition: background-size 0.35s var(--ease-out);
+}
+
+.link:hover {
+  background-size: 100% 1.5px;
+}
+
+.contactList {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-family: var(--font-ui);
+  font-weight: 300;
+  font-size: var(--fs-body);
+  line-height: 1.45;
+}
+
+.contactList li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.contactList .link {
+  padding: 0;
+  font-family: inherit;
+}
+
+.contactIcon {
+  width: 20px;
+  height: 20px;
+  flex: none;
+  margin-top: 2px;
+  color: var(--c-lime);
+}
+
+.hours {
+  display: block;
+}
+
+.small {
+  margin-top: 20px;
+  font-size: var(--fs-small);
+  line-height: 1.5;
+  color: var(--c-on-green-3);
+}
+
+.trust {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  padding: 0 0 calc(40 * var(--u));
+  list-style: none;
+}
+
+.trustTag {
+  display: inline-flex;
+  align-items: center;
+  height: 38px;
+  padding: 0 16px;
+  border-radius: 999px;
+  box-shadow: var(--ring-on-dark);
+  font-family: var(--font-label);
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.placeholder {
+  font-size: 12.5px;
+  color: var(--c-on-green-3);
+}
+
+.bottom {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 28px;
+  padding: 24px 0;
+  border-top: var(--hairline-dark);
+  font-size: var(--fs-small);
+  color: var(--c-on-green-3);
+}
+
+.bottom .link {
+  font-size: var(--fs-small);
+  color: var(--c-on-green-3);
+}
+
+.disclaimer {
+  flex: 1 1 360px;
+  text-align: right;
+}
+
+/* Giant wordmark, cropped by the page bottom */
+.wordmarkWrap {
+  display: block;
+  margin-top: calc(20 * var(--u));
+  height: 18.5vw;
+  overflow: hidden;
+  user-select: none;
+}
+
+.wordmark {
+  display: block;
+  font-size: 23vw;
+  font-family: var(--font-display);
+  font-weight: 800;
+  line-height: 0.8;
+  letter-spacing: -0.04em;
+  white-space: nowrap;
+  color: transparent;
+  background: linear-gradient(90deg, rgba(239, 217, 255, 0.22) 0%, rgba(239, 217, 255, 0.22) 50%, rgba(255, 255, 255, 0.06) 50%, rgba(255, 255, 255, 0.06) 100%) no-repeat;
+  background-size: 200% 100%;
+  background-position: 0% 0;
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+.wordmarkWrap[data-ready]:not([data-visible]) .wordmark {
+  background-position: 100% 0;
+}
+
+.wordmarkWrap[data-visible] .wordmark {
+  background-position: 100% 0;
+  animation: sweep 2.2s var(--ease-inout) both;
+}
+
+@keyframes sweep {
+  from {
+    background-position: 100% 0;
+  }
+  45% {
+    background-position: 0% 0;
+  }
+  to {
+    background-position: 100% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wordmarkWrap[data-visible] .wordmark {
+    animation: none;
+  }
+}
+
+.mobileOnly {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .link,
+  .bottom .link {
+    padding: 12px 0;
+  }
+  .contactList .link {
+    padding: 10px 0;
+  }
+  .footer {
+    padding-bottom: calc(72px + env(safe-area-inset-bottom));
+  }
+  .top {
+    flex-direction: column;
+    align-items: flex-start;
+    padding-bottom: 48px;
+  }
+  .columns {
+    grid-template-columns: 1fr;
+    gap: 0;
+    padding: 24px 0 40px;
+  }
+  .desktopOnly {
+    display: none;
+  }
+  .mobileOnly {
+    display: block;
+  }
+  .col {
+    border-bottom: var(--hairline-dark);
+  }
+  .contact {
+    padding-top: 28px;
+    border-bottom: 0;
+  }
+  .accSummary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 60px;
+    font-size: 20px;
+    cursor: pointer;
+    list-style: none;
+  }
+  .accSummary::-webkit-details-marker {
+    display: none;
+  }
+  .plus {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    box-shadow: var(--ring-on-dark);
+    transition: transform 0.3s var(--ease-out);
+  }
+  .plus svg {
+    width: 18px;
+    height: 18px;
+  }
+  .acc[open] .plus {
+    transform: rotate(45deg);
+  }
+  .acc .links {
+    padding-bottom: 16px;
+  }
+  .link {
+    padding: 10px 0;
+  }
+  .disclaimer {
+    text-align: left;
+  }
+  .wordmarkWrap {
+    height: 19vw;
+  }
+  .wordmark {
+    font-size: 24vw;
+  }
+}

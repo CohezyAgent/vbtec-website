@@ -1,13 +1,273 @@
 @import "tailwindcss";
+/* VB-TEC global tokens + base (foundation) */
+
+/* ==========================================================================
+   VB-TEC design tokens (docs/spec/04-design.md §1, §4.1)
+   Desktop sizes are drawn on a 1842px-wide reference canvas: N * var(--u).
+   Below 900px every unit becomes a plain px (see the media block below).
+   ========================================================================== */
+:root {
+  /* VB-TEC brand board: primary #0F6B5A, accent #22A68F, highlight #EFD9FF,
+     neutral #F8FAF9. The "lime" token names are historical: they now carry the
+     lilac highlight. */
+  --c-primary: #0f6b5a;
+  --c-accent: #22a68f;
+  --c-highlight: #efd9ff;
+
+  /* Ink & neutrals */
+  --c-ink: #05231d;
+  --c-ink-deep: #031813;
+  --c-paper: #f8faf9;
+  --c-white: #fff;
+  --c-grey-100: #eef2f0;
+  --c-grey-150: #e4ebe8;
+  --c-grey-200: #d9d9d9;
+  --c-grey-600: #4c5a56;
+  --c-grey-quote: #9aa59f;
+
+  /* Greens */
+  --c-green: #0b4a3f;
+  --c-green-card: #0f6b5a;
+  --c-slate: #093b32;
+  --c-on-green: #fff;
+  --c-on-green-2: #c3dcd5;
+  --c-on-green-3: rgba(255, 255, 255, 0.66);
+
+  /* Lime */
+  --c-lime: #efd9ff;
+  --c-lime-hover: #f6eaff;
+  --c-lime-bright: #efd9ff;
+  --c-lime-pale: #f1e2ff;
+  --c-lime-pale-hover: #e6ccfa;
+  --c-on-lime: #05231d;
+
+  /* Functional */
+  --c-error: #b3261e;
+  --c-error-on-dark: #ffb4a9;
+  --c-focus: var(--c-ink);
+
+  /* Data series */
+  --c-data-good: var(--c-lime);
+  --c-data-base: rgba(255, 255, 255, 0.28);
+  --c-data-base-light: #b9c2be;
+  --c-data-mid: #22a68f;
+
+  /* Fonts (font variables are set on <html> by next/font in layout.tsx) */
+  /* Not named --font-sans: Tailwind owns that theme variable and rewrites it. */
+  --font-text: var(--font-manrope), Helvetica, Arial, sans-serif;
+  --font-display: var(--font-manrope), Helvetica, Arial, sans-serif;
+  --font-ui: var(--font-lexend), Helvetica, Arial, sans-serif;
+  --font-label: var(--font-figtree), Helvetica, Arial, sans-serif;
+
+  /* Scale unit */
+  --ux: calc(100vw / 1842);
+  --u: var(--ux);
+  --side: calc(102 * var(--ux));
+  --col-eyebrow: calc(503 * var(--ux));
+  --header-h: calc(122 * var(--u));
+
+  /* Type scale (resolved at :root with the flowing --u) */
+  --fs-display: calc(102.5 * var(--u));
+  --lh-display: 1;
+  --fs-statement: calc(84 * var(--u));
+  --fs-stat: calc(101.5 * var(--u));
+  --fs-h2: calc(51.2 * var(--u));
+  --lh-h2: calc(64 * var(--u));
+  --fs-h3: calc(38.2 * var(--u));
+  --fs-h4: calc(30.5 * var(--u));
+  --fs-card-title: calc(25.5 * var(--u));
+  --fs-body-lg: max(17px, calc(25.5 * var(--u)));
+  --fs-body: max(16px, calc(20.3 * var(--u)));
+  --fs-eyebrow: max(14px, calc(20.3 * var(--u)));
+  --fs-small: max(13px, calc(18 * var(--u)));
+  --fs-ui: max(15px, calc(19.2 * var(--u)));
+
+  /* Spacing */
+  --pad-top: calc(142 * var(--u));
+  --pad-bottom: calc(125 * var(--u));
+  --pad-screen-top: calc(110 * var(--u));
+  --pad-screen-bottom: calc(90 * var(--u));
+  --gap-intro: calc(70 * var(--u));
+  --gap-cards: calc(25 * var(--u));
+  --gap-steps: calc(48 * var(--u));
+  --gap-cta: calc(44 * var(--u));
+  --card-pad: calc(39 * var(--u));
+
+  /* Radii */
+  --radius: calc(22 * var(--u));
+  --radius-sm: calc(10 * var(--u));
+
+  /* Elevation & glass */
+  --shadow-pill: 0 calc(10 * var(--u)) calc(30 * var(--u)) rgba(3, 24, 19, 0.08);
+  --shadow-lift: 0 calc(24 * var(--u)) calc(60 * var(--u)) rgba(3, 24, 19, 0.12);
+  --glass-photo-bg: rgba(255, 255, 255, 0.1);
+  --glass-photo-ring: inset 0 0 0 1px rgba(255, 255, 255, 0.16);
+  --glass-photo-blur: blur(14px) saturate(1.1);
+  --glass-dark-bg: rgba(8, 52, 44, 0.42);
+  --glass-dark-border: 1px solid rgba(255, 255, 255, 0.16);
+  --glass-dark-blur: blur(10px);
+  --glass-light-bg: rgba(253, 255, 255, 0.72);
+  --glass-light-border: 1px solid rgba(6, 20, 16, 0.08);
+  --glass-light-blur: blur(16px) saturate(1.2);
+  --ring-on-dark: inset 0 0 0 1.5px rgba(255, 255, 255, 0.24);
+  --ring-on-dark-strong: inset 0 0 0 1.5px rgba(255, 255, 255, 0.4);
+  --hairline-light: 1px solid rgba(6, 20, 16, 0.1);
+  --hairline-dark: 1px solid rgba(255, 255, 255, 0.12);
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-wipe: cubic-bezier(0.76, 0, 0.24, 1);
+  --ease-inout: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-back: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --dur-hover: 0.2s;
+  --dur-pop: 0.4s;
+  --dur-reveal: 0.8s;
+  --dur-wipe: 1.1s;
+  --dur-settle: 1.8s;
+  --dur-count: 1.4s;
+}
+
+@media (max-width: 900px) {
+  :root {
+    --ux: 1px;
+    --u: 1px;
+    --side: 20px;
+    --col-eyebrow: auto;
+    --header-h: 72px;
+
+    --fs-display: clamp(42px, 11vw, 72px);
+    --fs-statement: clamp(36px, 10vw, 56px);
+    --fs-stat: 64px;
+    --fs-h2: clamp(26px, 6.4vw, 40px);
+    --lh-h2: 1.25;
+    --fs-h3: 28px;
+    --fs-h4: 22px;
+    --fs-card-title: 19px;
+    --fs-body-lg: 18px;
+    --fs-body: 16px;
+    --fs-eyebrow: 15px;
+    --fs-small: 14px;
+    --fs-ui: 16px;
+
+    --pad-top: 72px;
+    --pad-bottom: 64px;
+    --pad-screen-top: 72px;
+    --pad-screen-bottom: 64px;
+    --gap-intro: 40px;
+    --gap-cards: 16px;
+    --gap-steps: 32px;
+    --gap-cta: 36px;
+    --card-pad: 28px;
+
+    --radius: 20px;
+    --radius-sm: 10px;
+  }
+}
+
+/* ==========================================================================
+   Base
+   ========================================================================== */
+html {
+  overflow-x: clip;
+  scroll-padding-top: 96px;
+}
 
 html,
 body {
-  background: #fdffff;
-  color: #061410;
+  background: var(--c-paper);
+  color: var(--c-ink);
 }
 
 body {
   margin: 0;
-  font-family: Helvetica, Arial, sans-serif;
+  overflow-x: clip;
+  font-family: var(--font-text);
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+:focus-visible {
+  outline: 2px solid var(--c-focus);
+  outline-offset: 3px;
+}
+
+[data-header-tone="dark"] :focus-visible {
+  outline-color: var(--c-lime);
+}
+
+/* No orphan words in headings, fewer widows in body copy (zero specificity: modules win). */
+:where(h1, h2, h3, h4) {
+  text-wrap: balance;
+}
+
+:where(p, li, blockquote) {
+  text-wrap: pretty;
+}
+
+@media (max-width: 900px) {
+  h1,
+  h2,
+  h3 {
+    overflow-wrap: anywhere;
+    hyphens: auto;
+  }
+}
+
+/* Screen-reader only text */
+.sr-only-global {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ==========================================================================
+   Reveal (src/components/motion/Reveal.tsx)
+   Content is hidden only under [data-ready]:not([data-visible]), so without
+   JS (and for crawlers) everything stays visible.
+   ========================================================================== */
+[data-reveal="self"][data-ready]:not([data-visible]),
+[data-reveal="group"][data-ready]:not([data-visible]) [data-reveal-item] {
+  opacity: 0;
+  transform: translateY(24px);
+}
+
+[data-reveal="self"][data-visible],
+[data-reveal="group"][data-visible] [data-reveal-item] {
+  transition:
+    opacity var(--dur-reveal) ease,
+    transform var(--dur-reveal) var(--ease-out);
+  transition-delay: calc(var(--reveal-delay, 0ms) + var(--i, 0) * var(--reveal-stagger, 150ms));
+}
+
+[data-reveal="wipe"][data-ready]:not([data-visible]) [data-reveal-item] {
+  clip-path: inset(100% 0 0 0 round var(--radius));
+  transform: translateY(calc(70 * var(--u)));
+}
+
+[data-reveal="wipe"][data-visible] [data-reveal-item] {
+  clip-path: inset(0 0 0 0 round var(--radius));
+  transition:
+    clip-path var(--dur-wipe) var(--ease-wipe),
+    transform var(--dur-wipe) var(--ease-out);
+  transition-delay: calc(var(--reveal-delay, 0ms) + var(--i, 0) * var(--reveal-stagger, 150ms));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal][data-ready]:not([data-visible]),
+  [data-reveal][data-ready]:not([data-visible]) [data-reveal-item] {
+    opacity: 1 !important;
+    transform: none !important;
+    clip-path: none !important;
+  }
+
+  [data-reveal][data-visible],
+  [data-reveal][data-visible] [data-reveal-item] {
+    transition: none !important;
+  }
 }

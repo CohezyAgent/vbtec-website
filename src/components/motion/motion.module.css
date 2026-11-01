@@ -1,0 +1,145 @@
+/* ---------- ScrollProgress ---------- */
+.progress {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  border-radius: 3px;
+  background: rgba(6, 20, 16, 0.1);
+}
+
+.progressDark {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.progressX {
+  width: 100%;
+  height: 3px;
+}
+
+.progressY {
+  width: 2px;
+  height: 100%;
+}
+
+.progressFill {
+  position: absolute;
+  inset: 0;
+  background: var(--c-ink);
+  transform-origin: left top;
+}
+
+.progressDark .progressFill {
+  background: var(--c-lime);
+}
+
+.progressX .progressFill {
+  transform: scaleX(var(--progress, 0));
+}
+
+.progressY .progressFill {
+  transform: scaleY(var(--progress, 0));
+}
+
+/* ---------- WordReveal ---------- */
+.word {
+  display: inline-block;
+}
+
+.hl {
+  background: linear-gradient(var(--c-lime-pale), var(--c-lime-pale)) no-repeat 0 85% / 100% 40%;
+  padding: 0 0.04em;
+  margin: 0 -0.04em;
+}
+
+.onLime .hl {
+  background-image: linear-gradient(rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.7));
+}
+
+.onDark .hl {
+  background: none;
+  color: var(--c-lime);
+}
+
+[data-reveal][data-ready]:not([data-visible]) .word {
+  opacity: 0;
+  transform: translateY(0.55em);
+  filter: blur(10px);
+}
+
+[data-reveal][data-ready]:not([data-visible]) .hl {
+  background-size: 0% 40%;
+}
+
+[data-reveal][data-visible] .word {
+  transition:
+    opacity 0.6s ease,
+    transform 0.8s var(--ease-out),
+    filter 0.7s ease;
+  transition-delay: calc(0.15s + var(--w) * 40ms);
+}
+
+[data-reveal][data-visible] .hl {
+  transition: background-size 0.8s var(--ease-inout);
+  transition-delay: calc(0.45s + var(--n) * 40ms);
+}
+
+/* Scroll-scrubbed "reading along" variant (only where supported, 00 §7). */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .scrub {
+      view-timeline-name: --wordreveal;
+    }
+
+    .scrub .word {
+      opacity: 1;
+      animation: wordIn linear both;
+      animation-timeline: --wordreveal;
+      animation-range: entry calc(30% + var(--w) / var(--n) * 50%) entry calc(45% + var(--w) / var(--n) * 55%);
+    }
+
+    [data-reveal].scrub[data-ready]:not([data-visible]) .word,
+    [data-reveal].scrub[data-visible] .word {
+      transition: none;
+    }
+
+    .scrub .hl {
+      animation: hlIn linear both;
+      animation-timeline: --wordreveal;
+      animation-range: cover 40% cover 55%;
+    }
+  }
+}
+
+@keyframes wordIn {
+  from {
+    opacity: 0.12;
+    transform: translateY(0.3em);
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+
+@keyframes hlIn {
+  from {
+    background-size: 0% 40%;
+  }
+  to {
+    background-size: 100% 40%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal][data-ready]:not([data-visible]) .word {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+  [data-reveal] .word,
+  [data-reveal] .hl {
+    transition: none !important;
+  }
+}

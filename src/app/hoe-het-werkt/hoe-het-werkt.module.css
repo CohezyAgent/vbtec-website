@@ -1,0 +1,21 @@
+/* /hoe-het-werkt glue – Builder 1 */
+.diagram {
+  margin-top: var(--gap-intro);
+}
+
+.profilesNote {
+  margin: 0;
+  font-size: var(--fs-body);
+  color: var(--c-grey-600);
+}
+
+.profilesNote a {
+  color: var(--c-ink);
+  text-underline-offset: 3px;
+}
+
+@media (max-width: 900px) {
+  .diagram {
+    margin-top: 32px;
+  }
+}

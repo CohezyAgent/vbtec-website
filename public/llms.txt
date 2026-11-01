@@ -1,0 +1,42 @@
+# VB-TEC
+
+> VB-TEC is een Vlaams energiebedrijf waar ingenieurs (geen verkopers) per woning uitrekenen welke combinatie van zonnepanelen, PVT-panelen, lucht-water of lucht-lucht warmtepomp, thuisbatterij, laadpaal en omvormer de energiefactuur zo dicht mogelijk bij €0 brengt. Eerlijk advies: als een toestel niet loont, zeggen we dat. Werkgebied: Vlaanderen. Alle cijfers op de site zijn indicatief, met bron en datum.
+
+Let op: projecten, reviews, teamleden en bedrijfsgegevens op deze site zijn voorlopig voorbeeldinhoud (gemarkeerd als "Voorbeeldproject", "Voorbeeldreviews").
+
+## Uitleg (pillar)
+- [Hoe het werkt](https://www.vb-tec.be/hoe-het-werkt): hoe zonnepanelen, PVT, warmtepomp, batterij, laadpaal en dynamisch tarief samenwerken in één woning.
+- [Hoe we werken](https://www.vb-tec.be/hoe-we-werken): van gratis berekening tot installatie en opvolging.
+
+## Vergelijkingen
+- [Gasketel of warmtepomp?](https://www.vb-tec.be/vergelijken/gasketel-vs-warmtepomp)
+- [Met of zonder thuisbatterij?](https://www.vb-tec.be/vergelijken/met-of-zonder-thuisbatterij)
+- [Met of zonder zonnepanelen?](https://www.vb-tec.be/vergelijken/met-of-zonder-zonnepanelen)
+- [Warmtepomp of airco?](https://www.vb-tec.be/vergelijken/warmtepomp-vs-airco)
+- [Zonnepanelen of PVT-panelen?](https://www.vb-tec.be/vergelijken/zonnepanelen-vs-pvt-panelen)
+- [Vast of dynamisch energiecontract?](https://www.vb-tec.be/vergelijken/vast-vs-dynamisch-energiecontract)
+
+## Kennisbank
+- [Wat is het capaciteitstarief?](https://www.vb-tec.be/kennisbank/wat-is-het-capaciteitstarief)
+- [Injectietarief en zelfverbruik](https://www.vb-tec.be/kennisbank/injectietarief-en-zelfverbruik)
+- [Dynamisch tarief uitgelegd](https://www.vb-tec.be/kennisbank/dynamisch-tarief-uitgelegd)
+- [SCOP en COP uitgelegd](https://www.vb-tec.be/kennisbank/scop-en-cop-uitgelegd)
+- [Is mijn woning geschikt voor een warmtepomp?](https://www.vb-tec.be/kennisbank/is-mijn-woning-geschikt-voor-een-warmtepomp)
+- [Wat is een PVT-paneel?](https://www.vb-tec.be/kennisbank/wat-is-een-pvt-paneel)
+- [Hoe groot moet een thuisbatterij zijn?](https://www.vb-tec.be/kennisbank/hoe-groot-moet-een-thuisbatterij-zijn)
+- [Mijn VerbouwPremie voor energie](https://www.vb-tec.be/kennisbank/mijn-verbouwpremie-voor-energie)
+- [EPC en renovatieverplichting](https://www.vb-tec.be/kennisbank/epc-en-renovatieverplichting)
+
+## Diensten
+- [Zonnepanelen](https://www.vb-tec.be/diensten/zonnepanelen)
+- [PVT-panelen](https://www.vb-tec.be/diensten/pvt-panelen)
+- [Omvormers](https://www.vb-tec.be/diensten/omvormers)
+- [Lucht-water warmtepomp](https://www.vb-tec.be/diensten/lucht-water-warmtepomp)
+- [Lucht-lucht warmtepomp (airco)](https://www.vb-tec.be/diensten/lucht-lucht-warmtepomp)
+- [Thuisbatterij](https://www.vb-tec.be/diensten/thuisbatterij)
+- [Laadpalen](https://www.vb-tec.be/diensten/laadpalen)
+
+## Optional
+- [Blog](https://www.vb-tec.be/blog): tarieven, premies en mythes in Vlaanderen.
+- [Projecten](https://www.vb-tec.be/projecten): voorbeeldberekeningen per woningtype.
+- [Sitemap](https://www.vb-tec.be/sitemap.xml)

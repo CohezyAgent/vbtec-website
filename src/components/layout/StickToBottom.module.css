@@ -1,0 +1,11 @@
+/* Slide-over hold: only on wide, tall screens without reduced motion (04-design §4). */
+.hold {
+  position: static;
+}
+
+@media (min-width: 901px) and (min-height: 600px) and (prefers-reduced-motion: no-preference) {
+  .hold {
+    position: sticky;
+    top: 0;
+  }
+}

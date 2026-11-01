@@ -1,0 +1,221 @@
+.track {
+  --line-x: calc(var(--col-eyebrow) - 60 * var(--ux));
+  --c-line: rgba(6, 20, 16, 0.1);
+  --c-fill: var(--c-ink);
+  --c-muted: var(--c-grey-600);
+  position: relative;
+  margin-top: var(--gap-intro);
+}
+
+.dark {
+  --c-line: rgba(255, 255, 255, 0.14);
+  --c-fill: var(--c-lime);
+  --c-muted: var(--c-on-green-2);
+}
+
+.line {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--line-x);
+  width: 2px;
+  background: var(--c-line);
+  border-radius: 2px;
+}
+
+.fill {
+  position: absolute;
+  inset: 0;
+  background: var(--c-fill);
+  transform-origin: top;
+  transform: scaleY(1);
+}
+
+.track[data-ready] .fill {
+  transform: scaleY(var(--progress, 0));
+}
+
+.steps {
+  display: flex;
+  flex-direction: column;
+  gap: calc(90 * var(--u));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.step {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) calc(440 * var(--ux));
+  gap: calc(80 * var(--ux));
+  padding-left: calc(var(--line-x) + 70 * var(--ux));
+}
+
+.step:not(:has(.photo)) {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.node {
+  position: absolute;
+  left: calc(var(--line-x) + 1px);
+  top: 6px;
+  width: max(18px, calc(24 * var(--u)));
+  height: max(18px, calc(24 * var(--u)));
+  border-radius: 50%;
+  border: 2px solid var(--c-line);
+  background: var(--c-green);
+  transform: translateX(-50%);
+  transition:
+    background-color 0.3s ease,
+    border-color 0.3s ease,
+    transform 0.6s var(--ease-back);
+}
+
+.track:not(.dark) .node {
+  background: #fff;
+}
+
+.track[data-ready] .step[data-on] .node {
+  border-color: var(--c-fill);
+  background: var(--c-fill);
+  transform: translateX(-50%) scale(1.15);
+}
+
+.track:not([data-ready]) .node {
+  border-color: var(--c-fill);
+}
+
+.content {
+  max-width: calc(860 * var(--ux));
+  font-family: var(--font-ui);
+}
+
+.num {
+  font-family: var(--font-label);
+  font-weight: 600;
+  font-size: max(14px, calc(18 * var(--u)));
+  color: var(--c-muted);
+}
+
+.title {
+  margin-top: calc(10 * var(--u));
+  font-family: var(--font-ui);
+  font-weight: 500;
+  font-size: max(22px, calc(38 * var(--u)));
+  line-height: 1.2;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: calc(16 * var(--u)) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.body {
+  margin-top: calc(18 * var(--u));
+  font-weight: 300;
+  font-size: max(16px, calc(21 * var(--u)));
+  line-height: 1.6;
+  color: var(--c-muted);
+}
+
+.body > * + * {
+  margin-top: 0.8em;
+}
+
+.who {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: calc(26 * var(--u));
+}
+
+.who > div {
+  padding: max(16px, calc(22 * var(--u)));
+  border-radius: calc(var(--radius) * 0.8);
+  background: rgba(127, 127, 127, 0.08);
+}
+
+.dark .who > div {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.who dt {
+  font-weight: 500;
+  font-size: 15px;
+}
+
+.who dd {
+  margin: 6px 0 0;
+  font-weight: 300;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--c-muted);
+}
+
+.photo {
+  border-radius: var(--radius);
+  overflow: hidden;
+  align-self: start;
+}
+
+/* Steps slide in from the line. */
+.track[data-ready] .step:not([data-on]) .content,
+.track[data-ready] .step:not([data-on]) .photo {
+  opacity: 0;
+  transform: translateX(calc(-30 * var(--u)));
+}
+
+.track[data-ready] .step .content,
+.track[data-ready] .step .photo {
+  transition:
+    opacity 0.7s ease,
+    transform 0.8s var(--ease-out);
+}
+
+.cta {
+  display: flex;
+  justify-content: center;
+  margin-top: calc(90 * var(--u));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .track[data-ready] .step:not([data-on]) .content,
+  .track[data-ready] .step:not([data-on]) .photo {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .track {
+    --line-x: 9px;
+  }
+  .steps {
+    gap: 48px;
+  }
+  .step {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding-left: 44px;
+  }
+  .node {
+    top: 2px;
+  }
+  .who {
+    grid-template-columns: 1fr;
+  }
+  .cta {
+    margin-top: 48px;
+  }
+}
+
+@media (max-width: 600px) {
+  .photo {
+    display: none;
+  }
+}

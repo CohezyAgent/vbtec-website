@@ -1,75 +1,59 @@
-import Image from "next/image";
 import Link from "next/link";
+import { getImage } from "@/content/images";
+import { TRUSTLINE } from "@/content/site";
+import { routes } from "@/lib/routes";
+import SmartImage from "@/components/ui/SmartImage";
 import HighlightsSlider from "./HighlightsSlider";
 import { ArrowUpRight, SolarLogo } from "./icons";
 import styles from "./Hero.module.css";
 
-const navLinks = [
-  { label: "Home", href: "/" },
-  { label: "About Us", href: "#about" },
-  { label: "Services", href: "#services" },
-  { label: "Solutions", href: "#solutions" },
-  { label: "Pricing", href: "#pricing" },
-];
-
+// Copy direction: docs/spec/05-pages.md §1 row 1. Builder 1 may move it to content/home.ts.
+// The shared site header (src/components/site) sits on top of this frame.
 export default function Hero() {
+  const bg = getImage("hero-gezin-woning");
   return (
-    <section className={styles.frame}>
+    <section className={styles.frame} data-header-tone="dark" aria-labelledby="home-title">
       <div className={styles.hero}>
-        <Image
-          src="/images/hero-solar.jpg"
-          alt="Solar panel field with a red freight train passing behind it"
-          fill
-          preload
-          sizes="100vw"
-          quality={90}
-          className={styles.bg}
-        />
-
-        <header className={styles.header}>
-          <Link href="/" className={styles.logo} aria-label="Enerza home">
-            <SolarLogo className={styles.logoIcon} />
-            <span>Enerza</span>
-          </Link>
-
-          <nav className={styles.nav} aria-label="Main">
-            {navLinks.map((link, i) => (
-              <Link
-                key={link.label}
-                href={link.href}
-                className={i === 0 ? `${styles.navLink} ${styles.navActive}` : styles.navLink}
-                aria-current={i === 0 ? "page" : undefined}
-              >
-                {link.label}
-              </Link>
-            ))}
-          </nav>
-
-          <Link href="#contact" className={styles.ctaGroup}>
-            <span className={styles.contactPill}>Contact Us</span>
-            <span className={styles.contactArrow}>
-              <ArrowUpRight className={styles.arrowIcon} />
-            </span>
-          </Link>
-        </header>
+        <SmartImage image={bg} fill preload sizes="100vw" quality={90} className={styles.bgWrap} imgClassName={styles.bg} />
+        <div className={styles.shade} aria-hidden="true" />
 
         <div className={styles.bottom}>
           <div className={styles.copy}>
             <p className={styles.badge}>
               <SolarLogo className={styles.badgeIcon} />
-              Power from the Sun
+              Energie-ingenieurs in Vlaanderen
             </p>
-            <h1 className={styles.title}>
-              Smarter Energy
+            <h1 id="home-title" className={styles.title}>
+              Jouw energiefactuur,
               <br />
-              for Modern Living
+              zo dicht mogelijk bij €0
+              <a href="#voetnoot-nul" className={styles.asterisk} aria-label="Lees de voorwaarden bij €0">
+                *
+              </a>
             </h1>
-            <Link href="#get-started" className={styles.startGroup}>
-              <span className={styles.startPill}>Get Started</span>
-              <span className={styles.startArrow}>
-                <ArrowUpRight className={styles.arrowIcon} />
-              </span>
-            </Link>
+            <p className={styles.lead}>
+              Onze ingenieurs rekenen uit welke combinatie van zon, warmtepomp en batterij jouw gezin het meest oplevert. En we zeggen het eerlijk als
+              iets niet loont.
+            </p>
+            <div className={styles.actions}>
+              <a href={routes.lead()} className={styles.startGroup}>
+                <span className={styles.startPill}>Bereken wat jouw woning kan besparen</span>
+                <span className={styles.startArrow} aria-hidden="true">
+                  <ArrowUpRight className={styles.arrowIcon} />
+                </span>
+              </a>
+              <Link href={routes.hoeHetWerkt()} className={styles.ghost}>
+                Bekijk hoe het werkt
+              </Link>
+            </div>
+            <ul className={styles.trust}>
+              {TRUSTLINE.map((t) => (
+                <li key={t}>{t}</li>
+              ))}
+            </ul>
+            <p id="voetnoot-nul" className={styles.footnote}>
+              * Indicatief: tot ~€0 netto per jaar, afhankelijk van je verbruik, dak, woning en contract. Je persoonlijke berekening is bindend.
+            </p>
           </div>
 
           <HighlightsSlider />

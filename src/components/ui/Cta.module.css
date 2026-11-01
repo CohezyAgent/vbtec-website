@@ -1,0 +1,246 @@
+/* CtaPill + TextLink (geometry from Services .cta and Hero .startGroup) */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: calc(22 * var(--u));
+  height: max(52px, calc(66 * var(--u)));
+  padding: 0 calc(8 * var(--u)) 0 calc(31 * var(--u));
+  border: 0;
+  border-radius: 999px;
+  font-family: var(--font-ui);
+  font-size: var(--fs-ui);
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  text-decoration: none;
+  transition:
+    background-color var(--dur-hover),
+    color var(--dur-hover);
+}
+
+.pill:disabled {
+  cursor: progress;
+}
+
+.label {
+  padding-top: 1px;
+}
+
+.circle {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: max(40px, calc(50 * var(--u)));
+  height: max(40px, calc(50 * var(--u)));
+  border-radius: 50%;
+  transition: transform var(--dur-hover);
+}
+
+.arrow {
+  width: 48%;
+  height: 48%;
+}
+
+.pill:hover .circle,
+.pill:hover .heroCircle,
+.pill:focus-visible .circle {
+  transform: rotate(45deg);
+}
+
+.pill[data-pending] .circle {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pill[data-pending] .circle {
+    animation: none;
+  }
+}
+
+/* lime: in-section CTA */
+.lime {
+  background: var(--c-lime);
+  color: var(--c-on-lime);
+}
+.lime:hover {
+  background: var(--c-lime-hover);
+}
+.lime .circle {
+  background: #031512;
+  color: var(--c-lime);
+}
+
+/* ink: on white / lime sections */
+.ink {
+  background: var(--c-ink);
+  color: #fff;
+}
+.ink:hover {
+  background: #11241d;
+}
+.ink .circle {
+  background: var(--c-lime);
+  color: var(--c-ink);
+}
+
+/* white: header contact / on dark */
+.white {
+  background: #fff;
+  color: var(--c-ink);
+}
+.white:hover {
+  background: #f2f4f2;
+}
+.white .circle {
+  background: var(--c-ink);
+  color: #fff;
+}
+
+/* ghost on dark: 1.5px white ring */
+.ghost_dark {
+  background: transparent;
+  color: #fff;
+  box-shadow: var(--ring-on-dark-strong);
+}
+.ghost_dark:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+.ghost_dark .circle {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+
+/* hero: split pill + separate circle, Helvetica 700, bright lime */
+.hero {
+  gap: calc(1 * var(--u));
+  height: auto;
+  padding: 0;
+  background: none;
+  font-family: var(--font-text);
+  font-weight: 700;
+  font-size: max(16px, calc(23 * var(--u)));
+  color: var(--c-ink);
+}
+
+.heroLabel,
+.heroCircle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: max(56px, calc(76 * var(--u)));
+  border-radius: 999px;
+  background: var(--c-lime-bright);
+  transition: transform var(--dur-hover);
+}
+
+.heroLabel {
+  padding: 0 calc(38 * var(--u));
+}
+
+.heroCircle {
+  width: max(56px, calc(76 * var(--u)));
+  flex: none;
+}
+
+.heroCircle .arrow {
+  width: 34%;
+  height: 34%;
+}
+
+.sm {
+  height: max(44px, calc(54 * var(--u)));
+  padding-left: calc(24 * var(--u));
+  gap: calc(16 * var(--u));
+}
+
+.sm .circle {
+  width: max(34px, calc(42 * var(--u)));
+  height: max(34px, calc(42 * var(--u)));
+}
+
+@media (max-width: 900px) {
+  .pill {
+    height: 56px;
+    padding: 0 8px 0 24px;
+    gap: 16px;
+    font-size: 16px;
+    white-space: normal;
+    text-align: left;
+  }
+  .circle {
+    width: 42px;
+    height: 42px;
+  }
+  .hero {
+    height: auto;
+    padding: 0;
+    font-size: 17px;
+  }
+  .heroLabel {
+    height: 60px;
+    padding: 0 26px;
+  }
+  .heroCircle {
+    width: 60px;
+    height: 60px;
+  }
+  .block {
+    display: flex;
+    width: 100%;
+  }
+  .block.hero .heroLabel {
+    flex: 1;
+  }
+}
+
+/* ---------- TextLink ---------- */
+.textLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  font-family: var(--font-text);
+  font-size: var(--fs-body);
+  color: var(--c-ink);
+  text-decoration: none;
+}
+
+.textLinkLabel {
+  background: linear-gradient(currentColor, currentColor) no-repeat 0 100% / 100% 1px;
+  padding-bottom: 2px;
+  transition: background-size 0.35s var(--ease-out);
+}
+
+.textLink:hover .textLinkLabel {
+  background-image: linear-gradient(var(--c-lime-pale), var(--c-lime-pale));
+  background-size: 100% 100%;
+}
+
+.textLinkDark {
+  color: #fff;
+}
+
+.textLinkDark:hover .textLinkLabel {
+  background-image: linear-gradient(var(--c-lime), var(--c-lime));
+  background-size: 100% 2px;
+}
+
+.textLinkArrow {
+  width: 0.9em;
+  height: 0.9em;
+  flex: none;
+  transition: transform var(--dur-hover);
+}
+
+.textLink:hover .textLinkArrow {
+  transform: rotate(45deg);
+}

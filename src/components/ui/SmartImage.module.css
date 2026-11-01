@@ -1,0 +1,42 @@
+.box,
+.fill {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  overflow: clip;
+  background: var(--c-slate);
+}
+
+.box {
+  width: 100%;
+  border-radius: inherit;
+}
+
+.fill {
+  position: absolute;
+  inset: 0;
+}
+
+.img {
+  object-fit: cover;
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .parallax {
+      inset: -6% 0 !important;
+      height: 112% !important;
+      animation: drift linear both;
+      animation-timeline: view();
+    }
+  }
+}
+
+@keyframes drift {
+  from {
+    transform: translateY(-5%);
+  }
+  to {
+    transform: translateY(5%);
+  }
+}

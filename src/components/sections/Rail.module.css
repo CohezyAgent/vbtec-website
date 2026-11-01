@@ -1,0 +1,257 @@
+.section {
+  overflow: hidden;
+  overflow: clip;
+}
+
+.root {
+  --c-ctrl: var(--c-ink);
+  --c-ctrl-ring: rgba(6, 20, 16, 0.18);
+}
+
+.dark {
+  --c-ctrl: #fff;
+  --c-ctrl-ring: rgba(255, 255, 255, 0.24);
+}
+
+.headerRow {
+  display: flex;
+  align-items: flex-end;
+  gap: 24px;
+  padding: 0 var(--side);
+}
+
+.headerMain {
+  flex: 1;
+  min-width: 0;
+}
+
+.controls {
+  display: flex;
+  flex: none;
+  gap: 12px;
+}
+
+.arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: max(48px, calc(61 * var(--u)));
+  height: max(48px, calc(61 * var(--u)));
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  box-shadow: inset 0 0 0 1.5px var(--c-ctrl-ring);
+  color: var(--c-ctrl);
+  cursor: pointer;
+  transition:
+    background-color var(--dur-hover),
+    opacity var(--dur-hover);
+}
+
+.dark .arrow {
+  background: #fff;
+  box-shadow: none;
+  color: var(--c-ink);
+}
+
+.arrow svg {
+  width: 42%;
+  height: 42%;
+}
+
+.arrow:hover:not(:disabled) {
+  background: var(--c-lime-pale);
+}
+
+.dark .arrow:hover:not(:disabled) {
+  background: var(--c-lime);
+}
+
+.arrow:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.track {
+  display: flex;
+  gap: max(16px, calc(25 * var(--u)));
+  margin: var(--gap-intro) 0 0;
+  padding: 4px var(--side) 8px;
+  list-style: none;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--side);
+  scrollbar-width: none;
+  overscroll-behavior-x: contain;
+  cursor: grab;
+}
+
+.track::-webkit-scrollbar {
+  display: none;
+}
+
+.track[data-dragging] {
+  cursor: grabbing;
+  scroll-snap-type: none;
+  user-select: none;
+}
+
+.track[data-dragging] * {
+  pointer-events: none;
+}
+
+.track:focus-visible {
+  outline-offset: -4px;
+}
+
+.slide {
+  flex: none;
+  width: max(280px, calc(520 * var(--u)));
+  scroll-snap-align: start;
+}
+
+[data-kind="team"] .slide,
+[data-kind="image"] .slide {
+  width: max(260px, calc(420 * var(--u)));
+}
+
+/* Cards rise in staggered on first view. */
+.root[data-ready] .slide {
+  animation: railIn 0.8s var(--ease-out) both;
+  animation-delay: calc(var(--i) * 120ms);
+  animation-play-state: paused;
+}
+
+@supports (animation-timeline: view()) {
+  .root[data-ready] .slide {
+    animation-play-state: running;
+    animation-timeline: view(inline);
+    animation-delay: 0s;
+    animation-range: entry 0% entry 100%;
+  }
+}
+
+@supports not (animation-timeline: view()) {
+  .root[data-ready] .slide {
+    animation: none;
+  }
+}
+
+@keyframes railIn {
+  from {
+    opacity: 0.45;
+    transform: translateX(40px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .root[data-ready] .slide {
+    animation: none;
+  }
+}
+
+.bottomRow {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  margin-top: calc(40 * var(--u));
+  padding: 0 var(--side);
+}
+
+.progress {
+  position: relative;
+  flex: 1;
+  height: 3px;
+  overflow: hidden;
+  border-radius: 3px;
+  background: rgba(127, 127, 127, 0.2);
+}
+
+.progressFill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: calc(var(--w, 0.3) * 100%);
+  border-radius: 3px;
+  background: var(--c-ink);
+  transform: translateX(calc(var(--p, 0) * (100% / var(--w, 0.3) - 100%)));
+}
+
+.dark .progressFill {
+  background: var(--c-lime);
+}
+
+.viewAll {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  font-family: var(--font-ui);
+  font-weight: 500;
+  font-size: var(--fs-ui);
+  color: var(--c-ink);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.viewAllDark {
+  color: #fff;
+}
+
+.viewAllIcon {
+  width: 16px;
+  height: 16px;
+}
+
+/* End card */
+.endCard {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-end;
+  gap: 18px;
+  height: 100%;
+  min-height: 320px;
+  padding: max(26px, calc(40 * var(--u)));
+  border-radius: var(--radius);
+  background: var(--c-grey-100);
+  color: var(--c-ink);
+}
+
+.endDark {
+  background: var(--c-green-card);
+  color: #fff;
+}
+
+.endTitle {
+  font-size: var(--fs-h3);
+  line-height: 1.15;
+}
+
+.endBody {
+  font-size: var(--fs-body);
+  line-height: 1.5;
+  opacity: 0.8;
+}
+
+@media (max-width: 900px) {
+  .controls {
+    display: none;
+  }
+  .track {
+    cursor: auto;
+  }
+  .slide,
+  [data-kind="team"] .slide,
+  [data-kind="image"] .slide {
+    width: 82vw;
+  }
+  .bottomRow {
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+}

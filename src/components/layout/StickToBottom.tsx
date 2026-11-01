@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, type ReactNode } from "react";
+import styles from "./StickToBottom.module.css";
 
 type Props = { children: ReactNode };
 
@@ -29,7 +30,7 @@ export default function StickToBottom({ children }: Props) {
   }, []);
 
   return (
-    <div ref={ref} style={{ position: "sticky", top: 0 }}>
+    <div ref={ref} className={styles.hold}>
       {children}
     </div>
   );

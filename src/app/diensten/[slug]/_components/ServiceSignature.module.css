@@ -1,0 +1,44 @@
+.split {
+  display: grid;
+  grid-template-columns: var(--col-eyebrow) minmax(0, 1fr);
+  gap: 0;
+  margin-top: var(--gap-intro);
+}
+
+.aside {
+  padding-right: calc(60 * var(--u));
+  display: grid;
+  align-content: start;
+  gap: 18px;
+  font-size: var(--fs-body);
+  line-height: 1.6;
+  color: var(--c-grey-600);
+}
+
+.aside p {
+  margin: 0;
+}
+
+.main {
+  min-width: 0;
+}
+
+.lead {
+  display: grid;
+  gap: 14px;
+}
+
+.lead p {
+  margin: 0;
+}
+
+@media (max-width: 900px) {
+  .split {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+  .aside {
+    order: 2;
+    padding-right: 0;
+  }
+}

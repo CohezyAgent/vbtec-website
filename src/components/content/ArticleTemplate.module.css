@@ -1,0 +1,15 @@
+.author {
+  margin-top: 3em !important;
+  padding-top: 28px;
+  border-top: var(--hairline-light);
+}
+
+.authorLabel {
+  margin: 0 0 14px;
+  font-family: var(--font-label);
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--c-grey-600);
+}

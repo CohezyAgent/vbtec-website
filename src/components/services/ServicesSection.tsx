@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { CSSProperties } from "react";
-import { Lexend } from "next/font/google";
+import { routes } from "@/lib/routes";
 import StepsReveal from "./StepsReveal";
 import {
   ArrowUpRight,
@@ -12,39 +12,34 @@ import {
 } from "./icons";
 import styles from "./Services.module.css";
 
-const lexend = Lexend({
-  subsets: ["latin"],
-  weight: ["300", "500"],
-  variable: "--font-lexend",
-});
-
+// Copy direction: docs/spec/05-pages.md §1 row 5. Builder 1 may move it to content/home.ts.
 const steps = [
   {
-    title: "Energy Assessment",
-    body: "We review your energy usage, site condition, available space, and future energy goals.",
+    title: "Gratis berekening",
+    body: "Je vertelt ons hoe je woont en wat je verbruikt. Een ingenieur rekent jouw scenario's uit – ook 'niets doen'.",
     image: "/images/step-assessment.jpg",
-    alt: "An engineer in a hard hat measuring a site near the sea with a wind turbine behind",
+    alt: "Een ingenieur met helm meet een terrein op",
     Icon: BoltIcon,
   },
   {
-    title: "Custom System Design",
-    body: "We design the right mix of solar, wind, battery storage and EV charging for your site.",
+    title: "Plaatsbezoek & meting",
+    body: "We komen kijken naar je dak, je meterkast, je radiatoren en je isolatie. Zo kloppen de cijfers voor jouw woning.",
     image: "/images/step-design.jpg",
-    alt: "Two engineers in hard hats discussing a small solar panel",
+    alt: "Twee mensen met een helm bespreken een zonnepaneel",
     Icon: GearCycleIcon,
   },
   {
-    title: "Expert Installation",
-    body: "Our certified team installs your system safely and connects it properly to the grid.",
+    title: "Voorstel met scenario's",
+    body: "Je krijgt de combinaties naast elkaar, met kosten, premies en terugverdientijd. Jij beslist, zonder druk.",
     image: "/images/step-installation.jpg",
-    alt: "An installer in a safety harness fitting solar panels on a roof",
+    alt: "Een installateur met valbeveiliging plaatst zonnepanelen op een dak",
     Icon: TurbineIcon,
   },
   {
-    title: "Monitor & Save",
-    body: "We monitor performance, maintain your system, and help you track clean energy savings.",
+    title: "Installatie & opvolging",
+    body: "Onze eigen ploeg installeert en stelt alles slim af. Daarna volgen we je opbrengst mee op. Start hieronder ↓",
     image: "/images/step-install.jpg",
-    alt: "A technician checking an inverter under a solar panel array",
+    alt: "Een technieker controleert een omvormer onder zonnepanelen",
     Icon: ChartUpIcon,
   },
 ];
@@ -52,15 +47,15 @@ const steps = [
 export default function ServicesSection() {
   return (
     <section
-      className={`${styles.section} ${lexend.variable}`}
+      className={styles.section}
       aria-labelledby="services-heading"
+      data-header-tone="dark"
     >
       <div className={styles.stage}>
         <div className={styles.intro}>
-          <p className={styles.eyebrow}>How We Work</p>
+          <p className={styles.eyebrow}>Zo werken we</p>
           <h2 id="services-heading" className={styles.heading}>
-            From strategy to implementation, we help businesses create
-            meaningful environmental and economic impact.
+            Van je jaarafrekening naar een installatie die écht opbrengt – in vier stappen.
           </h2>
         </div>
 
@@ -98,11 +93,14 @@ export default function ServicesSection() {
         </StepsReveal>
 
         <div className={styles.ctaWrap}>
-          <Link href="#contact" className={styles.cta}>
-            <span>Start Your Energy Assessment</span>
-            <span className={styles.ctaCircle}>
+          <a href={routes.lead()} className={styles.cta}>
+            <span>Start met stap 1</span>
+            <span className={styles.ctaCircle} aria-hidden="true">
               <ArrowUpRight className={styles.ctaArrow} />
             </span>
+          </a>
+          <Link href={routes.hoeWeWerken()} className={styles.textLink}>
+            Lees hoe we werken
           </Link>
         </div>
       </div>

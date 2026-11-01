@@ -1,0 +1,233 @@
+.layout {
+  display: flex;
+  align-items: flex-start;
+  gap: calc(60 * var(--ux));
+}
+
+.side {
+  flex: none;
+  width: calc(560 * var(--ux));
+}
+
+/* The intro row is stacked inside the narrow sticky column. */
+.intro {
+  flex-direction: column;
+  gap: calc(24 * var(--u));
+}
+
+.intro > * {
+  width: auto !important;
+}
+
+.aside {
+  margin-top: calc(40 * var(--u));
+}
+
+.pinned .side {
+  position: sticky;
+  top: calc(var(--header-h) + 30 * var(--u));
+}
+
+.stack {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: calc(40 * var(--u));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pinned .slot {
+  position: sticky;
+  top: calc(var(--header-h) + 10 * var(--u) + var(--i) * 18 * var(--u));
+}
+
+.card {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  min-height: min(70svh, calc(640 * var(--u)));
+  overflow: hidden;
+  overflow: clip;
+  border-radius: var(--radius);
+  transform: scale(calc(1 - 0.06 * var(--cover, 0)));
+  transform-origin: 50% 0;
+  will-change: transform;
+}
+
+.dim {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  background: #000;
+  opacity: calc(0.3 * var(--cover, 0));
+  pointer-events: none;
+}
+
+.tone_D {
+  background: var(--c-green);
+  color: #fff;
+}
+
+.onD.tone_D {
+  background: var(--c-green-card);
+}
+
+.tone_G {
+  background: var(--c-grey-100);
+  color: var(--c-ink);
+}
+
+.tone_I {
+  background: var(--c-slate);
+  color: #fff;
+}
+
+.cardImage {
+  z-index: -1;
+}
+
+.tone_I::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  /* Real photos are busy: darken bottom AND the text column on the left. */
+  background:
+    linear-gradient(90deg, rgba(6, 20, 16, 0.62) 0%, rgba(6, 20, 16, 0.25) 55%, rgba(6, 20, 16, 0) 80%),
+    linear-gradient(0deg, rgba(6, 20, 16, 0.85) 0%, rgba(6, 20, 16, 0.35) 55%, rgba(6, 20, 16, 0.1) 100%);
+}
+
+.cardContent {
+  position: relative;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: calc(22 * var(--u));
+  padding: calc(48 * var(--u)) calc(52 * var(--u));
+}
+
+.count {
+  font-family: var(--font-label);
+  font-weight: 600;
+  font-size: max(13px, calc(17 * var(--u)));
+  opacity: 0.55;
+}
+
+.eyebrow {
+  font-size: var(--fs-eyebrow);
+  opacity: 0.7;
+}
+
+.title {
+  margin-top: auto;
+  max-width: 22ch;
+  font-size: calc(58 * var(--u));
+  line-height: 1.08;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+.body {
+  max-width: 46ch;
+  font-size: var(--fs-body-lg);
+  line-height: 1.5;
+  opacity: 0.86;
+}
+
+.bottom {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px 24px;
+  margin-top: calc(10 * var(--u));
+}
+
+.link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  font-family: var(--font-ui);
+  font-weight: 500;
+  font-size: var(--fs-ui);
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.linkIcon {
+  width: 18px;
+  height: 18px;
+}
+
+@media (max-height: 700px) and (min-width: 901px) {
+  .pinned .slot,
+  .pinned .side {
+    position: static;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pinned .slot {
+    position: static;
+  }
+}
+
+@media (max-width: 900px) {
+  .layout {
+    flex-direction: column;
+    gap: 36px;
+  }
+  .side {
+    width: auto;
+  }
+  .pinned .side,
+  .pinned .slot {
+    position: static;
+  }
+  .intro {
+    gap: 16px;
+  }
+  .aside {
+    margin-top: 24px;
+  }
+  .stack {
+    gap: 16px;
+    width: 100%;
+  }
+  .card {
+    min-height: 0;
+    transform: none;
+  }
+  .tone_I {
+    min-height: 0;
+    background: var(--c-green-card);
+  }
+  .tone_I .cardImage {
+    position: relative !important;
+    display: block;
+    aspect-ratio: 4 / 3;
+    height: auto !important;
+  }
+  .tone_I::after {
+    display: none;
+  }
+  .cardContent {
+    padding: 28px 24px;
+    gap: 14px;
+  }
+  .title {
+    margin-top: 8px;
+    font-size: 28px;
+    line-height: 1.2;
+  }
+  .body {
+    font-size: 17px;
+  }
+}

@@ -1,0 +1,308 @@
+/* ---------- Image hero (framed, 78svh) ---------- */
+.frame {
+  --u: min(var(--ux), calc(100svh / 1176));
+  padding: calc(10 * var(--u)) calc(12.5 * var(--u)) calc(14 * var(--u));
+  background: var(--c-paper);
+}
+
+.hero {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  min-height: 78svh;
+  overflow: hidden;
+  overflow: clip;
+  border-radius: calc(22 * var(--u));
+  background: var(--c-slate);
+  color: #fff;
+}
+
+.bg {
+  z-index: -2;
+}
+
+.shade {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(180deg, rgba(6, 20, 16, 0.45) 0%, rgba(6, 20, 16, 0) 28%),
+    /* text column (left): real photos are busy behind the headline */
+    linear-gradient(90deg, rgba(6, 20, 16, 0.55) 0%, rgba(6, 20, 16, 0.3) 40%, rgba(6, 20, 16, 0) 65%),
+    linear-gradient(0deg, rgba(6, 20, 16, 0.7) 0%, rgba(6, 20, 16, 0.15) 55%, rgba(6, 20, 16, 0) 75%);
+}
+
+.crumbs {
+  padding: calc(150 * var(--u)) calc(88 * var(--u)) 0;
+}
+
+.bottom {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: calc(60 * var(--u));
+  margin-top: auto;
+  padding: calc(60 * var(--u)) calc(90 * var(--u)) calc(80 * var(--u)) calc(88 * var(--u));
+}
+
+.copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: calc(26 * var(--u));
+  max-width: calc(1150 * var(--u));
+}
+
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  height: max(36px, calc(50 * var(--u)));
+  padding: 0 calc(20 * var(--u));
+  border: var(--glass-dark-border);
+  border-radius: 999px;
+  background: rgba(34, 42, 58, 0.45);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  font-size: max(14px, calc(18 * var(--u)));
+}
+
+.titleImage {
+  font-size: calc(102.5 * var(--u));
+  line-height: 1;
+  font-weight: 400;
+  text-wrap: balance;
+}
+
+.leadImage {
+  max-width: calc(820 * var(--u));
+  font-size: max(17px, calc(25.5 * var(--u)));
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.86);
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: calc(20 * var(--u)) calc(32 * var(--u));
+  margin-top: calc(10 * var(--u));
+}
+
+.trust {
+  margin-top: calc(-6 * var(--u));
+}
+
+/* Glass fact card (HighlightsSlider look) */
+.factCard {
+  display: flex;
+  flex: none;
+  gap: calc(24 * var(--u));
+  width: calc(520 * var(--u));
+  padding: calc(14 * var(--u));
+  border-radius: calc(22 * var(--u));
+  background: rgba(255, 255, 255, 0.94);
+  color: var(--c-ink);
+  box-shadow: var(--shadow-lift);
+}
+
+.factThumb {
+  width: calc(150 * var(--u));
+  flex: none;
+  border-radius: calc(10 * var(--u));
+}
+
+.factBody {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: calc(10 * var(--u)) calc(10 * var(--u)) calc(6 * var(--u));
+}
+
+.factValue {
+  font-size: calc(46 * var(--u));
+  line-height: 1;
+  letter-spacing: -0.01em;
+}
+
+.factUnit {
+  font-size: 0.4em;
+  letter-spacing: 0;
+  color: var(--c-grey-600);
+}
+
+.factTitle {
+  font-size: max(15px, calc(20 * var(--u)));
+  line-height: 1.35;
+}
+
+.factNote {
+  font-size: 12.5px;
+}
+
+@media (max-width: 1100px) and (min-width: 901px) {
+  .bottom {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 900px) {
+  .frame {
+    padding: 8px;
+  }
+  .hero {
+    min-height: 70svh;
+    border-radius: 20px;
+  }
+  .crumbs {
+    padding: 92px 20px 0;
+  }
+  .bottom {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 28px;
+    padding: 48px 20px 24px;
+  }
+  .copy {
+    gap: 18px;
+  }
+  .titleImage {
+    font-size: clamp(38px, 10.5vw, 64px);
+    line-height: 1.02;
+  }
+  .leadImage {
+    font-size: 17px;
+  }
+  .actions {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    gap: 12px;
+  }
+  .factCard {
+    width: 100%;
+    padding: 10px;
+    gap: 14px;
+    border-radius: 18px;
+  }
+  .factThumb {
+    width: 96px;
+  }
+  .factValue {
+    font-size: 30px;
+  }
+}
+
+/* ---------- Typographic hero ---------- */
+.type {
+  background: var(--c-white);
+  color: var(--c-ink-deep);
+}
+
+.typeInner {
+  padding: calc(var(--header-h) + 40 * var(--u)) var(--side) calc(110 * var(--u));
+}
+
+.typeCrumbs {
+  margin-bottom: calc(70 * var(--u));
+}
+
+.typeGrid {
+  display: flex;
+  align-items: flex-start;
+}
+
+.typeAside {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  flex: none;
+  width: var(--col-eyebrow);
+  padding-top: calc(16 * var(--u));
+}
+
+.typeEyebrow {
+  font-size: var(--fs-eyebrow);
+  color: var(--c-grey-600);
+}
+
+.typeMain {
+  flex: 1;
+  min-width: 0;
+  max-width: calc(1240 * var(--ux));
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: calc(30 * var(--u));
+}
+
+.titleType {
+  font-size: var(--fs-display);
+  line-height: 1.02;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+.leadType {
+  max-width: calc(880 * var(--ux));
+  font-size: var(--fs-body-lg);
+  line-height: 1.5;
+  color: var(--c-grey-600);
+}
+
+.byline {
+  margin-top: calc(6 * var(--u));
+}
+
+.kort {
+  width: 100%;
+  margin-top: calc(10 * var(--u));
+}
+
+.typeChildren {
+  margin-top: calc(100 * var(--u));
+}
+
+@media (max-width: 900px) {
+  .typeInner {
+    padding: 96px 20px 56px;
+  }
+  .typeCrumbs {
+    margin-bottom: 28px;
+  }
+  .typeGrid {
+    flex-direction: column;
+    gap: 14px;
+  }
+  .typeAside {
+    width: auto;
+    padding-top: 0;
+  }
+  .typeAside:empty {
+    display: none;
+  }
+  .typeMain {
+    gap: 18px;
+  }
+  .typeChildren {
+    margin-top: 48px;
+  }
+}

@@ -1,0 +1,137 @@
+.wrap {
+  --c-text: #fff;
+  --c-muted: var(--c-on-green-2);
+  --c-rule: rgba(255, 255, 255, 0.12);
+  --c-card: var(--c-green-card);
+  color: var(--c-text);
+}
+
+.light {
+  --c-text: var(--c-ink);
+  --c-muted: var(--c-grey-600);
+  --c-rule: rgba(6, 20, 16, 0.1);
+  --c-card: var(--c-grey-100);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--fs-body);
+  line-height: 1.45;
+}
+
+.caption {
+  caption-side: top;
+  text-align: left;
+  padding-bottom: 18px;
+  font-size: var(--fs-small);
+  color: var(--c-muted);
+}
+
+.table th,
+.table td {
+  padding: max(14px, calc(22 * var(--u))) calc(24 * var(--u));
+  border-bottom: 1px solid var(--c-rule);
+  text-align: left;
+  vertical-align: top;
+}
+
+.table thead th {
+  font-family: var(--font-ui);
+  font-weight: 500;
+  font-size: var(--fs-ui);
+  border-bottom-width: 2px;
+}
+
+.table tbody th {
+  font-family: var(--font-label);
+  font-weight: 600;
+  color: var(--c-muted);
+  width: 24%;
+}
+
+.corner {
+  padding-left: 0 !important;
+}
+
+.table tbody th {
+  padding-left: 0;
+}
+
+.hlHead {
+  position: relative;
+}
+
+.hlHead::after {
+  content: "";
+  position: absolute;
+  left: calc(24 * var(--u));
+  right: calc(24 * var(--u));
+  bottom: -2px;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--c-lime);
+}
+
+.light .hlHead::after {
+  background: var(--c-ink);
+}
+
+.hlCell {
+  background: rgba(239, 217, 255, 0.06);
+}
+
+.light .hlCell {
+  background: rgba(241, 226, 255, 0.35);
+}
+
+.note {
+  margin-top: 16px;
+}
+
+@media (max-width: 900px) {
+  .table,
+  .table tbody,
+  .table tr,
+  .table td,
+  .table tbody th {
+    display: block;
+    width: auto;
+  }
+  .table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+  }
+  .table tr {
+    margin-bottom: 12px;
+    padding: 18px 20px;
+    border-radius: 18px;
+    background: var(--c-card);
+  }
+  .table tbody th {
+    padding: 0 0 10px;
+    border: 0;
+    font-size: 15px;
+  }
+  .table td {
+    display: grid;
+    grid-template-columns: 42% 1fr;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 0;
+    border-top: 1px solid var(--c-rule);
+    font-size: 15px;
+  }
+  .table td::before {
+    content: attr(data-label);
+    font-family: var(--font-ui);
+    font-weight: 500;
+    color: var(--c-muted);
+  }
+  .hlCell {
+    background: none;
+  }
+}

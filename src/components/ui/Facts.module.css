@@ -1,0 +1,164 @@
+/* ---------- FactNote ---------- */
+.note {
+  font-family: var(--font-text);
+  font-size: var(--fs-small);
+  line-height: 1.4;
+  color: var(--c-grey-600);
+}
+
+.note.dark {
+  color: var(--c-on-green-3);
+}
+
+.note_pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 30px;
+  padding: 4px 12px 4px 8px;
+  border-radius: 999px;
+  background: rgba(6, 20, 16, 0.05);
+  font-size: max(12.5px, calc(15 * var(--u)));
+}
+
+.note_pill.dark {
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.noteIcon {
+  width: 16px;
+  height: 16px;
+  flex: none;
+}
+
+.note_footnote {
+  display: block;
+}
+
+.note_inline {
+  font-size: 0.8em;
+}
+
+.noteLink {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+}
+
+/* ---------- KortAntwoord ---------- */
+.kort {
+  max-width: 820px;
+  padding: max(20px, calc(39 * var(--u)));
+  border-radius: var(--radius);
+  background: var(--c-grey-100);
+  color: var(--c-ink);
+}
+
+.kortDark {
+  background: var(--c-green-card);
+  color: #fff;
+}
+
+.kortLabel {
+  font-family: var(--font-ui);
+  font-weight: 500;
+  font-size: var(--fs-ui);
+  margin-bottom: 12px;
+}
+
+.kortBody {
+  font-size: max(17px, calc(22 * var(--u)));
+  line-height: 1.55;
+}
+
+.kortNote {
+  margin-top: 14px;
+}
+
+/* ---------- TrustLine ---------- */
+.trust {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--fs-small);
+  color: var(--c-grey-600);
+}
+
+.trust.dark {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.trust li + li::before {
+  content: "·";
+  margin: 0 10px;
+}
+
+@media (max-width: 600px) {
+  .trust {
+    gap: 2px 14px;
+  }
+  .trust li + li::before {
+    content: none;
+  }
+}
+
+@media (max-width: 380px) {
+  .trust li:nth-child(3) {
+    display: none;
+  }
+}
+
+/* ---------- SourcesList ---------- */
+.sources {
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--c-grey-600);
+}
+
+.sources.dark {
+  color: var(--c-on-green-3);
+}
+
+.sourcesTitle {
+  margin-bottom: 10px;
+  font-family: var(--font-ui);
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--c-ink);
+}
+
+.dark .sourcesTitle {
+  color: #fff;
+}
+
+.sourcesList {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding-left: 1.2em;
+  list-style: decimal;
+}
+
+.sourcesList a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.sourcesLabel {
+  color: var(--c-ink);
+}
+
+.dark .sourcesLabel {
+  color: #fff;
+}
+
+.kortBody a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}

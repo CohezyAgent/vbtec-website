@@ -1,0 +1,22 @@
+/* Home page glue – Builder 1 */
+.painClose {
+  margin: 0;
+  max-width: 22ch;
+  font-size: var(--fs-h4);
+  line-height: 1.2;
+  color: var(--c-lime);
+}
+
+.teaser {
+  margin-top: var(--gap-intro);
+}
+
+@media (max-width: 900px) {
+  .painClose {
+    font-size: 22px;
+  }
+
+  .teaser {
+    margin-top: 32px;
+  }
+}

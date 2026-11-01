@@ -1,0 +1,177 @@
+.section {
+  overflow: hidden;
+  overflow: clip;
+}
+
+.introPad {
+  padding: 0 var(--side);
+}
+
+/* ---------- Marquee ---------- */
+.marquee {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-cards);
+  margin-top: var(--gap-intro);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+}
+
+.row {
+  display: flex;
+  width: max-content;
+  animation: marquee 60s linear infinite;
+}
+
+.reverse {
+  animation-direction: reverse;
+  animation-duration: 70s;
+}
+
+.marquee:hover .row,
+.marquee:focus-within .row {
+  animation-play-state: paused;
+}
+
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.rowTrack {
+  display: flex;
+  gap: var(--gap-cards);
+  margin: 0;
+  padding: 0 calc(var(--gap-cards) / 2);
+  list-style: none;
+}
+
+.cell {
+  flex: none;
+  width: max(300px, calc(470 * var(--u)));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .row {
+    animation: none;
+    width: auto;
+    flex-wrap: wrap;
+    padding: 0 var(--side);
+  }
+  .rowTrack {
+    flex-wrap: wrap;
+    padding: 0;
+  }
+  .reverse,
+  .clone {
+    display: none;
+  }
+  .marquee {
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+}
+
+/* ---------- Static masonry ---------- */
+.masonry {
+  columns: 3 calc(360 * var(--ux));
+  column-gap: var(--gap-cards);
+  margin: var(--gap-intro) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.masonryItem {
+  break-inside: avoid;
+  margin-bottom: var(--gap-cards);
+}
+
+.more {
+  margin-top: 8px;
+}
+
+.more > .masonry {
+  margin-top: var(--gap-cards);
+}
+
+.moreButton {
+  display: inline-flex;
+  align-items: center;
+  height: 52px;
+  padding: 0 26px;
+  border-radius: 999px;
+  box-shadow: inset 0 0 0 1.5px rgba(6, 20, 16, 0.2);
+  font-family: var(--font-ui);
+  font-weight: 500;
+  font-size: var(--fs-ui);
+  cursor: pointer;
+  list-style: none;
+}
+
+.moreButton::-webkit-details-marker {
+  display: none;
+}
+
+.moreDark {
+  box-shadow: var(--ring-on-dark-strong);
+  color: #fff;
+}
+
+.more[open] > .moreButton {
+  display: none;
+}
+
+.desktopHidden {
+  display: none;
+}
+
+/* ---------- Summary card (only with real reviews) ---------- */
+.summary {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 10px;
+  min-height: 220px;
+  height: 100%;
+  padding: max(26px, calc(36 * var(--u)));
+  border-radius: var(--radius);
+  background: var(--c-lime);
+  color: var(--c-ink);
+}
+
+.summaryScore {
+  font-size: var(--fs-stat);
+  line-height: 1;
+}
+
+.summaryText {
+  font-size: var(--fs-body);
+}
+
+@media (max-width: 900px) {
+  .cell {
+    width: 82vw;
+  }
+  .reverse {
+    display: none;
+  }
+  .row {
+    animation-duration: 85s;
+  }
+  .masonry {
+    columns: 1;
+  }
+  .mobileHidden {
+    display: none;
+  }
+  .desktopHidden {
+    display: list-item;
+  }
+}
+
+@media (min-width: 901px) {
+  .moreMobileOnly {
+    display: none;
+  }
+}

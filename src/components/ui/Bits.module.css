@@ -1,0 +1,178 @@
+/* ---------- IconCircle ---------- */
+.iconCircle {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.iconCircleIcon {
+  width: 44%;
+  height: 44%;
+}
+
+.ic_lg {
+  width: max(56px, calc(79 * var(--u)));
+  height: max(56px, calc(79 * var(--u)));
+}
+.ic_md {
+  width: max(46px, calc(62 * var(--u)));
+  height: max(46px, calc(62 * var(--u)));
+}
+.ic_sm {
+  width: max(36px, calc(46 * var(--u)));
+  height: max(36px, calc(46 * var(--u)));
+}
+
+.fill_pale {
+  background: var(--c-lime-pale);
+  color: var(--c-ink);
+}
+.fill_lime {
+  background: var(--c-lime);
+  color: #04110b;
+}
+.fill_ring {
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: var(--ring-on-dark);
+  color: #fff;
+}
+.fill_glass {
+  background: rgba(255, 255, 255, 0.07);
+  box-shadow: var(--ring-on-dark-strong);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  color: #fff;
+}
+
+/* ---------- Tag ---------- */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  height: max(36px, calc(48 * var(--u)));
+  padding: 0 max(16px, calc(24 * var(--u)));
+  border-radius: 999px;
+  font-family: var(--font-label);
+  font-size: max(14px, calc(18 * var(--u)));
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+.tagSm {
+  height: 30px;
+  padding: 0 12px;
+  font-size: 13px;
+}
+
+.tag_grey {
+  background: var(--c-grey-200);
+  color: #0d1612;
+}
+.tag_light {
+  background: var(--c-grey-100);
+  color: var(--c-ink);
+}
+.tag_ring {
+  background: transparent;
+  box-shadow: var(--ring-on-dark);
+  color: #fff;
+}
+.tag_lime {
+  background: var(--c-lime);
+  color: var(--c-ink);
+}
+
+.tagLink {
+  transition:
+    background-color var(--dur-hover),
+    box-shadow var(--dur-hover);
+}
+.tagLink.tag_light:hover,
+.tagLink.tag_grey:hover {
+  background: var(--c-lime-pale);
+}
+.tagLink.tag_ring:hover {
+  box-shadow: var(--ring-on-dark-strong);
+}
+.tagLink.tag_lime:hover {
+  background: var(--c-lime-hover);
+}
+
+/* ---------- PlaceholderBadge ---------- */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 28px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px dashed rgba(6, 20, 16, 0.35);
+  background: rgba(255, 255, 255, 0.85);
+  font-family: var(--font-label);
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--c-ink);
+  white-space: nowrap;
+}
+
+.badgeDark {
+  border-color: rgba(255, 255, 255, 0.45);
+  background: rgba(6, 20, 16, 0.45);
+  color: #fff;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+/* ---------- CheckList ---------- */
+.checks {
+  display: grid;
+  gap: max(12px, calc(16 * var(--u)));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--fs-body);
+  line-height: 1.45;
+}
+
+.checks li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.check {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  margin-top: -1px;
+  border-radius: 50%;
+  background: var(--c-lime-pale);
+  color: var(--c-ink);
+}
+
+.checksDark .check {
+  background: var(--c-lime);
+}
+
+.check svg {
+  width: 15px;
+  height: 15px;
+}
+
+/* Touch: chips stay visually compact but get a ≥44px hit area. */
+@media (pointer: coarse) {
+  .tagLink {
+    position: relative;
+  }
+  .tagLink::after {
+    content: "";
+    position: absolute;
+    inset: -8px 0;
+  }
+}

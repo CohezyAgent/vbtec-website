@@ -10,12 +10,12 @@
 .section {
   --ux: calc(100vw / 1842);
   --u: min(var(--ux), calc(100svh / 1100));
-  --deep: #071813;
+  --deep: #0b4a3f;
   position: relative;
   z-index: 1; /* slides over the held Mission section */
   background: var(--deep);
   color: #fff;
-  font-family: Helvetica, Arial, sans-serif;
+  font-family: var(--font-text);
 }
 
 .stage {
@@ -90,7 +90,7 @@
   aspect-ratio: 424 / 644;
   border-radius: calc(22 * var(--u));
   overflow: hidden;
-  background: #1c2a24;
+  background: #0f6b5a;
 }
 
 .cardImage {
@@ -125,7 +125,7 @@
   width: max(36px, calc(72 * var(--k)));
   height: max(36px, calc(72 * var(--k)));
   border-radius: 50%;
-  background: #dbef75;
+  background: #efd9ff;
   color: #04110b;
   flex: none;
 }
@@ -166,7 +166,7 @@
 .stepFill {
   position: absolute;
   inset: 0;
-  background: #dbef75;
+  background: #efd9ff;
   transform: scaleX(1);
   transform-origin: left;
 }
@@ -204,19 +204,37 @@
 .ctaWrap {
   flex: none;
   display: flex;
+  align-items: center;
   justify-content: center;
+  gap: calc(36 * var(--u));
   margin-top: calc(44 * var(--u));
+}
+
+.textLink {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-size: max(15px, calc(19.2 * var(--u)));
+  color: #fff;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+}
+
+.textLink:hover {
+  color: var(--c-lime);
 }
 
 .cta {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: calc(411 * var(--u));
+  gap: calc(28 * var(--u));
+  min-width: calc(330 * var(--u));
   height: calc(66 * var(--u));
   padding: 0 calc(9 * var(--u)) 0 calc(31 * var(--u));
   border-radius: 999px;
-  background: #dbef75;
+  background: #efd9ff;
   font-family: var(--font-lexend), Helvetica, Arial, sans-serif;
   font-size: calc(19.2 * var(--u));
   font-weight: 500;
@@ -225,7 +243,7 @@
 }
 
 .cta:hover {
-  background: #e5f78f;
+  background: #f6eaff;
 }
 
 .ctaCircle {
@@ -236,7 +254,7 @@
   height: calc(50 * var(--u));
   border-radius: 50%;
   background: #031512;
-  color: #dbef75;
+  color: #efd9ff;
   transition: transform 0.2s;
 }
 
@@ -330,6 +348,8 @@
   }
 
   .ctaWrap {
+    flex-direction: column;
+    gap: 12px;
     margin-top: 36px;
     padding: 0 20px;
   }

@@ -1,0 +1,208 @@
+/* Builder 3 – hub page parts (/projecten, /blog, /kennisbank). */
+.stack {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: max(48px, calc(96 * var(--u)));
+}
+
+.intro {
+  display: grid;
+  grid-template-columns: var(--col-eyebrow) minmax(0, 1fr);
+}
+
+.introText {
+  grid-column: 2;
+  max-width: 68ch;
+  font-size: var(--fs-body-lg);
+  line-height: 1.55;
+  color: #1b2a24;
+}
+
+.introText p + p {
+  margin-top: 0.9em;
+}
+
+.sectionLabel {
+  margin: 0 0 18px;
+  font-size: var(--fs-eyebrow);
+  font-weight: 400;
+  color: var(--c-grey-600);
+}
+
+/* Featured: full-bleed photo with a glass panel, numbers big. */
+.feature {
+  position: relative;
+  display: block;
+  min-height: max(420px, calc(640 * var(--u)));
+  border-radius: var(--radius);
+  overflow: hidden;
+  color: #fff;
+  text-decoration: none;
+  background: var(--c-slate);
+  isolation: isolate;
+}
+
+.featureImg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  transition: transform 1.2s var(--ease-out);
+}
+
+.feature::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(90deg, rgba(11, 74, 63, 0.82) 0%, rgba(11, 74, 63, 0.35) 55%, rgba(11, 74, 63, 0.1) 100%);
+}
+
+@media (hover: hover) {
+  .feature:hover .featureImg {
+    transform: scale(1.03);
+  }
+  .feature:hover .featureArrow {
+    transform: rotate(45deg);
+    background: var(--c-lime);
+    color: var(--c-ink);
+  }
+}
+
+.featureInner {
+  position: absolute;
+  inset: auto auto 0 0;
+  display: grid;
+  gap: 16px;
+  max-width: 760px;
+  padding: max(24px, calc(56 * var(--u)));
+}
+
+.featureMeta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  font-size: var(--fs-small);
+  color: var(--c-on-green-2);
+}
+
+.featureTitle {
+  margin: 0;
+  font-size: var(--fs-h2);
+  line-height: 1.1;
+  font-weight: 400;
+}
+
+.featureNumber {
+  font-size: var(--fs-stat);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.featureUnit {
+  font-size: var(--fs-body-lg);
+  color: var(--c-on-green-2);
+}
+
+.featureText {
+  margin: 0;
+  max-width: 56ch;
+  font-size: var(--fs-body);
+  line-height: 1.55;
+  color: var(--c-on-green-2);
+}
+
+.featureArrow {
+  position: absolute;
+  right: max(20px, calc(40 * var(--u)));
+  top: max(20px, calc(40 * var(--u)));
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(10px);
+  transition: transform var(--dur-hover) var(--ease-out), background-color var(--dur-hover);
+}
+
+.featureArrow svg {
+  width: 22px;
+  height: 22px;
+}
+
+/* Blog grid */
+.postGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: max(32px, calc(64 * var(--u))) var(--gap-cards);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.honest {
+  display: grid;
+  grid-template-columns: var(--col-eyebrow) minmax(0, 1fr);
+  padding-top: max(24px, calc(40 * var(--u)));
+  border-top: var(--hairline-light);
+}
+
+.honestBody {
+  grid-column: 2;
+  max-width: 68ch;
+  font-size: var(--fs-body);
+  line-height: 1.6;
+  color: var(--c-grey-600);
+}
+
+.honestBody a {
+  color: var(--c-ink);
+  text-underline-offset: 3px;
+}
+
+.notFoundGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--gap-cards);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+@media (max-width: 1200px) {
+  .postGrid,
+  .notFoundGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 900px) {
+  .intro,
+  .honest {
+    grid-template-columns: 1fr;
+  }
+  .introText,
+  .honestBody {
+    grid-column: 1;
+  }
+  .feature {
+    min-height: 520px;
+  }
+  .feature::after {
+    background: linear-gradient(0deg, rgba(11, 74, 63, 0.9) 0%, rgba(11, 74, 63, 0.45) 60%, rgba(11, 74, 63, 0.1) 100%);
+  }
+  .featureNumber {
+    font-size: 48px;
+  }
+  .featureTitle {
+    font-size: 26px;
+  }
+}
+
+@media (max-width: 640px) {
+  .postGrid,
+  .notFoundGrid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -8,12 +8,12 @@
   --u: min(calc(100vw / 1842), calc(100svh / 1100));
   position: relative;
   height: 420svh;
-  --ink: #030f09;
-  --deep: #071813;
-  --lime: #dbef75;
+  --ink: #031813;
+  --deep: #0b4a3f;
+  --lime: #efd9ff;
   background: #fff;
   color: var(--ink);
-  font-family: Helvetica, Arial, sans-serif;
+  font-family: var(--font-text);
 }
 
 .stage {
@@ -149,7 +149,7 @@
   font-size: calc(21 * var(--u));
   line-height: 1;
   white-space: nowrap;
-  box-shadow: 0 calc(10 * var(--u)) calc(30 * var(--u)) rgba(3, 15, 9, 0.08);
+  box-shadow: 0 calc(10 * var(--u)) calc(30 * var(--u)) rgba(3, 24, 19, 0.08);
 }
 
 .quote {

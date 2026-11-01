@@ -1,0 +1,128 @@
+.list {
+  border-top: var(--hairline-light);
+}
+
+.dark.list {
+  border-top: var(--hairline-dark);
+}
+
+.item {
+  border-bottom: var(--hairline-light);
+}
+
+.dark .item {
+  border-bottom: var(--hairline-dark);
+}
+
+.summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  min-height: 56px;
+  padding: max(18px, calc(28 * var(--u))) 0;
+  cursor: pointer;
+  list-style: none;
+}
+
+.summary::-webkit-details-marker {
+  display: none;
+}
+
+.title {
+  font-family: var(--font-ui);
+  font-weight: 500;
+  font-size: max(17px, calc(25.5 * var(--u)));
+  line-height: 1.3;
+  color: inherit;
+}
+
+.plus {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: max(40px, calc(46 * var(--u)));
+  height: max(40px, calc(46 * var(--u)));
+  border-radius: 50%;
+  background: var(--c-grey-100);
+  color: var(--c-ink);
+  transition:
+    transform 0.4s var(--ease-out),
+    background-color var(--dur-hover);
+}
+
+.dark .plus {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.plus svg {
+  width: 45%;
+  height: 45%;
+}
+
+.summary:hover .plus {
+  background: var(--c-lime-pale);
+}
+
+.dark .summary:hover .plus {
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.item[open] .plus {
+  transform: rotate(45deg);
+}
+
+.body {
+  padding: 0 calc(70 * var(--u)) max(22px, calc(32 * var(--u))) 0;
+  font-size: var(--fs-body);
+  line-height: 1.6;
+  color: var(--c-grey-600);
+}
+
+.dark .body {
+  color: var(--c-on-green-2);
+}
+
+.body p + p {
+  margin-top: 0.8em;
+}
+
+.body a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* Smooth open where supported. */
+@supports selector(::details-content) {
+  .item::details-content {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition:
+      grid-template-rows 0.4s var(--ease-out),
+      content-visibility 0.4s allow-discrete;
+  }
+  .item[open]::details-content {
+    grid-template-rows: 1fr;
+  }
+  .panel {
+    overflow: hidden;
+    min-height: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .item::details-content {
+    transition: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .body {
+    padding-right: 0;
+    font-size: 16px;
+    line-height: 1.55;
+  }
+}

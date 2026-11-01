@@ -1,0 +1,204 @@
+/* Section, Container, SectionIntro, Eyebrow, Heading */
+.section {
+  position: relative;
+  font-family: var(--font-text);
+}
+
+.bgW {
+  background: var(--c-white);
+  color: var(--c-ink-deep);
+}
+
+.bgD {
+  /* Soft accent glow, like the silky gradients on the brand board. */
+  background:
+    radial-gradient(ellipse 70% 60% at 85% 0%, rgba(34, 166, 143, 0.28), transparent 70%),
+    radial-gradient(ellipse 60% 50% at 0% 100%, rgba(3, 24, 19, 0.45), transparent 70%),
+    var(--c-green);
+  color: var(--c-on-green);
+}
+
+.bgL {
+  background: var(--c-lime);
+  color: var(--c-ink);
+}
+
+.bgI {
+  background: var(--c-paper);
+  color: var(--c-on-green);
+}
+
+.padFlow {
+  padding-top: var(--pad-top);
+  padding-bottom: var(--pad-bottom);
+}
+
+.padScreen {
+  padding-top: var(--pad-screen-top);
+  padding-bottom: var(--pad-screen-bottom);
+}
+
+/* Paper frame (same treatment as the home hero). */
+.framed {
+  padding: calc(10 * var(--u)) calc(12.5 * var(--u)) calc(14 * var(--u));
+}
+
+.frameInner {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  overflow: clip;
+  border-radius: var(--radius);
+  background: var(--c-slate);
+  color: var(--c-on-green);
+}
+
+.container {
+  padding-left: var(--side);
+  padding-right: var(--side);
+}
+
+.narrow {
+  padding-left: calc(var(--side) + var(--col-eyebrow));
+  max-width: calc(var(--side) * 2 + var(--col-eyebrow) + 68ch);
+}
+
+@media (max-width: 900px) {
+  .framed {
+    padding: 8px;
+  }
+  .narrow {
+    padding-left: var(--side);
+  }
+}
+
+/* ---------- Intro row ---------- */
+.intro {
+  display: flex;
+  align-items: flex-start;
+}
+
+.introEyebrow {
+  flex: none;
+  width: var(--col-eyebrow);
+  margin-top: calc(3 * var(--u));
+}
+
+.introMain {
+  flex: 1;
+  min-width: 0;
+  max-width: calc(1140 * var(--ux));
+}
+
+.introAside {
+  flex: none;
+  margin-left: auto;
+  padding-left: calc(40 * var(--u));
+  align-self: flex-end;
+}
+
+.introCenter {
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.introCenter .introEyebrow {
+  width: auto;
+  margin: 0 0 calc(24 * var(--u));
+}
+
+.introCenter .introMain {
+  max-width: calc(1100 * var(--ux));
+}
+
+.introCenter .introAside {
+  margin: calc(32 * var(--u)) 0 0;
+  padding: 0;
+  align-self: center;
+}
+
+.eyebrow {
+  font-size: var(--fs-eyebrow);
+  line-height: 1.2;
+  color: var(--c-grey-600);
+}
+
+.onDark.eyebrow,
+.eyebrow.onDark {
+  color: var(--c-on-green-3);
+}
+
+.heading {
+  font-weight: 400;
+  letter-spacing: 0;
+  color: inherit;
+}
+
+.size_display {
+  font-size: var(--fs-display);
+  line-height: var(--lh-display);
+}
+
+.size_statement {
+  font-size: var(--fs-statement);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+}
+
+.size_h2 {
+  font-size: var(--fs-h2);
+  line-height: var(--lh-h2);
+}
+
+.size_h3 {
+  font-size: var(--fs-h3);
+  line-height: 1.2;
+}
+
+.size_h4 {
+  font-size: var(--fs-h4);
+  line-height: 1.2;
+}
+
+.lead {
+  margin-top: calc(28 * var(--u));
+  max-width: calc(900 * var(--ux));
+  font-size: var(--fs-body-lg);
+  line-height: 1.5;
+  color: var(--c-grey-600);
+}
+
+.lead.onDark {
+  color: var(--c-on-green-2);
+}
+
+.introCenter .lead {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (max-width: 900px) {
+  .intro {
+    flex-direction: column;
+    gap: 16px;
+  }
+  .introEyebrow {
+    width: auto;
+    margin-top: 0;
+  }
+  .introEyebrow:empty {
+    display: none;
+  }
+  .introAside {
+    margin-left: 0;
+    padding-left: 0;
+    align-self: flex-start;
+  }
+  .introCenter .introEyebrow {
+    margin: 0;
+  }
+  .lead {
+    margin-top: 16px;
+  }
+}

@@ -39,8 +39,8 @@ export function CarIcon({ className }: IconProps) {
   return (
     <svg className={className} viewBox="0 0 32 32" aria-hidden="true" {...stroke}>
       <path d="M4 20.5v-3.2c0-1 .7-1.8 1.7-2L8.5 14.6l2.6-3.9A2.5 2.5 0 0 1 13.2 9.6h5.4a2.5 2.5 0 0 1 2 1l3 4 2.7.6c1 .2 1.7 1 1.7 2v3.3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1Z" />
-      <circle cx="10" cy="22" r="2.3" fill="#dff3b6" />
-      <circle cx="22.5" cy="22" r="2.3" fill="#dff3b6" />
+      <circle cx="10" cy="22" r="2.3" fill="#f1e2ff" />
+      <circle cx="22.5" cy="22" r="2.3" fill="#f1e2ff" />
       <path d="M8.8 14.6h15.8" />
       <path d="M26 4.5l-1.6 2.8h2.6L25.4 10" strokeWidth="1.8" />
     </svg>

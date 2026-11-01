@@ -1,5 +1,15 @@
 type IconProps = { className?: string };
 
+/** VB-TEC brand mark: leaf with big rounding top-left and bottom-right. Lilac (#EFD9FF) on
+ * dark, primary green on light; set it with `color`. */
+export function VbtecMark({ className }: IconProps) {
+  return (
+    <svg className={className} viewBox="0 0 100 92" aria-hidden="true">
+      <path d="M40 0H92a8 8 0 0 1 8 8v44a40 40 0 0 1-40 40H8a8 8 0 0 1-8-8V40A40 40 0 0 1 40 0Z" fill="currentColor" />
+    </svg>
+  );
+}
+
 export function SolarLogo({ className }: IconProps) {
   return (
     <svg className={className} viewBox="0 0 30 34" fill="currentColor" aria-hidden="true">

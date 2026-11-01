@@ -1,0 +1,78 @@
+.wrap {
+  margin-top: var(--gap-intro);
+}
+
+.list {
+  display: grid;
+  gap: var(--gap-cards);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  text-align: left;
+}
+
+.item {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr 1fr;
+  gap: calc(40 * var(--u));
+  padding: calc(36 * var(--u)) calc(39 * var(--u));
+  border-radius: var(--radius);
+  background: var(--c-grey-100);
+  color: var(--c-ink);
+}
+
+.dark .item {
+  background: var(--c-green-card);
+  color: #fff;
+}
+
+.label {
+  margin-bottom: 10px;
+  font-family: var(--font-label);
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--c-grey-600);
+}
+
+.dark .label {
+  color: var(--c-on-green-3);
+}
+
+.myth {
+  font-size: max(20px, calc(30 * var(--u)));
+  line-height: 1.25;
+}
+
+.answer,
+.whenTrue {
+  font-size: var(--fs-body);
+  line-height: 1.6;
+}
+
+.whenTrue {
+  color: var(--c-grey-600);
+}
+
+.dark .whenTrue {
+  color: var(--c-on-green-2);
+}
+
+.honest {
+  padding-left: calc(30 * var(--u));
+  border-left: 3px solid var(--c-lime);
+}
+
+.note {
+  margin-top: 12px;
+}
+
+@media (max-width: 900px) {
+  .item {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding: 24px 20px;
+  }
+  .honest {
+    padding-left: 16px;
+  }
+}

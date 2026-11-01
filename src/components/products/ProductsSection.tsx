@@ -1,15 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { CSSProperties } from "react";
-import { Figtree } from "next/font/google";
+import { routes } from "@/lib/routes";
 import { BatteryIcon, CarIcon, FanIcon, PulseIcon, SunIcon } from "./icons";
 import styles from "./Products.module.css";
-
-const figtree = Figtree({
-  subsets: ["latin"],
-  weight: ["600"],
-  variable: "--font-figtree",
-});
 
 /*
  * Each card is one image (card outline + product, which overlaps the edge),
@@ -20,7 +14,7 @@ const figtree = Figtree({
 const products = [
   {
     label: "Zonnepanelen",
-    href: "#zonnepanelen",
+    href: routes.service("zonnepanelen"),
     image: "/images/h-solar.jpg",
     alt: "Een zonnepaneel",
     w: 382,
@@ -31,7 +25,7 @@ const products = [
   },
   {
     label: "Omvormers",
-    href: "#omvormers",
+    href: routes.service("omvormers"),
     image: "/images/h-inverter.jpg",
     alt: "Een witte omvormer",
     w: 371,
@@ -42,7 +36,7 @@ const products = [
   },
   {
     label: "Thuisbatterijen",
-    href: "#thuisbatterijen",
+    href: routes.service("thuisbatterij"),
     image: "/images/h-battery.jpg",
     alt: "Een witte thuisbatterij",
     w: 371,
@@ -53,7 +47,7 @@ const products = [
   },
   {
     label: "Laadpalen",
-    href: "#laadpalen",
+    href: routes.service("laadpalen"),
     image: "/images/h-charger.jpg",
     alt: "Een zwarte laadpaal",
     w: 367,
@@ -64,7 +58,7 @@ const products = [
   },
   {
     label: "Warmtepompen",
-    href: "#warmtepompen",
+    href: routes.service("lucht-water-warmtepomp"),
     image: "/images/h-heatpump.jpg",
     alt: "Een buitenunit van een warmtepomp",
     w: 391,
@@ -75,12 +69,15 @@ const products = [
   },
 ];
 
+// Extra services without a product cut-out yet (05 §0.3-5): shown as tags.
+const extra = [
+  { label: "PVT-panelen", href: routes.service("pvt-panelen") },
+  { label: "Airco (lucht-lucht)", href: routes.service("lucht-lucht-warmtepomp") },
+];
+
 export default function ProductsSection() {
   return (
-    <section
-      className={`${styles.section} ${figtree.variable}`}
-      aria-label="Onze producten"
-    >
+    <section className={styles.section} aria-labelledby="products-heading" data-header-tone="light">
       <ul className={styles.row}>
         {products.map(({ label, href, image, alt, w, text, size, icon, Icon }) => (
           <li
@@ -99,7 +96,7 @@ export default function ProductsSection() {
                 quality={90}
                 className={styles.image}
               />
-              <h3 className={styles.label}>{label}</h3>
+              <span className={styles.label}>{label}</span>
               <span className={styles.iconCircle}>
                 <Icon className={styles.icon} />
               </span>
@@ -107,6 +104,22 @@ export default function ProductsSection() {
           </li>
         ))}
       </ul>
+      <div className={styles.strip}>
+        <h2 id="products-heading" className={styles.stripTitle}>
+          Eén systeem, niet één product
+        </h2>
+        <p className={styles.extra}>
+          <span className={styles.extraLabel}>Ook:</span>
+          {extra.map((e) => (
+            <Link key={e.href} href={e.href} className={styles.extraTag}>
+              {e.label}
+            </Link>
+          ))}
+          <Link href={routes.diensten()} className={styles.allLink}>
+            Alle diensten
+          </Link>
+        </p>
+      </div>
     </section>
   );
 }

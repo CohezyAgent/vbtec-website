@@ -1,0 +1,559 @@
+/*
+ * Shared header. Desktop geometry copied from the Hero's former inline header
+ * (1842 x 1176 reference, same --u as the hero) and offset by the hero frame padding
+ * (10u top, 12.5u sides) so on the home page it lands exactly where the inline one was.
+ */
+.header {
+  --u: min(calc(100vw / 1842), calc(100svh / 1176));
+  --fg: #fff;
+  --pill-bg: var(--glass-dark-bg);
+  --pill-border: var(--glass-dark-border);
+  --pill-blur: var(--glass-dark-blur);
+  --active-bg: #fff;
+  --active-fg: var(--c-ink);
+  --cta-bg: #fff;
+  --cta-fg: var(--c-ink);
+  --cta-arrow-bg: #fff;
+  --cta-arrow-fg: var(--c-ink);
+  --hover-bg: rgba(255, 255, 255, 0.12);
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 50;
+  height: calc(132 * var(--u));
+  color: var(--fg);
+  font-family: var(--font-text);
+  pointer-events: none;
+  transition:
+    transform 0.4s var(--ease-out),
+    color 0.3s ease;
+}
+
+.header > * {
+  pointer-events: auto;
+}
+
+/* Second selector: before hydration (no [data-toned] yet) pick the tone from the first
+   section in <main>, so light pages do not flash a white logo/CTA on white. */
+.header[data-tone="light"],
+:global(body:has(main > section:first-of-type[data-header-tone="light"])) .header:not([data-toned]) {
+  --fg: var(--c-ink);
+  --pill-bg: var(--glass-light-bg);
+  --pill-border: var(--glass-light-border);
+  --pill-blur: var(--glass-light-blur);
+  --active-bg: var(--c-primary);
+  --active-fg: #fff;
+  --cta-bg: var(--c-primary);
+  --cta-fg: #fff;
+  --cta-arrow-bg: var(--c-primary);
+  --cta-arrow-fg: #fff;
+  --hover-bg: rgba(6, 20, 16, 0.07);
+  /* Lilac mark disappears on white: use the primary green there. */
+  --mark: var(--c-primary);
+}
+
+.header[data-hidden] {
+  transform: translateY(-110%);
+}
+
+/* Floating glass bar once scrolled */
+.backing {
+  position: absolute;
+  top: calc(18 * var(--u));
+  left: calc(12.5 * var(--u) + 64 * var(--u));
+  right: calc(12.5 * var(--u) + 62 * var(--u));
+  height: calc(86 * var(--u));
+  border-radius: 999px;
+  background: var(--pill-bg);
+  border: var(--pill-border);
+  backdrop-filter: var(--pill-blur);
+  -webkit-backdrop-filter: var(--pill-blur);
+  box-shadow: var(--shadow-pill);
+  opacity: 0;
+  transform: scale(0.98);
+  transition:
+    opacity 0.3s ease,
+    transform 0.4s var(--ease-out),
+    background-color 0.3s ease;
+  pointer-events: none !important;
+}
+
+.header[data-scrolled] .backing {
+  opacity: 1;
+  transform: none;
+}
+
+.header[data-scrolled] .nav {
+  background: transparent;
+  border-color: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+/* ---------- Logo ---------- */
+.logo {
+  position: absolute;
+  left: calc(12.5 * var(--u) + 94 * var(--u));
+  top: calc(10 * var(--u) + 44 * var(--u));
+  display: flex;
+  align-items: center;
+  gap: calc(17 * var(--u));
+  height: calc(32 * var(--u));
+  font-size: calc(34.6 * var(--u));
+  font-weight: 700;
+  letter-spacing: calc(0.2 * var(--u));
+  color: var(--fg);
+  text-decoration: none;
+}
+
+.logoIcon {
+  color: var(--mark, var(--c-highlight));
+  width: calc(40 * var(--u));
+  height: calc(37 * var(--u));
+  flex: none;
+}
+
+/* Brand wordmark: heavy, tight, as on the brand board. */
+.wordmark {
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+/* ---------- Nav pill ---------- */
+.nav {
+  position: absolute;
+  left: 50%;
+  top: calc(10 * var(--u) + 32 * var(--u));
+  transform: translateX(-50%);
+  height: calc(57 * var(--u));
+  padding: 0 calc(5 * var(--u));
+  border: var(--pill-border);
+  border-radius: 999px;
+  background: var(--pill-bg);
+  backdrop-filter: var(--pill-blur);
+  -webkit-backdrop-filter: var(--pill-blur);
+  transition:
+    background-color 0.3s ease,
+    border-color 0.3s ease;
+}
+
+.navList {
+  display: flex;
+  align-items: center;
+  gap: calc(2 * var(--u));
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.navMenu {
+  position: relative;
+}
+
+.navLink {
+  display: flex;
+  align-items: center;
+  gap: calc(6 * var(--u));
+  height: calc(46 * var(--u));
+  padding: calc(3 * var(--u)) calc(20 * var(--u)) 0;
+  border: 0;
+  border-radius: 999px;
+  background: none;
+  font: inherit;
+  font-size: calc(19.8 * var(--u));
+  color: var(--fg);
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background-color 0.2s,
+    color 0.2s;
+}
+
+.navLink:hover {
+  background: var(--hover-bg);
+}
+
+.navActive,
+.navActive:hover {
+  background: var(--active-bg);
+  color: var(--active-fg);
+}
+
+.chevron {
+  width: calc(16 * var(--u));
+  height: calc(16 * var(--u));
+  margin-top: calc(-2 * var(--u));
+  transition: transform 0.25s var(--ease-out);
+}
+
+.navLink[aria-expanded="true"] .chevron {
+  transform: rotate(180deg);
+}
+
+/* ---------- Dropdown / mega panel ---------- */
+.panel {
+  position: absolute;
+  top: calc(100% + 18 * var(--u));
+  left: 50%;
+  width: max(320px, calc(460 * var(--u)));
+  padding: calc(30 * var(--u));
+  border-radius: calc(22 * var(--u));
+  background: rgba(253, 255, 255, 0.94);
+  border: var(--glass-light-border);
+  backdrop-filter: var(--glass-light-blur);
+  -webkit-backdrop-filter: var(--glass-light-blur);
+  box-shadow: var(--shadow-lift);
+  color: var(--c-ink);
+  transform: translateX(-50%);
+  animation: panelIn 0.25s var(--ease-out);
+}
+
+/* Hover bridge so the panel doesn't close while moving the mouse down. */
+.panel::before {
+  content: "";
+  position: absolute;
+  inset: calc(-20 * var(--u)) 0 auto;
+  height: calc(20 * var(--u));
+}
+
+.panelWide {
+  left: 0;
+  width: max(720px, calc(1100 * var(--u)));
+  transform: translateX(calc(-12 * var(--u)));
+}
+
+@keyframes panelIn {
+  from {
+    opacity: 0;
+    margin-top: calc(-8 * var(--u));
+  }
+  to {
+    opacity: 1;
+    margin-top: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .panel {
+    animation: none;
+  }
+}
+
+.panelCols {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+  gap: calc(28 * var(--u));
+}
+
+.panelCol ul {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.panelTitle {
+  margin-bottom: calc(12 * var(--u));
+  padding-left: 12px;
+  font-size: max(13px, calc(16 * var(--u)));
+  color: var(--c-grey-600);
+}
+
+.panelLink {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  color: var(--c-ink);
+  text-decoration: none;
+  transition: background-color 0.2s;
+}
+
+.panelLink:hover,
+.panelLink[aria-current="page"] {
+  background: var(--c-lime-pale);
+}
+
+.panelLabel {
+  font-family: var(--font-label);
+  font-weight: 600;
+  font-size: max(15px, calc(19 * var(--u)));
+}
+
+.panelDesc {
+  font-size: max(13px, calc(15.5 * var(--u)));
+  line-height: 1.35;
+  color: var(--c-grey-600);
+}
+
+.feature {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 8px;
+  min-height: calc(220 * var(--u));
+  padding: calc(24 * var(--u));
+  border-radius: calc(16 * var(--u));
+  background:
+    radial-gradient(120% 90% at 100% 0%, rgba(239, 217, 255, 0.35), transparent 60%),
+    var(--c-green);
+  color: #fff;
+  text-decoration: none;
+}
+
+.featureTitle {
+  font-size: max(18px, calc(26 * var(--u)));
+}
+
+.featureBody {
+  font-size: max(13px, calc(16 * var(--u)));
+  line-height: 1.4;
+  color: var(--c-on-green-2);
+}
+
+.featureCta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+  font-family: var(--font-ui);
+  font-weight: 500;
+  font-size: max(14px, calc(17 * var(--u)));
+  color: var(--c-lime);
+}
+
+.featureIcon {
+  width: 14px;
+  height: 14px;
+  transition: transform 0.2s;
+}
+
+.feature:hover .featureIcon,
+.panelFooter:hover .featureIcon {
+  transform: rotate(45deg);
+}
+
+.panelFooter {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: calc(18 * var(--u)) 0 0 12px;
+  font-family: var(--font-ui);
+  font-weight: 500;
+  font-size: max(14px, calc(17 * var(--u)));
+  color: var(--c-ink);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+/* ---------- CTA ---------- */
+.right {
+  position: absolute;
+  right: calc(12.5 * var(--u) + 90 * var(--u));
+  top: calc(10 * var(--u) + 30 * var(--u));
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ctaGroup {
+  display: flex;
+  gap: calc(2 * var(--u));
+  text-decoration: none;
+}
+
+.ctaPill,
+.ctaArrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: calc(61 * var(--u));
+  border-radius: 999px;
+  background: var(--cta-bg);
+  color: var(--cta-fg);
+  transition:
+    transform 0.2s,
+    background-color 0.3s ease,
+    color 0.3s ease;
+}
+
+.ctaPill {
+  padding: 0 calc(30 * var(--u));
+  font-size: calc(21 * var(--u));
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.ctaArrow {
+  width: calc(61 * var(--u));
+  background: var(--cta-arrow-bg);
+  color: var(--cta-arrow-fg);
+}
+
+.ctaGroup:hover .ctaArrow {
+  transform: rotate(45deg);
+}
+
+.arrowIcon {
+  width: calc(26 * var(--u));
+  height: calc(26 * var(--u));
+}
+
+.ctaShort {
+  display: none;
+}
+
+.burger {
+  display: none;
+}
+
+/* Skip link */
+.skip {
+  position: fixed;
+  left: 16px;
+  top: 12px;
+  z-index: 100;
+  padding: 12px 20px;
+  border-radius: 999px;
+  background: var(--c-lime);
+  color: var(--c-ink);
+  font-family: var(--font-ui);
+  font-weight: 500;
+  transform: translateY(-200%);
+  transition: transform 0.2s;
+}
+
+.skip:focus {
+  transform: none;
+}
+
+/* Medium desktops: tighten the nav so it never collides with logo/CTA. */
+@media (min-width: 901px) and (max-width: 1280px) {
+  .navLink {
+    padding: calc(3 * var(--u)) calc(14 * var(--u)) 0;
+    font-size: max(13px, calc(19.8 * var(--u)));
+  }
+  .ctaLong {
+    display: none;
+  }
+  .ctaShort {
+    display: inline;
+  }
+}
+
+/* ---------- Mobile bar ---------- */
+@media (max-width: 900px) {
+  .header {
+    --u: 1px;
+    height: 72px;
+    padding-top: env(safe-area-inset-top);
+  }
+  .backing {
+    top: 8px;
+    left: 8px;
+    right: 8px;
+    height: 60px;
+  }
+  .nav {
+    display: none;
+  }
+  .logo {
+    left: 24px;
+    top: 26px;
+    height: 26px;
+    gap: 10px;
+    font-size: 24px;
+  }
+  .logoIcon {
+    width: 21px;
+    height: 24px;
+  }
+  .right {
+    right: 14px;
+    top: 15px;
+    gap: 8px;
+  }
+  .ctaPill {
+    height: 46px;
+    padding: 0 18px;
+    font-size: 15px;
+  }
+  .ctaArrow {
+    display: none;
+  }
+  .ctaLong {
+    display: none;
+  }
+  .ctaShort {
+    display: inline;
+  }
+  .burger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 46px;
+    height: 46px;
+    border: var(--pill-border);
+    border-radius: 50%;
+    background: var(--pill-bg);
+    backdrop-filter: var(--pill-blur);
+    -webkit-backdrop-filter: var(--pill-blur);
+    color: var(--fg);
+    cursor: pointer;
+  }
+  .burgerLines {
+    position: relative;
+    width: 18px;
+    height: 10px;
+  }
+  .burgerLines span {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 2px;
+    border-radius: 2px;
+    background: currentColor;
+    transition:
+      transform 0.3s var(--ease-out),
+      top 0.3s var(--ease-out);
+  }
+  .burgerLines span:first-child {
+    top: 0;
+  }
+  .burgerLines span:last-child {
+    top: 8px;
+  }
+  .header[data-menu] {
+    --fg: #fff;
+    --pill-bg: rgba(255, 255, 255, 0.1);
+    --pill-border: 1px solid rgba(255, 255, 255, 0.2);
+    --cta-bg: var(--c-lime);
+    --cta-fg: var(--c-ink);
+    transform: none;
+  }
+  .header[data-menu] .backing {
+    opacity: 0;
+  }
+  .header[data-menu] .burgerLines span:first-child {
+    top: 4px;
+    transform: rotate(45deg);
+  }
+  .header[data-menu] .burgerLines span:last-child {
+    top: 4px;
+    transform: rotate(-45deg);
+  }
+}
+
+@media (max-width: 420px) {
+  .ctaGroup {
+    display: none;
+  }
+  .header[data-menu] .ctaGroup {
+    display: none;
+  }
+}

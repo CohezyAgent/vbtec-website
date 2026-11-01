@@ -1,0 +1,230 @@
+.frame {
+  padding: calc(10 * var(--u)) calc(12.5 * var(--u)) calc(14 * var(--u));
+  background: var(--c-paper);
+}
+
+.stage {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: flex-end;
+  min-height: min(100svh, calc(980 * var(--u)));
+  min-height: max(560px, min(100svh, calc(980 * var(--u))));
+  padding: calc(70 * var(--u));
+  overflow: hidden;
+  overflow: clip;
+  border-radius: var(--radius);
+  background: var(--c-slate);
+  color: #fff;
+}
+
+.media {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  overflow: clip;
+}
+
+.media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(0deg, rgba(6, 20, 16, 0.55) 0%, rgba(6, 20, 16, 0.12) 50%, rgba(6, 20, 16, 0) 70%);
+}
+
+.image img {
+  transition: transform var(--dur-settle) var(--ease-out);
+}
+
+.badge {
+  position: absolute;
+  top: calc(40 * var(--u));
+  left: calc(40 * var(--u));
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: calc(18 * var(--u));
+  width: calc(620 * var(--u));
+  padding: calc(40 * var(--u));
+  border-radius: var(--radius);
+  /* Tinted glass: real photos have bright skies/roofs behind the panel, plain 10% white
+     glass left the body copy under 4.5:1. */
+  background: rgba(6, 20, 16, 0.5);
+  box-shadow: var(--glass-photo-ring);
+  backdrop-filter: blur(18px) saturate(1.1);
+  -webkit-backdrop-filter: blur(18px) saturate(1.1);
+}
+
+.quotePanel {
+  width: calc(760 * var(--u));
+}
+
+.left {
+  margin-right: auto;
+}
+
+.right {
+  margin-left: auto;
+}
+
+.eyebrow {
+  font-size: var(--fs-eyebrow);
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.title {
+  font-size: var(--fs-h3);
+  line-height: 1.15;
+  font-weight: 400;
+  text-wrap: balance;
+}
+
+.quoteHeading {
+  font-size: var(--fs-eyebrow);
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.body {
+  font-size: var(--fs-body-lg);
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.quote {
+  margin: 0;
+}
+
+.quoteMark {
+  width: 34px;
+  height: 26px;
+  color: var(--c-lime);
+}
+
+.quoteText {
+  margin: calc(18 * var(--u)) 0 0;
+  font-size: max(22px, calc(38 * var(--u)));
+  line-height: 1.25;
+}
+
+.quoteBy {
+  display: flex;
+  flex-direction: column;
+  margin-top: calc(22 * var(--u));
+  font-size: var(--fs-small);
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.quoteName {
+  font-weight: 700;
+  color: #fff;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px 26px;
+  margin-top: calc(10 * var(--u));
+}
+
+.secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  font-size: var(--fs-body);
+  color: #fff;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.secondaryIcon {
+  width: 16px;
+  height: 16px;
+}
+
+/* ---------- Motion ---------- */
+.stage[data-ready]:not([data-visible]) {
+  clip-path: inset(8% 4% 8% 4% round var(--radius));
+}
+
+.stage[data-ready]:not([data-visible]) .image img {
+  transform: scale(1.12);
+}
+
+.stage[data-ready]:not([data-visible]) .panel {
+  opacity: 0;
+  transform: translateY(40px);
+}
+
+.stage[data-visible] {
+  clip-path: inset(0 0 0 0 round var(--radius));
+  transition: clip-path var(--dur-wipe) var(--ease-wipe);
+}
+
+.stage[data-visible] .panel {
+  transition:
+    opacity 0.8s ease 0.4s,
+    transform 0.9s var(--ease-out) 0.4s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stage[data-ready]:not([data-visible]),
+  .stage[data-ready]:not([data-visible]) .panel,
+  .stage[data-ready]:not([data-visible]) .image img {
+    clip-path: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .frame {
+    padding: 8px;
+  }
+  .stage {
+    flex-direction: column;
+    align-items: stretch;
+    min-height: 0;
+    padding: 0;
+    border-radius: 20px;
+    background: var(--c-green);
+  }
+  .media {
+    position: relative;
+    aspect-ratio: 4 / 5;
+    max-height: 70svh;
+    width: 100%;
+  }
+  .badge {
+    top: 14px;
+    left: 14px;
+  }
+  .panel,
+  .quotePanel {
+    width: auto;
+    margin: 0;
+    padding: 28px 20px 24px;
+    gap: 14px;
+    border-radius: 0;
+    background: var(--c-green);
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+  .title {
+    font-size: 28px;
+  }
+  .quoteText {
+    font-size: 22px;
+  }
+  .actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
