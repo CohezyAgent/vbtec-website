@@ -1,0 +1,276 @@
+/*
+ * Full-screen white section. Same scale system as the other sections:
+ * --u is one pixel of the 1842px reference design, limited by width and
+ * height so everything fits one screen.
+ */
+/* Tall section with a pinned (sticky) stage: the animation is driven by scroll. */
+.section {
+  --u: min(calc(100vw / 1842), calc(100svh / 1100));
+  position: relative;
+  height: 420svh;
+  --ink: #030f09;
+  --deep: #071813;
+  --lime: #dbef75;
+  background: #fff;
+  color: var(--ink);
+  font-family: Helvetica, Arial, sans-serif;
+}
+
+.stage {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: hidden;
+}
+
+/*
+ * The next section slides up over this one's pinned stage during the last
+ * screen of scrolling, so it starts covering right after the pile forms
+ * (no empty gap after the hand's flick).
+ */
+@media (prefers-reduced-motion: no-preference) {
+  .section + :global(*) {
+    position: relative;
+    z-index: 1;
+    margin-top: -100svh;
+  }
+}
+
+/* ---------- Center statement ---------- */
+
+.center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 calc(102 * var(--u));
+  text-align: center;
+  pointer-events: none;
+}
+
+.headingWrap {
+  position: relative;
+}
+
+.eyebrow {
+  position: absolute;
+  bottom: calc(100% + 22 * var(--u));
+  left: 0;
+  right: 0;
+  font-size: calc(20.3 * var(--u));
+  line-height: 1.2;
+  color: #505050;
+}
+
+.word {
+  display: inline-block;
+  will-change: opacity, transform;
+}
+
+.heading {
+  max-width: calc(980 * var(--u));
+  font-size: calc(84 * var(--u));
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+/* ---------- Hand video ----------
+ * Sized so the arm always runs off the right edge. Positioned so the
+ * fingertip (30% across, 36% down the clip) meets the right side of the
+ * pile, which gathers in the centre of the stage.
+ */
+.hand {
+  --vid-w: max(calc(62svh * 16 / 9), calc(75vw + 40px));
+  --touch-x: calc(190 * var(--u));
+  /* How far the fingertip sits above the pile's centre line. */
+  --lift: calc(70 * var(--u));
+  position: absolute;
+  left: calc(50% + var(--touch-x) - 0.3 * var(--vid-w));
+  /* The fingertip sits above the vertically centred pile. */
+  --hand-y: 40%;
+  top: calc(var(--hand-y) - var(--lift) - 0.36 * var(--vid-w) * 9 / 16);
+  width: var(--vid-w);
+  max-width: none; /* Tailwind's base styles cap videos at 100% width */
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  /* The clip's background is 253/255 white; this lifts it to pure white. */
+  filter: brightness(1.02);
+  /* Multiply makes the white background see-through, so pills stay visible. */
+  mix-blend-mode: multiply;
+  opacity: 0;
+  transform: translateX(14%);
+  pointer-events: none;
+  transition:
+    opacity 0.45s ease,
+    transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.hand[data-state="in"] {
+  opacity: 1;
+  transform: none;
+}
+
+.hand[data-state="out"] {
+  opacity: 0;
+  transform: translateX(6%);
+  transition:
+    opacity 0.6s ease,
+    transform 0.8s ease;
+}
+
+/* ---------- Doubt pills ---------- */
+
+.doubts {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.doubt {
+  position: absolute;
+  top: var(--y);
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(10 * var(--u));
+  height: calc(62 * var(--u));
+  padding: 0 calc(28 * var(--u)) 0 calc(22 * var(--u));
+  border-radius: 999px;
+  font-size: calc(21 * var(--u));
+  line-height: 1;
+  white-space: nowrap;
+  box-shadow: 0 calc(10 * var(--u)) calc(30 * var(--u)) rgba(3, 15, 9, 0.08);
+}
+
+.quote {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: calc(40 * var(--u));
+  line-height: 1;
+  transform: translateY(calc(7 * var(--u)));
+}
+
+.light .pill {
+  background: #eee;
+  color: var(--ink);
+}
+
+.light .quote {
+  color: #9aa59f;
+}
+
+.dark .pill {
+  background: var(--deep);
+  color: #fff;
+}
+
+.dark .quote {
+  color: var(--lime);
+}
+
+.lime .pill {
+  background: var(--lime);
+  color: var(--ink);
+}
+
+.lime .quote {
+  color: var(--deep);
+}
+
+/* ---------- Animation ----------
+ * Scroll position and mouse drive the headline words and the pills (JS).
+ * The pills also float gently on their own.
+ */
+
+.doubt {
+  will-change: opacity, transform;
+}
+
+.stage[data-animated] .pill {
+  animation: float var(--float) ease-in-out var(--float-delay) infinite alternate;
+}
+
+@keyframes float {
+  from {
+    transform: translateY(0) rotate(-0.6deg);
+  }
+  to {
+    transform: translateY(calc(-14 * var(--u))) rotate(0.6deg);
+  }
+}
+
+/* Reduced motion: no pinning, everything simply visible. */
+@media (prefers-reduced-motion: reduce) {
+  .section {
+    height: auto;
+  }
+
+  .stage {
+    position: relative;
+  }
+
+  .hand {
+    display: none;
+  }
+}
+
+/* ---------- Mobile ---------- */
+
+@media (max-width: 900px) {
+  .section {
+    --u: 0.75px;
+  }
+
+  .word {
+  display: inline-block;
+  will-change: opacity, transform;
+}
+
+.heading {
+    max-width: 92vw;
+    font-size: clamp(36px, 10vw, 56px);
+  }
+
+  .eyebrow {
+    font-size: 15px;
+  }
+
+  .desktopOnly {
+    display: none;
+  }
+
+  /* The pile nearly fills a phone's width: use a smaller hand that
+     touches it a little further in, drawn in front of the pills. */
+  .hand {
+    --vid-w: 150vw;
+    --touch-x: 70px;
+    --lift: 75px;
+    z-index: 2;
+  }
+
+  /* Phones use their own positions above and below the headline. */
+  .doubt {
+    top: var(--my);
+    left: var(--mx) !important;
+    right: auto !important;
+  }
+
+  .pill {
+    height: 40px;
+    padding: 0 16px 0 12px;
+    font-size: 14px;
+  }
+
+  .quote {
+    font-size: 26px;
+  }
+}

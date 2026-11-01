@@ -1,0 +1,355 @@
+/*
+ * Same type system and grid as the Mission section (1842px-wide reference).
+ * --ux: one reference pixel by width — used for side margins and columns, so
+ *       edges line up exactly with the Mission section.
+ * --u:  one reference pixel limited by width AND height — used for sizes, so
+ *       everything fits one screen.
+ *
+ * The section fills one screen; the cards fade in one after another.
+ */
+.section {
+  --ux: calc(100vw / 1842);
+  --u: min(var(--ux), calc(100svh / 1100));
+  --deep: #071813;
+  position: relative;
+  z-index: 1; /* slides over the held Mission section */
+  background: var(--deep);
+  color: #fff;
+  font-family: Helvetica, Arial, sans-serif;
+}
+
+.stage {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100svh;
+  box-sizing: border-box;
+  padding: calc(110 * var(--u)) 0 calc(90 * var(--u));
+  overflow: hidden;
+}
+
+/* ---------- Intro (mirrors .intro / .eyebrow / .statement in Mission) ---------- */
+
+.intro {
+  display: flex;
+  align-items: flex-start;
+  padding: 0 calc(102 * var(--ux));
+}
+
+.eyebrow {
+  flex: none;
+  width: calc(503 * var(--ux));
+  margin-top: calc(3 * var(--u));
+  font-size: calc(20.3 * var(--u));
+  line-height: 1.2;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* Fills the rest of the row, so its right edge meets the content edge. */
+.heading {
+  flex: 1;
+  min-width: 0;
+  font-size: calc(51.2 * var(--u));
+  font-weight: 400;
+  line-height: calc(64 * var(--u));
+  color: #fff;
+}
+
+/* ---------- Steps ----------
+ * Four cards in one row. Cards take whatever height is left so the whole
+ * section fits one screen. Card internals are measured on a 424px-wide
+ * reference card; --k is one reference pixel at the card's real width.
+ */
+
+.steps {
+  --gap: calc(48 * var(--ux));
+  --bar-block: calc(20 * var(--u));
+  flex: 1;
+  min-height: 0;
+  container-type: size;
+  display: flex;
+  justify-content: center;
+  gap: var(--gap);
+  margin: calc(56 * var(--u)) 0 0;
+  padding: 0 calc(102 * var(--ux));
+  list-style: none;
+}
+
+.step {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+  position: relative;
+  width: min(calc((100cqw - 3 * var(--gap)) / 4), calc((100cqh - var(--bar-block)) * 424 / 644));
+}
+
+.card {
+  position: relative;
+  container-type: inline-size;
+  aspect-ratio: 424 / 644;
+  border-radius: calc(22 * var(--u));
+  overflow: hidden;
+  background: #1c2a24;
+}
+
+.cardImage {
+  object-fit: cover;
+}
+
+.panel {
+  --k: calc(100cqw / 424);
+  position: absolute;
+  left: calc(25 * var(--k));
+  right: calc(25 * var(--k));
+  bottom: calc(25 * var(--k));
+  min-height: calc(256 * var(--k));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: calc(30 * var(--k)) calc(14 * var(--k)) calc(22 * var(--k));
+  border-radius: calc(22 * var(--k));
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(14px) saturate(1.1);
+  -webkit-backdrop-filter: blur(14px) saturate(1.1);
+  text-align: center;
+  font-family: var(--font-lexend), Helvetica, Arial, sans-serif;
+  color: #fff;
+}
+
+.iconCircle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: max(36px, calc(72 * var(--k)));
+  height: max(36px, calc(72 * var(--k)));
+  border-radius: 50%;
+  background: #dbef75;
+  color: #04110b;
+  flex: none;
+}
+
+.icon {
+  width: 70%;
+  height: 70%;
+}
+
+.cardTitle {
+  margin-top: calc(13 * var(--k));
+  font-size: max(14px, calc(23.6 * var(--k)));
+  font-weight: 500;
+  line-height: 1.2;
+  color: #fff;
+}
+
+.cardBody {
+  max-width: max(calc(296 * var(--k)), 92%);
+  margin-top: calc(13 * var(--k));
+  font-size: max(12px, calc(16.35 * var(--k)));
+  font-weight: 300;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.96);
+}
+
+/* Progress bar under each card: fills lime as its card lands. */
+.stepBar {
+  position: relative;
+  display: block;
+  height: 3px;
+  margin-top: calc(var(--bar-block) - 3px);
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.14);
+  overflow: hidden;
+}
+
+.stepFill {
+  position: absolute;
+  inset: 0;
+  background: #dbef75;
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* ---------- Fade in: steps appear one after another ---------- */
+
+.steps[data-ready] .step:not([data-visible]) .card {
+  opacity: 0;
+  transform: translateY(24px);
+}
+
+.steps[data-ready] .step:not([data-visible]) .stepFill {
+  transform: scaleX(0);
+}
+
+.step[data-visible] .card {
+  transition:
+    opacity 0.8s ease calc(var(--i) * 180ms),
+    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1) calc(var(--i) * 180ms);
+}
+
+.step[data-visible] .stepFill {
+  transition: transform 0.7s cubic-bezier(0.65, 0, 0.35, 1) calc(var(--i) * 180ms + 250ms);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .step[data-visible] .card,
+  .step[data-visible] .stepFill {
+    transition: none;
+  }
+}
+
+/* ---------- CTA ---------- */
+
+.ctaWrap {
+  flex: none;
+  display: flex;
+  justify-content: center;
+  margin-top: calc(44 * var(--u));
+}
+
+.cta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: calc(411 * var(--u));
+  height: calc(66 * var(--u));
+  padding: 0 calc(9 * var(--u)) 0 calc(31 * var(--u));
+  border-radius: 999px;
+  background: #dbef75;
+  font-family: var(--font-lexend), Helvetica, Arial, sans-serif;
+  font-size: calc(19.2 * var(--u));
+  font-weight: 500;
+  color: #020604;
+  transition: background-color 0.2s;
+}
+
+.cta:hover {
+  background: #e5f78f;
+}
+
+.ctaCircle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: calc(50 * var(--u));
+  height: calc(50 * var(--u));
+  border-radius: 50%;
+  background: #031512;
+  color: #dbef75;
+  transition: transform 0.2s;
+}
+
+.cta:hover .ctaCircle {
+  transform: rotate(45deg);
+}
+
+.ctaArrow {
+  width: calc(24 * var(--u));
+  height: calc(24 * var(--u));
+}
+
+/* Short desktop screens: tighten spacing so the cards keep a readable size. */
+@media (min-width: 901px) and (max-height: 820px) {
+  .stage {
+    padding: calc(70 * var(--u)) 0 calc(56 * var(--u));
+  }
+
+  .steps {
+    margin-top: calc(40 * var(--u));
+  }
+
+  .ctaWrap {
+    margin-top: calc(30 * var(--u));
+  }
+}
+
+/* ---------- Tablet & mobile (mirrors Mission) ---------- */
+
+@media (max-width: 900px) {
+  .section {
+    --u: 1px;
+    --ux: 1px;
+    height: auto;
+  }
+
+  .stage {
+    position: static;
+    height: auto;
+    padding: 72px 0 64px;
+    overflow: visible;
+  }
+
+  .intro {
+    flex-direction: column;
+    gap: 16px;
+    padding: 0 20px;
+  }
+
+  .eyebrow {
+    width: auto;
+    margin-top: 0;
+    font-size: 15px;
+  }
+
+  .heading {
+    font-size: clamp(26px, 6.4vw, 40px);
+    line-height: 1.25;
+  }
+
+  .steps {
+    container-type: inline-size;
+    flex-direction: column;
+    align-items: center;
+    gap: 32px;
+    margin-top: 40px;
+    padding: 0 20px;
+  }
+
+  .step {
+    width: min(100%, 440px);
+    align-self: center;
+  }
+
+  .card {
+    border-radius: 20px;
+  }
+
+  .cardTitle {
+    font-size: 20px;
+  }
+
+  .cardBody {
+    font-size: 15px;
+    line-height: 1.5;
+  }
+
+  .step[data-visible] .card,
+  .step[data-visible] .stepFill {
+    transition-delay: 0s;
+  }
+
+  .ctaWrap {
+    margin-top: 36px;
+    padding: 0 20px;
+  }
+
+  .cta {
+    width: auto;
+    max-width: 100%;
+    gap: 16px;
+    height: 56px;
+    padding: 0 8px 0 24px;
+    font-size: 16px;
+  }
+
+  .ctaCircle {
+    width: 42px;
+    height: 42px;
+  }
+
+  .ctaArrow {
+    width: 20px;
+    height: 20px;
+  }
+}

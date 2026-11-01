@@ -1,0 +1,110 @@
+/*
+ * Reference: five card images (382–391 x 217 px each). They sit in one row
+ * with generous gaps, spanning the same content width as the other sections
+ * (side margins 102 / 1842). --k is one reference pixel at the real size.
+ */
+.section {
+  --side: calc(100vw * 102 / 1842);
+  --gap-ref: 40;
+  --k: calc((100vw - 2 * var(--side)) / (1882 + 4 * var(--gap-ref)));
+  padding: calc(60 * var(--k)) var(--side) calc(70 * var(--k));
+  background: #fff;
+}
+
+.row {
+  display: flex;
+  justify-content: center;
+  gap: calc(var(--gap-ref) * var(--k));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.item {
+  flex: none;
+  width: calc(var(--w) * var(--k));
+  height: calc(217 * var(--k));
+}
+
+.link {
+  position: relative;
+  display: block;
+  height: 100%;
+  color: #0b1d17;
+}
+
+.image {
+  object-fit: cover;
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.link:hover .image {
+  transform: translateY(calc(-4 * var(--k)));
+}
+
+.label {
+  position: absolute;
+  left: calc(var(--text-x) * var(--k));
+  top: calc(117 * var(--k));
+  transform: translateY(-50%);
+  font-family: var(--font-figtree), Helvetica, Arial, sans-serif;
+  font-size: calc(var(--size) * var(--k));
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  color: #0b1d17;
+}
+
+.iconCircle {
+  position: absolute;
+  left: calc((var(--icon-x) - 31) * var(--k));
+  top: calc(61 * var(--k));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: calc(62 * var(--k));
+  height: calc(62 * var(--k));
+  border-radius: 50%;
+  background: #dff3b6;
+  color: #0b1d17;
+  transition: background-color 0.2s;
+}
+
+.icon {
+  width: 62%;
+  height: 62%;
+}
+
+.link:hover .iconCircle {
+  background: #cdee8c;
+}
+
+/* ---------- Tablet: wrap into rows ---------- */
+
+@media (max-width: 1100px) {
+  .section {
+    --k: 0.68px;
+    padding: 40px 20px 56px;
+  }
+
+  .row {
+    flex-wrap: wrap;
+    row-gap: 18px;
+  }
+}
+
+/* ---------- Phone: one card per row ---------- */
+
+@media (max-width: 600px) {
+  .section {
+    --k: min(0.9px, calc((100vw - 24px) / 391));
+    padding: 32px 12px 48px;
+  }
+
+  .row {
+    flex-direction: column;
+    align-items: center;
+    row-gap: 0;
+  }
+}
