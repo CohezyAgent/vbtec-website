@@ -749,27 +749,9 @@
   box-shadow: var(--hd-card-ring);
 }
 
-/* Scene card + detail card in one cell; the cell is as tall as the taller of the two. */
-.cardStack {
-  display: grid;
-}
-
-.cardStack > * {
-  grid-area: 1 / 1;
-  min-width: 0;
-}
-
-.scenePanel {
-  transition: opacity 0.35s var(--ease-out), transform 0.35s var(--ease-out);
-}
-
+/* While a part is selected its white card takes the scene card's place; × brings the scene card back. */
 .scenePanel[data-covered] {
-  opacity: 0;
-  transform: scale(0.97);
-}
-
-.detail:empty {
-  pointer-events: none;
+  display: none;
 }
 
 .detailCard {
@@ -778,7 +760,6 @@
   --hd-fill-strong: rgba(6, 20, 16, 0.07);
   --hd-text: var(--c-ink);
   --hd-text-2: var(--c-grey-600);
-  height: 100%;
   padding: var(--card-pad);
   border-radius: var(--radius);
   background: var(--c-white);

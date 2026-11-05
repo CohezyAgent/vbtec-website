@@ -53,13 +53,17 @@ export default function RailScroller({ header, footer, children, tone, kind, lab
       moved = false;
       startX = e.clientX;
       startLeft = el.scrollLeft;
-      el.dataset.dragging = "true";
     };
     const move = (e: PointerEvent) => {
       if (!dragging) return;
       const dx = e.clientX - startX;
-      if (Math.abs(dx) > 4) moved = true;
-      el.scrollLeft = startLeft - dx;
+      // Only a real drag disables the cards' pointer events (data-dragging); a plain click
+      // must still reach the card link.
+      if (!moved && Math.abs(dx) > 4) {
+        moved = true;
+        el.dataset.dragging = "true";
+      }
+      if (moved) el.scrollLeft = startLeft - dx;
     };
     const up = () => {
       if (!dragging) return;

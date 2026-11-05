@@ -485,9 +485,8 @@ export default function HouseDiagram({
       <div className={styles.fullGrid}>
         {stage}
         <div ref={panelRef} className={styles.side}>
-          {/* Scene card and detail card share one grid cell: a selected part's white card
-              covers the scene card; closing it (×) reveals the scene card again. */}
-          <div className={styles.cardStack}>
+          {/* A selected part's white card replaces the scene card; × shows the scene card again. */}
+          <div>
             <div
               id={`${idBase}-panel`}
               role="tabpanel"

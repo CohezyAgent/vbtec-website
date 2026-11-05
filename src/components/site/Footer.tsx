@@ -107,7 +107,8 @@ export default function Footer() {
         <Link href={routes.privacy()} className={styles.link}>
           Privacy
         </Link>
-        <a href={routes.sitemapXml()} className={styles.link}>
+        {/* Plain <a> (not Link), so the GitHub Pages base path is added by hand. */}
+        <a href={`${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}${routes.sitemapXml()}`} className={styles.link}>
           Sitemap
         </a>
         <p className={styles.disclaimer}>{FACTS_DISCLAIMER}</p>
