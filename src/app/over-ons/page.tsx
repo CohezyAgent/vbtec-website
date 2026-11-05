@@ -18,6 +18,7 @@ import { routes } from "@/lib/routes";
 import { aboutPage } from "@/lib/schema";
 import { buildMetadata } from "@/lib/seo";
 import styles from "./page.module.css";
+import LatestPosts from "@/components/sections/LatestPosts";
 
 // /over-ons (05 §7.2): Hero (I) → Statement (W) → Timeline (D) → Bento (W) → Team rail (D) → Story (C · I) → FAQ (W) → Lead (I).
 export const metadata = buildMetadata({ title: c.title, description: c.description, path: routes.overOns() });
@@ -59,14 +60,14 @@ export default function OverOnsPage() {
       <Timeline
         id="waarom"
         bg="D"
-        intro={{ eyebrow: c.timelineIntro.eyebrow, title: c.timelineIntro.title, lead: <p>{c.timelineIntro.lead}</p> }}
+        intro={{ eyebrow: c.timelineIntro.eyebrow, twoTone: true, title: c.timelineIntro.title, lead: <p>{c.timelineIntro.lead}</p> }}
         steps={c.milestones}
       />
 
       <Bento
         id="waarden"
         bg="W"
-        intro={{ eyebrow: c.values.eyebrow, title: c.values.title, lead: <p>{c.values.lead}</p> }}
+        intro={{ eyebrow: c.values.eyebrow, twoTone: true, title: c.values.title, lead: <p>{c.values.lead}</p> }}
         tiles={[
           {
             kind: "stat",
@@ -93,7 +94,7 @@ export default function OverOnsPage() {
         id="team"
         bg="D"
         kind="team"
-        intro={{ eyebrow: c.teamIntro.eyebrow, title: c.teamIntro.title }}
+        intro={{ eyebrow: c.teamIntro.eyebrow, twoTone: true, title: c.teamIntro.title }}
         items={team.map((m) => (
           <TeamCard key={m.slug} member={m} variant="rail" tone="dark" />
         ))}
@@ -120,6 +121,10 @@ export default function OverOnsPage() {
         />
       )}
 
+      <LeadSection bron={routes.overOns()} heading={c.leadHeading} subheading={c.leadSub} />
+
+      <LatestPosts />
+
       <Faq
         title={c.faqTitle}
         items={[...c.faq, ...getFaqs(["regio"])]}
@@ -131,8 +136,6 @@ export default function OverOnsPage() {
           projectLink("gezin-kortrijk-geen-batterij-advies", "Project: waarom we een batterij afraadden"),
         ]}
       />
-
-      <LeadSection bron={routes.overOns()} heading={c.leadHeading} subheading={c.leadSub} />
 
       <JsonLd data={aboutPage(routes.overOns(), c.title)} />
     </>

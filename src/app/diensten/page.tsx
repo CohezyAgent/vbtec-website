@@ -12,6 +12,7 @@ import { comparisonLink } from "@/lib/links";
 import { routes } from "@/lib/routes";
 import { itemList } from "@/lib/schema";
 import { buildMetadata } from "@/lib/seo";
+import LatestPosts from "@/components/sections/LatestPosts";
 
 // /diensten hub (05 §5.1): Hero + groups (W) → Statement (L) → Projects rail (D) → FAQ (W) → Lead (I).
 export const metadata = buildMetadata({ title: dienstenHub.title, description: dienstenHub.description, path: routes.diensten() });
@@ -61,8 +62,12 @@ export default function DienstenPage() {
       <ProjectsRail
         id="projecten"
         projects={featuredProjects.slice(0, 4)}
-        intro={{ eyebrow: "Projecten", title: "Gezinnen zoals jij. Hun factuur vóór en na." }}
+        intro={{ eyebrow: "Projecten", twoTone: true, title: "Gezinnen zoals jij. Hun factuur vóór en na." }}
       />
+
+      <LeadSection bron={routes.diensten()} heading={dienstenHub.leadHeading} />
+
+      <LatestPosts />
 
       <Faq
         title="Veelgestelde vragen over onze diensten"
@@ -70,8 +75,6 @@ export default function DienstenPage() {
         relatedTitle="Twijfel je tussen twee keuzes?"
         relatedLinks={COMPARISONS.map((c) => comparisonLink(c.slug))}
       />
-
-      <LeadSection bron={routes.diensten()} heading={dienstenHub.leadHeading} />
 
       <JsonLd data={itemList(SERVICES.map((s) => ({ name: s.shortTitle, path: routes.service(s.slug) })))} />
     </>

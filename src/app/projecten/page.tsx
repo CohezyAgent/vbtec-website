@@ -16,6 +16,7 @@ import Link from "next/link";
 import ProjectFilterGrid, { type FilterOption } from "@/components/content/ProjectFilterGrid";
 import FeatureCard from "@/components/content/FeatureCard";
 import styles from "@/components/content/Hub.module.css";
+import LatestPosts from "@/components/sections/LatestPosts";
 
 const PATH = routes.projecten();
 
@@ -144,9 +145,13 @@ export default function ProjectenPage() {
         bg="D"
         variant="static"
         initial={6}
-        intro={{ eyebrow: "In hun woorden", title: "Wat gezinnen zeggen na de berekening", lead: "Voorbeeldreviews: ze tonen het soort reacties dat we willen verdienen, en worden vervangen door echte reviews met toestemming." }}
+        intro={{ eyebrow: "In hun woorden", twoTone: true, title: "Wat gezinnen zeggen na de berekening", lead: "Voorbeeldreviews: ze tonen het soort reacties dat we willen verdienen, en worden vervangen door echte reviews met toestemming." }}
         reviews={projectReviews}
       />
+
+      <LeadSection bron={PATH} heading="Zo'n berekening voor jouw woning?" />
+
+      <LatestPosts />
 
       <Faq
         title="Hoe we resultaten meten"
@@ -154,8 +159,6 @@ export default function ProjectenPage() {
         items={FAQ}
         relatedLinks={relatedLinks({ comparisons: ["met-of-zonder-thuisbatterij", "gasketel-vs-warmtepomp"], articles: ["injectietarief-en-zelfverbruik"] })}
       />
-
-      <LeadSection bron={PATH} heading="Zo'n berekening voor jouw woning?" />
 
       <JsonLd data={itemList(allProjects.map((p) => ({ name: p.title, path: routes.project(p.slug) })))} />
     </>

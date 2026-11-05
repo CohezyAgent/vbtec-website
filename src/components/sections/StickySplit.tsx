@@ -8,7 +8,9 @@ import { FactNote } from "@/components/ui/Facts";
 import { ArrowUpRight } from "@/components/ui/icons";
 import SmartImage from "@/components/ui/SmartImage";
 import Reveal from "@/components/motion/Reveal";
+import OppositeTrack from "./OppositeTrack";
 import SplitTracker from "./SplitTracker";
+import type { CSSProperties } from "react";
 import styles from "./StickySplit.module.css";
 
 export type StickySplitStep = {
@@ -27,6 +29,9 @@ export type StickySplitProps = {
   intro?: IntroProps;
   steps: StickySplitStep[];
   bg: "W" | "D";
+  /** sticky = text sticks while media scrolls past · opposite = the whole split pins; text
+   *  slides up while the media slides down (desktop with motion only). */
+  variant?: "sticky" | "opposite";
   id?: string;
 };
 
@@ -34,17 +39,21 @@ export type StickySplitProps = {
  * Geometry D – sticky text + scrolling media. Each chapter's text sticks while its media
  * scrolls past; the active chapter is full strength, the others dim. ≤900px: text then media.
  */
-export default function StickySplit({ intro, steps, bg, id }: StickySplitProps) {
+export default function StickySplit({ intro, steps, bg, variant = "sticky", id }: StickySplitProps) {
   const tone = bg === "D" ? "dark" : "light";
   const titleId = id ? `${id}-title` : undefined;
-  return (
-    <Section bg={bg} id={id} labelledBy={intro ? titleId : undefined}>
-      {intro && <SectionIntro {...intro} tone={tone} titleId={titleId} className={styles.intro} />}
-      <SplitTracker className={`${styles.list} ${bg === "D" ? styles.dark : ""}`}>
-        {steps.map((step, i) => {
+  const opposite = variant === "opposite";
+  const rows = steps.map((step, i) => {
           const H = step.titleAs ?? (intro ? "h3" : "h2");
           return (
-            <li key={step.title} id={step.id} className={styles.row} data-split-row data-active={i === 0 ? "true" : undefined}>
+            <li
+              key={step.title}
+              id={step.id}
+              className={styles.row}
+              data-split-row
+              data-active={i === 0 ? "true" : undefined}
+              style={opposite ? ({ "--i": i } as CSSProperties) : undefined}
+            >
               <div className={styles.text}>
                 <div className={styles.sticky}>
                   <p className={styles.eyebrow}>
@@ -81,8 +90,23 @@ export default function StickySplit({ intro, steps, bg, id }: StickySplitProps) 
               </Reveal>
             </li>
           );
-        })}
-      </SplitTracker>
+        });
+  return (
+    <Section bg={bg} id={id} labelledBy={intro ? titleId : undefined} className={opposite ? styles.oppSection : undefined}>
+      {intro && <SectionIntro {...intro} tone={tone} titleId={titleId} className={styles.intro} />}
+      {opposite ? (
+        <OppositeTrack
+          count={steps.length}
+          className={`${styles.opp} ${bg === "D" ? styles.dark : ""}`}
+          stageClassName={styles.oppStage}
+          listClassName={`${styles.list} ${styles.oppList}`}
+          progressClassName={styles.oppProgress}
+        >
+          {rows}
+        </OppositeTrack>
+      ) : (
+        <SplitTracker className={`${styles.list} ${bg === "D" ? styles.dark : ""}`}>{rows}</SplitTracker>
+      )}
     </Section>
   );
 }

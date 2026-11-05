@@ -21,3 +21,4 @@ export { default as RelatedLinks } from "./RelatedLinks";
 export { default as LeadSection, default as LeadFormSection } from "@/components/lead/LeadSection";
 export { default as SplitShowcase, type ShowcaseStat } from "./SplitShowcase";
 export { default as BentoShowcase, type BentoSlide } from "./BentoShowcase";
+export { default as LatestPosts } from "./LatestPosts";

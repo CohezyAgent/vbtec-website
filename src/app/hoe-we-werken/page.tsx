@@ -14,6 +14,7 @@ import { articleLink, projectLink } from "@/lib/links";
 import { routes } from "@/lib/routes";
 import { howTo } from "@/lib/schema";
 import { buildMetadata } from "@/lib/seo";
+import LatestPosts from "@/components/sections/LatestPosts";
 
 // /hoe-we-werken (05 §7.1): Hero type (W) → Timeline (E · D) → Bento (F · W) → Team rail (I · D) → FAQ (W) → Lead (I).
 export const metadata = buildMetadata({ title: c.title, description: c.description, path: routes.hoeWeWerken() });
@@ -39,7 +40,7 @@ export default function HoeWeWerkenPage() {
       <Timeline
         id="stappen"
         bg="D"
-        intro={{ eyebrow: c.timelineIntro.eyebrow, title: c.timelineIntro.title, lead: <p>{c.timelineIntro.lead}</p> }}
+        intro={{ eyebrow: c.timelineIntro.eyebrow, twoTone: true, title: c.timelineIntro.title, lead: <p>{c.timelineIntro.lead}</p> }}
         steps={c.steps}
         cta={{ label: "Start met stap 1", href: routes.lead() }}
       />
@@ -47,7 +48,7 @@ export default function HoeWeWerkenPage() {
       <Bento
         id="niet-loont"
         bg="W"
-        intro={{ eyebrow: c.bento.eyebrow, title: c.bento.title, lead: <p>{c.bento.lead}</p> }}
+        intro={{ eyebrow: c.bento.eyebrow, twoTone: true, title: c.bento.title, lead: <p>{c.bento.lead}</p> }}
         tiles={[
           {
             kind: "stat",
@@ -68,12 +69,16 @@ export default function HoeWeWerkenPage() {
         id="team"
         bg="D"
         kind="team"
-        intro={{ eyebrow: c.teamIntro.eyebrow, title: c.teamIntro.title }}
+        intro={{ eyebrow: c.teamIntro.eyebrow, twoTone: true, title: c.teamIntro.title }}
         items={team.map((m) => (
           <TeamCard key={m.slug} member={m} variant="rail" tone="dark" />
         ))}
         viewAll={{ href: routes.team(), label: "Maak kennis met het hele team" }}
       />
+
+      <LeadSection bron={routes.hoeWeWerken()} heading={c.leadHeading} subheading={c.leadSub} />
+
+      <LatestPosts />
 
       <Faq
         title={c.faqTitle}
@@ -86,8 +91,6 @@ export default function HoeWeWerkenPage() {
           projectLink("gezinswoning-gent-warmtepomp-pvt", "Project: van gasketel naar warmtepomp en PVT in Gent"),
         ]}
       />
-
-      <LeadSection bron={routes.hoeWeWerken()} heading={c.leadHeading} subheading={c.leadSub} />
 
       <JsonLd
         data={howTo({

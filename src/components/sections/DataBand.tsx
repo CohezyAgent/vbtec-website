@@ -1,11 +1,11 @@
 import type { ReactNode } from "react";
 import type { FactKey } from "@/content/facts";
 import { fact, formatFactValue } from "@/content/facts";
-import type { Cta } from "@/content/types";
+import type { Cta, ImageInput } from "@/content/types";
 import Section from "@/components/ui/Section";
 import SectionIntro, { type IntroProps } from "@/components/ui/SectionIntro";
 import CtaPill from "@/components/ui/CtaPill";
-import Accordion from "@/components/ui/Accordion";
+import SmartImage from "@/components/ui/SmartImage";
 import ComparisonTable, { type ComparisonTableProps } from "@/components/ui/ComparisonTable";
 import { FactNote, SourcesList } from "@/components/ui/Facts";
 import { BarChart, LineChart, StackedBar, StatRow, type BarChartProps, type LineChartProps, type StackedBarProps, type Stat } from "@/components/ui/charts";
@@ -38,14 +38,27 @@ export type DataBandProps = {
   cta?: Cta;
   /** Extra content under the chart (e.g. a project link). */
   children?: ReactNode;
+  /** Photo card beside the chart; carries the "Wanneer klopt het wél?" line when given. */
+  image?: ImageInput;
   id?: string;
 };
 
-/** Geometry H – proof & data on deep green: stats, chart and/or table, assumptions. */
-export default function DataBand({ intro, myth, mode, stats, chart, table, extra, whenTrue, urgency, assumptions, assumptionsNote, cta, children, id }: DataBandProps) {
+/**
+ * Geometry H – proof & data. Deep-green band with white cards on it (stats, chart, rules),
+ * an optional photo card, and the assumptions in a collapsed white drawer (native
+ * <details>, so the sources stay in the HTML).
+ */
+export default function DataBand({ intro, myth, mode, stats, chart, table, extra, whenTrue, urgency, assumptions, assumptionsNote, cta, children, image, id }: DataBandProps) {
   const titleId = id ? `${id}-title` : "databand-title";
   const showChart = (mode === "chart" || mode === "table+chart") && chart;
   const showTable = (mode === "table" || mode === "table+chart") && table;
+  const honestOnPhoto = Boolean(image && whenTrue);
+  const honest = whenTrue && (
+    <>
+      <p className={styles.honestLabel}>Wanneer klopt het wél?</p>
+      <p className={styles.honestText}>{whenTrue}</p>
+    </>
+  );
   return (
     <Section bg="D" id={id} labelledBy={titleId}>
       <div className={styles.head}>
@@ -59,32 +72,43 @@ export default function DataBand({ intro, myth, mode, stats, chart, table, extra
       <SectionIntro {...intro} tone="dark" titleId={titleId} />
 
       {(mode === "stats" || stats) && stats && stats.length > 0 && (
-        <div className={styles.block}>
-          <StatRow stats={stats} tone="dark" />
+        <div className={`${styles.block} ${styles.card} ${styles.statsCard}`}>
+          <StatRow stats={stats} tone="light" />
         </div>
       )}
 
       {showTable && (
-        <Reveal className={styles.block}>
-          <ComparisonTable {...table} tone="dark" />
+        <Reveal className={`${styles.block} ${styles.card}`}>
+          <ComparisonTable {...table} tone="light" />
         </Reveal>
       )}
 
-      {showChart && (
-        <Reveal className={`${styles.block} ${styles.panel}`}>
-          {chart.title && <h3 className={styles.panelTitle}>{chart.title}</h3>}
-          {chart.type === "bar" && <BarChart {...chart.props} tone="dark" />}
-          {chart.type === "line" && <LineChart {...chart.props} tone="dark" />}
-          {chart.type === "stacked" && <StackedBar {...chart.props} tone="dark" />}
-        </Reveal>
+      {(showChart || image) && (
+        <div className={`${styles.block} ${image ? styles.duo : ""}`}>
+          {showChart && (
+            <Reveal className={styles.card}>
+              {chart.title && <h3 className={styles.panelTitle}>{chart.title}</h3>}
+              {chart.type === "bar" && <BarChart {...chart.props} tone="light" />}
+              {chart.type === "line" && <LineChart {...chart.props} tone="light" />}
+              {chart.type === "stacked" && <StackedBar {...chart.props} tone="light" />}
+              {children && <div className={styles.cardExtra}>{children}</div>}
+            </Reveal>
+          )}
+          {image && (
+            <Reveal className={styles.photo}>
+              <SmartImage image={image} fill sizes="(max-width: 900px) 100vw, 40vw" className={styles.photoImg} />
+              {honestOnPhoto && <div className={styles.photoGlass}>{honest}</div>}
+            </Reveal>
+          )}
+        </div>
       )}
 
-      {children && <div className={styles.block}>{children}</div>}
+      {children && !showChart && <div className={styles.block}>{children}</div>}
 
-      {(extra || urgency || whenTrue) && (
+      {(extra || urgency || (whenTrue && !honestOnPhoto)) && (
         <div className={styles.lower}>
           {extra && (
-            <div className={styles.extra}>
+            <div className={styles.card}>
               <h3 className={styles.subTitle}>{extra.title}</h3>
               <dl className={styles.rows}>
                 {extra.rows.map((r) => (
@@ -97,11 +121,11 @@ export default function DataBand({ intro, myth, mode, stats, chart, table, extra
                   </div>
                 ))}
               </dl>
-              <FactNote keys={extra.rows.map((r) => r.k)} tone="dark" variant="footnote" />
+              <FactNote keys={extra.rows.map((r) => r.k)} variant="footnote" />
             </div>
           )}
           {urgency && urgency.length > 0 && (
-            <div className={styles.extra}>
+            <div className={styles.card}>
               <h3 className={styles.subTitle}>Waarom nu?</h3>
               <dl className={styles.rows}>
                 {urgency.map((r) => (
@@ -114,34 +138,28 @@ export default function DataBand({ intro, myth, mode, stats, chart, table, extra
                   </div>
                 ))}
               </dl>
-              <FactNote keys={urgency.map((r) => r.k)} tone="dark" variant="footnote" />
+              <FactNote keys={urgency.map((r) => r.k)} variant="footnote" />
             </div>
           )}
-          {whenTrue && (
-            <div className={styles.honest}>
-              <p className={styles.honestLabel}>Wanneer klopt het wél?</p>
-              <p className={styles.honestText}>{whenTrue}</p>
-            </div>
-          )}
+          {whenTrue && !honestOnPhoto && <div className={styles.honest}>{honest}</div>}
         </div>
       )}
 
       <div className={styles.foot}>
-        <Accordion
-          tone="dark"
-          className={styles.assumptions}
-          items={[
-            {
-              title: "Bekijk aannames",
-              body: (
-                <>
-                  {assumptionsNote && <div className={styles.assumptionsNote}>{assumptionsNote}</div>}
-                  <SourcesList keys={assumptions} title="Gebruikte cijfers" tone="dark" />
-                </>
-              ),
-            },
-          ]}
-        />
+        <details className={styles.assumptions}>
+          <summary className={styles.assumptionsToggle}>
+            <span className={styles.assumptionsIcon} aria-hidden="true">
+              i
+            </span>
+            Bekijk aannames &amp; bronnen
+            <span className={styles.assumptionsCount}>{assumptions.length}</span>
+            <span className={styles.chevron} aria-hidden="true" />
+          </summary>
+          <div className={styles.assumptionsPanel}>
+            {assumptionsNote && <div className={styles.assumptionsNote}>{assumptionsNote}</div>}
+            <SourcesList keys={assumptions} title="Gebruikte cijfers" />
+          </div>
+        </details>
         {cta && (
           <div className={styles.cta}>
             <CtaPill href={cta.href} variant={cta.variant ?? "lime"}>

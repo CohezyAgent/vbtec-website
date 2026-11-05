@@ -15,7 +15,8 @@ export type PainCard = { tone: "D" | "G" | "I"; eyebrow: string; title: string; 
 
 export const PAIN = {
   eyebrow: "Herken je dit?",
-  title: "Je factuur stijgt. Je verbruik niet.",
+  title: "Je factuur stijgt.",
+  titleMuted: "Je verbruik niet.",
   lead: "Je doet niets verkeerd. De regels veranderden onder je.",
   cards: [
     {
@@ -59,7 +60,8 @@ export const MYTH = {
 
 export const DATA = {
   eyebrow: "De cijfers",
-  title: "Wat kost 1 kWh warmte in Vlaanderen?",
+  title: "Wat kost 1 kWh warmte",
+  titleMuted: "in Vlaanderen?",
   lead: `Stroom is duurder dan gas, maar een warmtepomp maakt van 1 kWh stroom ${v("scopRekenwaarde", { dec: 1 })} kWh warmte. Wat telt, is de prijs van je warmte.`,
   whenTrue: heatMyth.whenTrue,
 };
@@ -73,7 +75,7 @@ export const PVT = {
 export const SYSTEM_TEASER = {
   eyebrow: "Hoe het samenwerkt",
   title: "Je woning als één systeem: zon eerst in huis, de rest slim gestuurd.",
-  lead: "Een warmtepomp, panelen of een batterij alleen doen het goed. Samen doen ze het veel beter, omdat elk toestel het overschot van het andere opvangt. Kies een moment van de dag en zie waar je stroom en je warmte naartoe gaan.",
+  lead: "Elk toestel alleen doet het goed. Samen vangen ze elkaars overschot op – en daar zit de echte winst.",
 };
 
 export const SMART_SPLIT = {
@@ -103,7 +105,8 @@ export const PROJECTS_INTRO = {
 
 export const REVIEWS_INTRO = {
   eyebrow: "Reviews",
-  title: "Wat gezinnen zeggen na hun berekening",
+  title: "Wat gezinnen zeggen",
+  titleMuted: "na hun berekening.",
 };
 
 export const DOUBT = {

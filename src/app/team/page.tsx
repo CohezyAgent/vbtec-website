@@ -13,6 +13,7 @@ import { routes } from "@/lib/routes";
 import { persons } from "@/lib/schema";
 import { buildMetadata } from "@/lib/seo";
 import TeamGrid from "./_components/TeamGrid";
+import LatestPosts from "@/components/sections/LatestPosts";
 
 // /team (05 §7.3): Hero type + team grid (W) → Articles by our team (I · D) → FAQ (W) → Lead (I).
 // Person schema only once the team is real (00 §2.8) – persons() returns [] while placeholder.
@@ -57,9 +58,11 @@ export default function TeamPage() {
         />
       )}
 
-      <Faq title="Wie je aan de lijn en over de vloer krijgt" items={c.faq} />
-
       <LeadSection bron={routes.team()} heading={c.leadHeading} />
+
+      <LatestPosts />
+
+      <Faq title="Wie je aan de lijn en over de vloer krijgt" items={c.faq} />
 
       {schema.length > 0 && <JsonLd data={schema} />}
     </>

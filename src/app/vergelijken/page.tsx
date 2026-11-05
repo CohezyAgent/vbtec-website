@@ -8,6 +8,7 @@ import { routes } from "@/lib/routes";
 import { itemList } from "@/lib/schema";
 import { buildMetadata } from "@/lib/seo";
 import styles from "./_components/hub.module.css";
+import LatestPosts from "@/components/sections/LatestPosts";
 
 // /vergelijken – hub (05 §5.2): Hero + decision cards (W) → Hoe we vergelijken (D) → FAQ (W) → Lead (I).
 export const metadata = buildMetadata({
@@ -88,9 +89,11 @@ export default function VergelijkenHub() {
         cta={{ label: "Laat jouw situatie doorrekenen", href: routes.lead(), variant: "lime" }}
       />
 
-      <Faq title="Vragen over onze vergelijkingen" items={FAQ} />
-
       <LeadSection bron={routes.vergelijken()} heading="Twijfel je nog? Wij rekenen jouw scenario's uit – gratis." />
+
+      <LatestPosts />
+
+      <Faq title="Vragen over onze vergelijkingen" items={FAQ} />
 
       <JsonLd data={itemList(comparisons.map((c) => ({ name: c.shortTitle, path: routes.comparison(c.slug) })))} />
     </>

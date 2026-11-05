@@ -224,3 +224,138 @@
     padding: 20px;
   }
 }
+
+/* ==========================================================================
+   variant="opposite" – the split pins for n viewports; text cells slide up
+   while media cells slide down (OppositeTrack writes --s = 0 → n-1).
+   Every cell sits in the same grid area and is moved by (i - s) stage heights.
+   ========================================================================== */
+@media (min-width: 901px) and (min-height: 640px) and (prefers-reduced-motion: no-preference) {
+  .oppSection {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  .opp {
+    --stage-pad: calc(40 * var(--u));
+    --h: calc(100svh - var(--header-h) - 2 * var(--stage-pad));
+    position: relative;
+    height: calc(var(--n) * 100svh);
+  }
+
+  .oppStage {
+    position: sticky;
+    top: 0;
+    height: 100svh;
+    padding: calc(var(--header-h) + var(--stage-pad)) 0 var(--stage-pad);
+  }
+
+  .oppList {
+    display: grid;
+    grid-template-columns: minmax(0, 40fr) minmax(0, 52fr);
+    grid-template-rows: var(--h);
+    gap: 0 calc(110 * var(--ux));
+    height: var(--h);
+    overflow: clip;
+  }
+
+  .oppList > .row {
+    display: contents;
+  }
+
+  /* Text: column 1, slides up. Fades out as it leaves the centre. */
+  .oppList .text {
+    --d: calc(var(--i) - var(--s));
+    grid-area: 1 / 1;
+    display: flex;
+    align-items: center;
+    height: var(--h);
+    transform: translate3d(0, calc(var(--d) * var(--h)), 0);
+    opacity: calc(1 - min(1, max(var(--d), -1 * var(--d))) * 0.9);
+    will-change: transform, opacity;
+  }
+
+  .oppList .sticky {
+    position: static;
+    padding-bottom: 0;
+    opacity: 1;
+    filter: none;
+  }
+
+  .oppList .title {
+    margin-top: 14px;
+  }
+
+  .oppList .body {
+    margin-top: 14px;
+    font-size: 17px;
+    line-height: 1.6;
+  }
+
+  /* Media: column 2, slides down – the next one arrives from above. */
+  .oppList .media {
+    grid-area: 1 / 2;
+    height: var(--h);
+    min-height: 0;
+    transform: translate3d(0, calc((var(--s) - var(--i)) * (var(--h) + 24px)), 0);
+    will-change: transform;
+  }
+
+  .oppList .figure,
+  .oppList .node {
+    height: 100%;
+    min-height: 0;
+  }
+
+  .oppList .media > * {
+    clip-path: none;
+  }
+
+  /* Slow zoom on the photo while its step is on stage. */
+  .oppList .figure img {
+    transform: scale(calc(1.08 - 0.08 * (1 - min(1, max(var(--i) - var(--s), var(--s) - var(--i))))));
+    transition: none;
+  }
+
+  /* Progress rail under the text column. */
+  .oppProgress {
+    position: absolute;
+    left: 0;
+    bottom: calc(var(--stage-pad) * 0.5);
+    width: calc(40 / 92 * (100% - 110 * var(--ux)));
+    height: 2px;
+    border-radius: 2px;
+    background: rgba(6, 20, 16, 0.1);
+    overflow: hidden;
+  }
+
+  .oppProgress::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--c-primary);
+    transform-origin: left;
+    transform: scaleX(var(--p));
+  }
+
+  .dark .oppProgress {
+    background: rgba(255, 255, 255, 0.14);
+  }
+
+  .dark .oppProgress::after {
+    background: var(--c-lime);
+  }
+}
+
+/* Fallback (≤900px, reduced motion): plain stacked steps. */
+@media (max-width: 900px), (max-height: 639px), (prefers-reduced-motion: reduce) {
+  .oppProgress {
+    display: none;
+  }
+}
+
+/* The opposite variant fades by position instead of dimming inactive rows. */
+.opp .row:not([data-active]) .sticky {
+  opacity: 1;
+  filter: none;
+}

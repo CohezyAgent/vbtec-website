@@ -24,6 +24,7 @@ import JsonLd from "@/components/ui/JsonLd";
 import SmartImage from "@/components/ui/SmartImage";
 import ScenarioTable from "@/components/content/ScenarioTable";
 import styles from "@/components/content/ProjectParts.module.css";
+import LatestPosts from "@/components/sections/LatestPosts";
 
 type Params = { slug: string };
 
@@ -209,14 +210,16 @@ function ProjectView({ p }: { p: ProjectDetail }) {
 
       <CardRow id="ook-interessant" skin="photo" bg="D" intro={{ eyebrow: "Ook interessant", title: "Verder kijken: de techniek, de keuze, een ander gezin" }} items={alsoItems} />
 
+      <LeadSection bron={path} defaultInteresse={[...p.products]} heading="Zo'n berekening voor jouw woning?" />
+
+      <LatestPosts />
+
       <Faq
         items={faq}
         title="Vragen over dit project"
         relatedLinks={relatedLinks({ services: p.products, projects: others.slice(1).map((o) => o.slug), articles: (p.relatedArticles ?? []).slice(0, 1), posts: p.relatedPosts })}
         relatedTitle="Gebruikte producten en achtergrond"
       />
-
-      <LeadSection bron={path} defaultInteresse={[...p.products]} heading="Zo'n berekening voor jouw woning?" />
 
       <JsonLd
         data={article({

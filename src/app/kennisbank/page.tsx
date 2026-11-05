@@ -11,6 +11,7 @@ import Statement from "@/components/sections/Statement";
 import Faq from "@/components/sections/Faq";
 import LeadSection from "@/components/lead/LeadSection";
 import KennisbankBrowser, { type KbCategory } from "@/components/content/KennisbankBrowser";
+import LatestPosts from "@/components/sections/LatestPosts";
 
 const PATH = routes.kennisbank();
 
@@ -101,12 +102,15 @@ export default function KennisbankPage() {
         ]}
       />
 
+      <LeadSection bron={PATH} heading="Liever meteen weten wat het voor jóuw woning betekent?" />
+
+      <LatestPosts />
+
       <Faq
         items={FAQ}
         relatedLinks={relatedLinks({ comparisons: ["gasketel-vs-warmtepomp", "met-of-zonder-thuisbatterij"], services: ["lucht-water-warmtepomp"] })}
       />
 
-      <LeadSection bron={PATH} heading="Liever meteen weten wat het voor jóuw woning betekent?" />
     </>
   );
 }

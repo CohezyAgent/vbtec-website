@@ -5,7 +5,7 @@ import ProductsSection from "@/components/products/ProductsSection";
 import ServicesSection from "@/components/services/ServicesSection";
 import LeadSection from "@/components/lead/LeadSection";
 import { BentoShowcase, DataBand, Faq, ImagePanel, ReviewWall, SplitShowcase, StackCards, Statement } from "@/components/sections";
-import HouseDiagram from "@/components/sections/house-diagram/HouseDiagram";
+import SystemPhoto from "@/components/sections/system-photo/SystemPhoto";
 import { JsonLd, Section, SectionIntro } from "@/components/ui";
 import { comparisonLink } from "@/lib/links";
 import { buildMetadata } from "@/lib/seo";
@@ -18,11 +18,13 @@ import { v } from "@/content/comparisons";
 import { DATA, DOUBT, HOME_FAQ, LEAD_HEADING, MYTH, PAIN, PROJECTS_BENTO, PVT, REVIEWS_INTRO, SMART_SPLIT, SYSTEM_TEASER } from "@/content/home";
 import { BatteryIcon, BoltIcon, EyeIcon, FanIcon, SolarPanelIcon, SunIcon } from "@/components/ui/icons";
 import styles from "./home.module.css";
+import LatestPosts from "@/components/sections/LatestPosts";
 
-// Home – section order per docs/spec/05-pages.md §1 (00 §2.6):
+// Home – section order per docs/spec/05-pages.md §1 (00 §2.6), updated: on every page the lead
+// form comes before the FAQ, with the latest blog posts in between.
 // Hero(I) · Products(W strip) · Herken je dit?(D, pinned) · Mission(W) + Services slide-over(D) ·
-// Mythe(W) · Cijfers(D) · PVT(I) · Hoe het samenwerkt(W) · Projecten(D) · Reviews(W) ·
-// Twijfel je nog?(L) · FAQ(W) · Lead(I).
+// Mythe(W) · Zon eerst · Cijfers(D) · PVT(I) · Hoe het samenwerkt(W) · Projecten · Reviews(W) ·
+// Twijfel je nog?(L) · Lead(I) · Blog(W) · FAQ(W).
 export const metadata = buildMetadata({
   title: "VB-TEC | Je energiefactuur zo dicht mogelijk bij €0",
   absoluteTitle: true,
@@ -40,7 +42,7 @@ export default function Home() {
       <StackCards
         bg="D"
         id="herken-je-dit"
-        intro={{ eyebrow: PAIN.eyebrow, title: PAIN.title, lead: PAIN.lead }}
+        intro={{ eyebrow: PAIN.eyebrow, title: PAIN.title, titleMuted: PAIN.titleMuted, lead: PAIN.lead }}
         cards={PAIN.cards.map((c) => ({ tone: c.tone, eyebrow: c.eyebrow, title: c.title, body: <p>{c.body}</p>, image: c.image, factKeys: c.factKeys }))}
         aside={<p className={styles.painClose}>Iedereen zegt iets anders. Wij rekenen het uit.</p>}
       />
@@ -87,7 +89,7 @@ export default function Home() {
 
       <DataBand
         id="cijfers"
-        intro={{ eyebrow: DATA.eyebrow, title: DATA.title, lead: DATA.lead }}
+        intro={{ eyebrow: DATA.eyebrow, title: DATA.title, titleMuted: DATA.titleMuted, lead: DATA.lead }}
         mode="chart"
         chart={{
           type: "bar",
@@ -128,7 +130,7 @@ export default function Home() {
       <Section bg="W" id="hoe-het-samenwerkt" labelledBy="systeem-title">
         <SectionIntro eyebrow={SYSTEM_TEASER.eyebrow} title={SYSTEM_TEASER.title} lead={SYSTEM_TEASER.lead} titleId="systeem-title" />
         <div className={styles.teaser}>
-          <HouseDiagram mode="teaser" cta={{ label: "Bekijk hoe het werkt", href: routes.hoeHetWerkt(), variant: "ink" }} />
+          <SystemPhoto mode="teaser" cta={{ label: "Stel je eigen systeem samen", href: routes.hoeHetWerkt(), variant: "ink" }} />
         </div>
       </Section>
 
@@ -176,9 +178,12 @@ export default function Home() {
         ]}
       />
 
+      <LeadSection bron="/" heading={LEAD_HEADING} image="woonkamer-warm-winter" />
+
+      <LatestPosts />
+
       <Faq title="Wat je nog wil weten" items={HOME_FAQ} />
 
-      <LeadSection bron="/" heading={LEAD_HEADING} image="woonkamer-warm-winter" />
       <JsonLd data={localBusiness()} />
     </>
   );

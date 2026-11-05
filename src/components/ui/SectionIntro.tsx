@@ -5,6 +5,10 @@ import styles from "./Section.module.css";
 export type IntroProps = {
   eyebrow?: string;
   title: ReactNode;
+  /** Second part of a two-tone heading, shown muted on its own line (Elexys-style). */
+  titleMuted?: ReactNode;
+  /** Auto two-tone: split a string title after its first sentence (". ", "? ", ": ", " – "). */
+  twoTone?: boolean;
   as?: "h1" | "h2" | "h3";
   /** split = 503u eyebrow column + heading (default); center = centred (geometry G). */
   align?: "split" | "center";
@@ -49,7 +53,9 @@ export function Heading({ as: Tag = "h2", size = "h2", tone = "light", id, class
  */
 export default function SectionIntro({
   eyebrow,
-  title,
+  title: titleProp,
+  titleMuted: titleMutedProp,
+  twoTone,
   as = "h2",
   align = "split",
   tone = "light",
@@ -60,6 +66,15 @@ export default function SectionIntro({
   highlight,
   className,
 }: IntroProps) {
+  let title = titleProp;
+  let titleMuted = titleMutedProp;
+  if (twoTone && !titleMuted && typeof titleProp === "string") {
+    const m = titleProp.match(/^(.+?[.?:!]|.+? –)\s+(.+)$/);
+    if (m) {
+      title = m[1];
+      titleMuted = m[2];
+    }
+  }
   const headingClass = `${styles.heading} ${styles.size_h2} ${tone === "dark" ? styles.onDark : ""}`;
   return (
     <div className={`${styles.intro} ${align === "center" ? styles.introCenter : ""} ${className ?? ""}`}>
@@ -69,7 +84,7 @@ export default function SectionIntro({
         align === "split" && <span className={styles.introEyebrow} aria-hidden="true" />
       )}
       <div className={styles.introMain}>
-        {wordReveal && typeof title === "string" ? (
+        {wordReveal && typeof title === "string" && !titleMuted ? (
           <WordReveal as={as} id={titleId} text={title} highlight={highlight} tone={tone} className={headingClass} />
         ) : (
           (() => {
@@ -77,6 +92,12 @@ export default function SectionIntro({
             return (
               <Tag id={titleId} className={headingClass}>
                 {title}
+                {titleMuted && (
+                  <>
+                    {" "}
+                    <span className={`${styles.titleMuted} ${tone === "dark" ? styles.onDark : ""}`}>{titleMuted}</span>
+                  </>
+                )}
               </Tag>
             );
           })()

@@ -19,6 +19,7 @@ import SplitShowcase from "@/components/sections/SplitShowcase";
 import ReviewWall from "@/components/sections/ReviewWall";
 import Faq from "@/components/sections/Faq";
 import LeadSection from "@/components/lead/LeadSection";
+import LatestPosts from "@/components/sections/LatestPosts";
 import HouseDiagram from "@/components/sections/house-diagram/HouseDiagram";
 import { FactNote, KortAntwoord } from "@/components/ui/Facts";
 import { TextLink } from "@/components/ui/CtaPill";
@@ -71,7 +72,8 @@ export default function ServiceView({ s }: { s: ServiceContent }) {
       eyebrow: "Uitleg",
       title: s.howItWorks.title,
       titleAs: "h2",
-      body: paragraphs(s.howItWorks.body),
+      // Two paragraphs max: the pinned split has one screen of height per step.
+      body: paragraphs(s.howItWorks.body.slice(0, 2)),
       media: { kind: "image", image: s.howItWorks.image },
       factKeys: s.howItWorks.factKeys,
     },
@@ -99,7 +101,6 @@ export default function ServiceView({ s }: { s: ServiceContent }) {
         text: project.quote.text,
         name: project.quote.name,
         place: project.place,
-        meta: `${project.headline.before} → ${project.headline.after} ${project.headline.unit} (indicatief)`,
       }
     : review
       ? { text: review.text, name: review.name, place: review.place, meta: review.homeType }
@@ -190,12 +191,13 @@ export default function ServiceView({ s }: { s: ServiceContent }) {
         assumptions={s.dataBand.assumptions}
         assumptionsNote={s.dataBand.assumptionsNote}
         cta={{ label: ctaLabel, href: routes.lead() }}
+        image={productImage(s.slug, s.shortTitle, s.image)}
       >
-        {s.dataBand.chartFactKeys && <FactNote keys={s.dataBand.chartFactKeys} tone="dark" />}
+        {s.dataBand.chartFactKeys && <FactNote keys={s.dataBand.chartFactKeys} />}
       </DataBand>
 
       {/* 4 · Hoe werkt het & hoe past het in je systeem (D · W, pinned) */}
-      <StickySplit id="systeem" bg="W" steps={systemSteps} />
+      <StickySplit id="systeem" bg="W" variant="opposite" steps={systemSteps} />
 
       {/* 5 · Wanneer we het afraden (G · L) */}
       <Statement
@@ -236,7 +238,7 @@ export default function ServiceView({ s }: { s: ServiceContent }) {
           eyebrow="Een gezin zoals jij"
           title={s.story.title}
           quote={quote}
-          body={<p>{s.story.body}</p>}
+          result={project?.headline}
           cta={{ label: "Zo'n berekening voor jouw woning?", href: routes.lead() }}
           secondary={project ? projectLink(project.slug, "Bekijk het project") : { href: routes.projecten(), label: "Alle projecten" }}
           placeholderBadge="Voorbeeldproject"
@@ -254,11 +256,14 @@ export default function ServiceView({ s }: { s: ServiceContent }) {
         filterProduct={s.slug}
       />
 
-      {/* 10 · FAQ + verder lezen + bronnen (W) */}
-      <Faq title={`Wat je nog wil weten over ${s.productName}`} items={s.faq} relatedLinks={faqLinks} sources={s.sources} />
-
-      {/* 11 · Lead (I) */}
+      {/* 10 · Lead (I) */}
       <LeadSection bron={path} defaultInteresse={[s.slug]} heading={s.leadHeading} />
+
+      {/* 11 · Blog (W) */}
+      <LatestPosts id="blog" />
+
+      {/* 12 · FAQ + verder lezen + bronnen (W) */}
+      <Faq title={`Wat je nog wil weten over ${s.productName}`} items={s.faq} relatedLinks={faqLinks} sources={s.sources} />
 
       <JsonLd data={serviceSchema({ name: s.title, description: s.description, path, serviceType: s.serviceType })} />
     </>

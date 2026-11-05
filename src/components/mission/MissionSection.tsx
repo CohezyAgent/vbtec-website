@@ -12,8 +12,13 @@ import styles from "./Mission.module.css";
 // Copy direction: docs/spec/05-pages.md §1 row 4. Builder 1 may move it to content/home.ts.
 const tags = ["Merkonafhankelijk", "Altijd een scenario 'niets doen'", "Geen voorschot vóór akkoord"];
 
+// Two-tone statement (dark, then muted) – Elexys-style.
 const STATEMENT =
   "We verkopen geen toestel. We rekenen uit wat jouw woning nodig heeft – en zeggen het als iets niet loont.";
+const DARK_WORDS = 4; // "We verkopen geen toestel."
+
+/** Decorative mini bar chart on the brand card (heights in %). */
+const BARS = [34, 48, 42, 60, 55, 72, 66, 84, 78, 96];
 
 const v = (vars: Record<string, number>) => vars as CSSProperties;
 
@@ -28,7 +33,7 @@ export default function MissionSection() {
             {STATEMENT.split(" ").map((word, i) => (
               <Fragment key={i}>
                 {i > 0 && " "}
-                <span className={styles.word} style={v({ "--w": i })}>
+                <span className={`${styles.word} ${i >= DARK_WORDS ? styles.wordMuted : ""}`} style={v({ "--w": i })}>
                   {word}
                 </span>
               </Fragment>
@@ -44,7 +49,7 @@ export default function MissionSection() {
         <article className={`${styles.card} ${styles.statCard}`} style={v({ "--c": 0 })}>
           <div className={styles.cardTop}>
             <p className={styles.statLabel}>Ons eerlijkheidscijfer</p>
-            <span className={`${styles.iconCircle} ${styles.iconDark}`}>
+            <span className={`${styles.iconCircle} ${styles.iconLight}`}>
               <SolarPanelIcon className={styles.icon} />
             </span>
           </div>
@@ -74,11 +79,13 @@ export default function MissionSection() {
         <article className={`${styles.card} ${styles.valuesCard}`} style={v({ "--c": 2 })}>
           <p className={styles.valuesText}>
             Klant eerst.{" "}
-            <br />
-            Ook als dat betekent{" "}
-            <br />
-            dat we minder verkopen.
+            <span className={styles.valuesMuted}>Ook als we dan minder verkopen.</span>
           </p>
+          <div className={styles.bars} aria-hidden="true">
+            {BARS.map((h, i) => (
+              <span key={i} className={styles.bar} style={v({ "--h": h, "--b": i })} />
+            ))}
+          </div>
           <ul className={styles.tags}>
             {tags.map((tag, i) => (
               <li key={tag} className={styles.tag} style={v({ "--t": i })}>

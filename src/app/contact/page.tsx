@@ -10,6 +10,7 @@ import { buildMetadata } from "@/lib/seo";
 import ContactAside from "./_components/ContactAside";
 import ContactDetails from "./_components/ContactDetails";
 import styles from "./_components/Contact.module.css";
+import LatestPosts from "@/components/sections/LatestPosts";
 
 // /contact (05 §7.4): Hero type with the form (W) → details band (D) → mini FAQ (W).
 // No LeadSection at the end (the form IS the hero) and no sticky mobile CTA (handled by SiteChrome).
@@ -36,6 +37,8 @@ export default function ContactPage() {
       </PageHero>
 
       <ContactDetails />
+
+      <LatestPosts />
 
       <Faq title={c.faqTitle} items={[...getFaqs(["reactietijd", "gegevens"]), ...c.faqExtra]} />
 

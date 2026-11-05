@@ -19,6 +19,7 @@ import { ArticleCard, ComparisonCard, ServiceCard } from "@/components/ui/cards"
 import { AuthorBox, InlineCta } from "@/components/ui/Content";
 import JsonLd from "@/components/ui/JsonLd";
 import styles from "./ArticleTemplate.module.css";
+import LatestPosts from "@/components/sections/LatestPosts";
 
 type Props =
   | { kind: "article"; item: Article; path: string; breadcrumb: BreadcrumbItem[] }
@@ -99,6 +100,10 @@ export default function ArticleTemplate(props: Props) {
         />
       )}
 
+      <LeadSection bron={path} defaultInteresse={item.relatedServices ? [...item.relatedServices] : undefined} heading="Je hebt nu de theorie. Wil je de cijfers voor jouw woning?" />
+
+      <LatestPosts exclude={[item.slug]} />
+
       {item.faq && item.faq.length >= 3 && (
         <Faq
           items={item.faq}
@@ -108,8 +113,6 @@ export default function ArticleTemplate(props: Props) {
           relatedTitle="Ook interessant"
         />
       )}
-
-      <LeadSection bron={path} defaultInteresse={item.relatedServices ? [...item.relatedServices] : undefined} heading="Je hebt nu de theorie. Wil je de cijfers voor jouw woning?" />
 
       <JsonLd
         data={articleSchema({

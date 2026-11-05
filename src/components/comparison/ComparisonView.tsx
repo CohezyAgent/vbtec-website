@@ -16,6 +16,7 @@ import { relatedLinks, projectLink } from "@/lib/links";
 import { routes } from "@/lib/routes";
 import { article } from "@/lib/schema";
 import styles from "./Comparison.module.css";
+import LatestPosts from "@/components/sections/LatestPosts";
 
 function chartFor(c: ComparisonPage): DataBandChart | undefined {
   if (!c.chart) return undefined;
@@ -145,6 +146,14 @@ export default function ComparisonView({ c }: { c: ComparisonPage }) {
         viewAll={{ href: routes.vergelijken(), label: "Alle vergelijkingen" }}
       />
 
+      <LeadSection
+        bron={path}
+        defaultInteresse={c.interesse}
+        heading="Twijfel je nog? Wij rekenen beide scenario's voor jouw woning uit – gratis."
+      />
+
+      <LatestPosts />
+
       <Faq
         title={`Veelgestelde vragen: ${c.shortTitle.replace(/\?$/, "").toLowerCase()}`}
         items={faqItems}
@@ -153,12 +162,6 @@ export default function ComparisonView({ c }: { c: ComparisonPage }) {
           ...relatedLinks({ services: c.relatedServices, articles: c.relatedArticles, posts: c.relatedPosts }),
           { href: routes.hoeHetWerkt(), label: "Hoe alles samenwerkt in één energiesysteem", kind: "page" },
         ]}
-      />
-
-      <LeadSection
-        bron={path}
-        defaultInteresse={c.interesse}
-        heading="Twijfel je nog? Wij rekenen beide scenario's voor jouw woning uit – gratis."
       />
 
       <JsonLd
