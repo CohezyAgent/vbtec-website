@@ -45,6 +45,8 @@ export const site = {
   /** "In {x}% van de berekeningen raadden we minstens één product af." */
   adviceAgainstPct: 38, // PLACEHOLDER
   calculationsCount: 1200, // PLACEHOLDER
+  /** Google review badge in image heroes. PLACEHOLDER – vervang door de echte Google-score. */
+  googleRating: { score: "4,9", count: 127 },
   guarantees: [
     "Geen voorschot vóór je akkoord", // PLACEHOLDER – bevestigen met klant
     "Fabrieksgarantie + installatiegarantie (termijnen volgen)", // PLACEHOLDER

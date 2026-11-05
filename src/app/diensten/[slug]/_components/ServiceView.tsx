@@ -1,7 +1,12 @@
+import { existsSync } from "node:fs";
+import path from "node:path";
 import type { ReactNode } from "react";
+import type { ImageInput } from "@/content/types";
 import { MYTHS } from "@/content/facts";
 import { getProject } from "@/content/projects";
 import { getReviewsByProduct, reviews } from "@/content/reviews";
+import { site } from "@/content/site";
+import { eur, fx } from "@/content/services";
 import type { ServiceContent } from "@/content/services";
 import PageHero from "@/components/sections/PageHero";
 import StackCards from "@/components/sections/StackCards";
@@ -10,19 +15,38 @@ import StickySplit, { type StickySplitStep } from "@/components/sections/StickyS
 import Statement from "@/components/sections/Statement";
 import CardRow from "@/components/sections/CardRow";
 import ImagePanel from "@/components/sections/ImagePanel";
+import SplitShowcase from "@/components/sections/SplitShowcase";
 import ReviewWall from "@/components/sections/ReviewWall";
 import Faq from "@/components/sections/Faq";
 import LeadSection from "@/components/lead/LeadSection";
 import HouseDiagram from "@/components/sections/house-diagram/HouseDiagram";
 import { FactNote, KortAntwoord } from "@/components/ui/Facts";
-import { Tag } from "@/components/ui/Bits";
 import { TextLink } from "@/components/ui/CtaPill";
 import JsonLd from "@/components/ui/JsonLd";
 import { projectLink, postLink, relatedLinks, serviceLink } from "@/lib/links";
 import { routes } from "@/lib/routes";
 import { service as serviceSchema } from "@/lib/schema";
 import ServiceSignature from "./ServiceSignature";
+import { SERVICE_SHOWCASE } from "./serviceShowcase";
 import styles from "./ServiceView.module.css";
+
+/** Key number on the hero glass card, in plain words (values come from facts.ts). */
+const HERO_STAT: Record<string, { value: string; label: string; zoom?: number }> = {
+  "lucht-water-warmtepomp": { value: `tot ${fx("premieLuchtWaterCat4", { euro: true, single: true, exact: true })}`, label: "Mijn VerbouwPremie – wij vragen ze voor je aan" },
+  "lucht-lucht-warmtepomp": { value: `${fx("scopLuchtLucht", { single: true, exact: true })}×`, label: "zoveel warmte uit elke kWh stroom", zoom: 1.05 },
+  zonnepanelen: { value: `${fx("pvOpbrengstPerKwp", { single: true, exact: true })} kWh`, label: "per kWp per jaar op een Vlaams dak", zoom: 1.15 },
+  "pvt-panelen": { value: "2 in 1", label: "stroom én warmte van hetzelfde paneel" },
+  laadpalen: { value: fx("kostPer100kmZonOverschot", { euro: true, single: true }), label: "per 100 km, geladen op je eigen zonnestroom" },
+  thuisbatterij: { value: eur("prijsThuisbatterijPerKwh", true), label: "per kWh opslag, geplaatst – en dalend", zoom: 1.1 },
+  omvormers: { value: fx("levensduurOmvormer", { suffix: " jaar", single: true, exact: true }), label: "gaat een omvormer gemiddeld mee" },
+};
+
+/** Studio product photo for the hero glass card (public/images/products), else the service photo. */
+function productImage(slug: string, name: string, fallback: ImageInput): ImageInput {
+  const src = `/images/products/product-${slug}.jpg`;
+  if (!existsSync(path.join(process.cwd(), "public", src))) return fallback;
+  return { src, alt: name, width: 1400, height: 1050 };
+}
 
 const paragraphs = (ps: string[]): ReactNode => (
   <>
@@ -36,6 +60,9 @@ const paragraphs = (ps: string[]): ReactNode => (
 export default function ServiceView({ s }: { s: ServiceContent }) {
   const path = routes.service(s.slug);
   const ctaLabel = `Bereken of ${s.productPhrase} ${s.productPhrase.startsWith("een ") ? "loont" : "lonen"} voor jou`;
+  const showcase = SERVICE_SHOWCASE[s.slug];
+  // Service-specific deliverables first, then the shared ones (max. 5 checklist rows).
+  const showcasePoints = [...s.deliverables.slice(5), ...s.deliverables.slice(0, 5)].slice(0, 5).map((label) => ({ label }));
   const myth = s.mythKey ? MYTHS.find((m) => m.key === s.mythKey) : undefined;
 
   // Row 4 – "Hoe werkt het" + one step per complementary service (mini house diagram).
@@ -107,8 +134,14 @@ export default function ServiceView({ s }: { s: ServiceContent }) {
         image={s.image}
         cta={{ label: ctaLabel, href: routes.lead() }}
         secondaryCta={{ label: "Hoe past het in je systeem?", href: "#systeem" }}
-        trustLine
-        factCard={s.heroFact}
+        showcase={{
+          image: productImage(s.slug, s.shortTitle, s.image),
+          value: HERO_STAT[s.slug]?.value ?? String(s.heroFact?.value ?? ""),
+          label: HERO_STAT[s.slug]?.label ?? s.heroFact?.title.split(" – ")[0] ?? "",
+          zoom: HERO_STAT[s.slug]?.zoom,
+          avatars: getReviewsByProduct(s.slug).slice(0, 4).map((r) => r.name.charAt(0)),
+          avatarsLabel: `${site.calculationsCount.toLocaleString("nl-BE")}+ gezinnen berekend`, // PLACEHOLDER count
+        }}
         updatedAt={s.updatedAt}
         eyebrow={s.shortTitle}
       />
@@ -127,6 +160,19 @@ export default function ServiceView({ s }: { s: ServiceContent }) {
           image: p.image,
           factKeys: p.factKeys,
         }))}
+      />
+
+      {/* 2b · Visual break: what you get + key numbers on a photo */}
+      <SplitShowcase
+        id="in-een-oogopslag"
+        badge="Wat je krijgt"
+        title={showcase.title}
+        points={showcasePoints}
+        cta={{ label: ctaLabel, href: routes.lead(), variant: "ink" }}
+        image={showcase.image}
+        chip={showcase.chip}
+        stats={showcase.stats}
+        tone="lilac"
       />
 
       {/* 3 · Kost & opbrengst (H · D) – unique per service */}
@@ -176,20 +222,6 @@ export default function ServiceView({ s }: { s: ServiceContent }) {
         numbered
         intro={{ eyebrow: "Wat we voor jou berekenen", title: "Wat onze ingenieur voor jou uitrekent", lead: <p>{s.calculatesLead}</p> }}
         items={s.calculates.map((c) => ({ title: c.title, body: <p>{c.body}</p>, image: c.image, progress: true }))}
-        footer={
-          <div className={styles.deliverables}>
-            <h3 className={styles.deliverablesTitle}>Wat je krijgt</h3>
-            <ul className={styles.tags}>
-              {s.deliverables.map((d) => (
-                <li key={d}>
-                  <Tag tone="ring" size="sm">
-                    {d}
-                  </Tag>
-                </li>
-              ))}
-            </ul>
-          </div>
-        }
       />
 
       {/* 7 · Signature (W) – unique per service */}

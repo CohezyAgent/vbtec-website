@@ -16,34 +16,34 @@ export type PainCard = { tone: "D" | "G" | "I"; eyebrow: string; title: string; 
 export const PAIN = {
   eyebrow: "Herken je dit?",
   title: "Je factuur stijgt. Je verbruik niet.",
-  lead: "De meeste gezinnen die bij ons aankloppen, doen niets verkeerd. De regels veranderden onder hen: hoe je stroom betaalt, wat je zonnepanelen opbrengen, wat gas gaat kosten.",
+  lead: "Je doet niets verkeerd. De regels veranderden onder je.",
   cards: [
     {
       tone: "I",
       eyebrow: "Je voorschot",
       title: "Je voorschot ging omhoog, je verbruik niet.",
-      body: "Je doet de lichten uit, de thermostaat een graad lager, en toch blijft de jaarafrekening schrikken. Je betaalt niet alleen voor energie, maar voor netkosten, heffingen en een prijs die je niet in de hand hebt.",
+      body: "Lichten uit, thermostaat lager – en toch schrik je van de jaarafrekening.",
       image: "gezin-keuken-factuur",
     },
     {
       tone: "D",
       eyebrow: "Het capaciteitstarief",
       title: "Sinds het capaciteitstarief betaal je ook voor je pieken.",
-      body: `Je hoogste kwartier van de maand bepaalt mee wat je betaalt: gemiddeld ${v("capaciteitstariefGemiddeldPerJaar", { pre: "€ " })} per jaar voor een Vlaams gezin. Koken, wassen en laden tegelijk? Dan betaal je dat het hele jaar.`,
+      body: `Je hoogste kwartier per maand kost een Vlaams gezin gemiddeld ${v("capaciteitstariefGemiddeldPerJaar", { pre: "€ " })} per jaar.`,
       factKeys: ["capaciteitstariefGemiddeldPerJaar"],
     },
     {
       tone: "G",
       eyebrow: "Je zonnepanelen",
       title: "Je panelen draaien, maar je stroom gaat voor een paar cent het net op.",
-      body: `Overdag geef je stroom weg voor ${v("injectievergoeding")} cent per kWh. 's Avonds koop je ze terug aan ${v("stroomprijsAllIn", { scale: 100 })} cent. Zonder terugdraaiende teller is dat verschil je grootste verlies.`,
+      body: `Overdag weg voor ${v("injectievergoeding")} cent per kWh, 's avonds terugkopen aan ${v("stroomprijsAllIn", { scale: 100 })} cent.`,
       factKeys: ["injectievergoeding", "stroomprijsAllIn"],
     },
     {
       tone: "D",
       eyebrow: "Je ketel",
       title: "Je ketel is vijftien jaar oud. Weer gas voelt als geld weggooien, een warmtepomp als een gok.",
-      body: "De buurman zegt dit, de verkoper dat, het nieuws iets anders. Iedereen heeft een mening, niemand heeft jouw woning doorgerekend. Dat doen wij: met je jaarafrekening, je dak en je radiatoren, en met een scenario 'niets doen' erbij.",
+      body: "Iedereen heeft een mening. Niemand rekende jouw woning door. Wij wel – met een scenario 'niets doen' erbij.",
     },
   ] satisfies PainCard[],
 };
@@ -60,7 +60,7 @@ export const MYTH = {
 export const DATA = {
   eyebrow: "De cijfers",
   title: "Wat kost 1 kWh warmte in Vlaanderen?",
-  lead: `Stroom is per kWh duurder dan gas. Maar een warmtepomp maakt van 1 kWh stroom ${v("scopRekenwaarde", { dec: 1 })} kWh warmte. Wat telt, is dus niet de prijs van je energie, maar de prijs van je warmte.`,
+  lead: `Stroom is duurder dan gas, maar een warmtepomp maakt van 1 kWh stroom ${v("scopRekenwaarde", { dec: 1 })} kWh warmte. Wat telt, is de prijs van je warmte.`,
   whenTrue: heatMyth.whenTrue,
 };
 
@@ -74,6 +74,26 @@ export const SYSTEM_TEASER = {
   eyebrow: "Hoe het samenwerkt",
   title: "Je woning als één systeem: zon eerst in huis, de rest slim gestuurd.",
   lead: "Een warmtepomp, panelen of een batterij alleen doen het goed. Samen doen ze het veel beter, omdat elk toestel het overschot van het andere opvangt. Kies een moment van de dag en zie waar je stroom en je warmte naartoe gaan.",
+};
+
+export const SMART_SPLIT = {
+  badge: "Slim gestuurd",
+  title: "Eerst je eigen zon. Dan pas het net.",
+  lead: "Wij laten warmtepomp, boiler, batterij en auto draaien op je eigen zonnestroom. Zo betaal je minder en verdien je je installatie sneller terug.",
+  points: ["Panelen en omvormer op maat van je dak", "Warmtepomp die draait als de zon schijnt", "Een batterij enkel als ze loont", "Alles live in één app"],
+  chip: "Voorbeelddag in juni · 6 kWp",
+};
+
+export const PROJECTS_BENTO = {
+  eyebrow: "Projecten",
+  title: "Gezinnen zoals jij. Hun factuur vóór en na.",
+  body: "Elke woning is anders. Zo rekenden we het uit voor vier gezinnen – en zo ziet hun factuur er nu uit.",
+  side: {
+    title: "Ook als het niet loont, zeggen we het.",
+    body: "In Kortrijk raadden we de batterij af. Het gezin kreeg panelen, en een eerlijk antwoord.",
+    caption: "Ingenieurs, geen verkopers",
+  },
+  note: "Voorbeeldprojecten · indicatieve cijfers, berekend met Vlaamse rekenwaarden 2026",
 };
 
 export const PROJECTS_INTRO = {

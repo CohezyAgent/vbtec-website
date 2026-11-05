@@ -1,0 +1,638 @@
+/* BentoShowcase – lead card · carousel photo with floating cards · side column. */
+.section {
+  padding: calc(110 * var(--u)) var(--side) calc(90 * var(--u));
+  background: var(--c-white);
+}
+
+.eyebrow {
+  display: flex;
+  justify-content: center;
+  margin: 0 0 calc(44 * var(--u));
+  border-bottom: var(--hairline-light);
+  font-size: var(--fs-small);
+  color: var(--c-grey-600);
+}
+
+.eyebrow span {
+  padding-bottom: 14px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 0.92fr 1.62fr 0.82fr;
+  gap: calc(14 * var(--u));
+  height: max(560px, min(calc(820 * var(--u)), 86svh));
+}
+
+.lilac {
+  background: var(--c-lime-pale);
+}
+
+.mint {
+  background: #e7f3ee;
+}
+
+/* ───── Lead card ───── */
+.lead {
+  display: flex;
+  flex-direction: column;
+  padding: calc(44 * var(--u)) calc(44 * var(--u)) calc(40 * var(--u));
+  border-radius: var(--radius);
+  color: var(--c-ink);
+}
+
+.segments {
+  display: flex;
+  gap: 8px;
+}
+
+.segment {
+  position: relative;
+  flex: 1;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.segment::before {
+  content: "";
+  position: absolute;
+  inset: 10px 0;
+  border-radius: 4px;
+  background: rgba(5, 35, 29, 0.14);
+}
+
+.segmentFill {
+  position: absolute;
+  inset: 10px 0;
+  border-radius: 4px;
+  background: var(--c-ink);
+  transform-origin: left;
+  transform: scaleX(0);
+}
+
+.segment[data-state="done"] .segmentFill {
+  transform: scaleX(1);
+}
+
+.segment[data-state="active"] .segmentFill {
+  transform: scaleX(1);
+}
+
+.segment[data-state="active"][data-running] .segmentFill {
+  animation: fill var(--dur) linear both;
+}
+
+@keyframes fill {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+.leadBody {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.title {
+  margin: 0;
+  font-size: var(--fs-h3);
+  line-height: 1.15;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+.divider {
+  position: relative;
+  width: 100%;
+  height: 1px;
+  margin: calc(36 * var(--u)) 0;
+  background: rgba(5, 35, 29, 0.14);
+}
+
+.divider::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--c-primary);
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 0 6px var(--c-lime-pale);
+}
+
+.mint .divider::after {
+  box-shadow: 0 0 0 6px #e7f3ee;
+}
+
+.body {
+  margin: 0;
+  max-width: 24em;
+  font-size: var(--fs-small);
+  line-height: 1.6;
+  color: var(--c-grey-600);
+}
+
+.leadFoot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.arrows {
+  display: flex;
+  gap: 8px;
+}
+
+.arrow {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 1px solid rgba(5, 35, 29, 0.2);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--c-ink);
+  cursor: pointer;
+  transition: background var(--dur-hover) ease;
+}
+
+.arrow:hover {
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.arrow svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* ───── Main photo / carousel ───── */
+.main {
+  position: relative;
+  border-radius: var(--radius);
+  overflow: hidden;
+  overflow: clip;
+  isolation: isolate;
+  background: var(--c-slate);
+}
+
+.slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+
+.slide[data-active] {
+  opacity: 1;
+}
+
+.slideImg img {
+  transform: scale(1.1);
+  transition: transform 7s linear;
+}
+
+.slide[data-active] .slideImg img {
+  transform: scale(1);
+}
+
+.main::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(0deg, rgba(3, 24, 19, 0.62) 0%, rgba(3, 24, 19, 0) 48%);
+  pointer-events: none;
+}
+
+.caption {
+  position: absolute;
+  z-index: 1;
+  left: calc(40 * var(--u));
+  bottom: calc(108 * var(--u));
+  max-width: 52%;
+  color: #fff;
+}
+
+.kicker {
+  margin: 0 0 8px;
+  font-size: var(--fs-small);
+  color: rgba(255, 255, 255, 0.78);
+  animation: rise 0.8s var(--ease-out) both;
+}
+
+.slideTitle {
+  display: block;
+  margin: 0;
+  font-size: max(24px, calc(44 * var(--u)));
+  line-height: 1.08;
+  letter-spacing: -0.01em;
+  color: #fff;
+  text-decoration: none;
+  animation: rise 0.9s var(--ease-out) 0.08s both;
+}
+
+.slideTitleIcon {
+  display: inline-block;
+  width: 0.5em;
+  height: 0.5em;
+  vertical-align: 0.15em;
+  transition: transform var(--dur-hover) ease;
+}
+
+a.slideTitle:hover .slideTitleIcon {
+  transform: rotate(45deg);
+}
+
+.counter {
+  position: absolute;
+  z-index: 1;
+  left: calc(40 * var(--u));
+  bottom: calc(30 * var(--u));
+  margin: 0;
+  font-family: var(--font-ui);
+  font-size: max(30px, calc(52 * var(--u)));
+  line-height: 1;
+  color: #fff;
+}
+
+.counterNow {
+  display: inline-block;
+  animation: rise 0.6s var(--ease-out) both;
+}
+
+.counterAll {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+
+/* Floating cards (right side of the photo) */
+.floats {
+  position: absolute;
+  z-index: 1;
+  right: calc(26 * var(--u));
+  bottom: calc(26 * var(--u));
+  display: grid;
+  gap: calc(12 * var(--u));
+  width: min(42%, calc(330 * var(--u)));
+  min-width: 220px;
+  animation: float 7s ease-in-out infinite;
+}
+
+@keyframes float {
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.metric {
+  padding: calc(24 * var(--u)) calc(24 * var(--u)) calc(18 * var(--u));
+  border-radius: calc(16 * var(--u));
+  background: var(--c-lime);
+  color: var(--c-ink);
+  box-shadow: 0 18px 40px rgba(3, 24, 19, 0.22);
+}
+
+.metricLabel {
+  margin: 0;
+  font-size: var(--fs-small);
+}
+
+.metricValue {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin: 10px 0 14px;
+  font-family: var(--font-ui);
+  font-size: max(34px, calc(64 * var(--u)));
+  font-weight: 500;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.metricSuffix {
+  font-size: 0.34em;
+  font-weight: 400;
+  color: var(--c-grey-600);
+}
+
+.metricTrend {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  margin: 0;
+  font-family: var(--font-ui);
+  font-size: var(--fs-small);
+}
+
+.trendIcon {
+  width: 12px;
+  height: 12px;
+  transform: rotate(90deg);
+}
+
+.routine {
+  padding: calc(20 * var(--u)) calc(22 * var(--u));
+  border-radius: calc(16 * var(--u));
+  background: #fff;
+  color: var(--c-ink);
+  box-shadow: 0 18px 40px rgba(3, 24, 19, 0.18);
+}
+
+.routineTitle {
+  margin: 0 0 12px;
+  font-size: var(--fs-small);
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0 0 14px;
+  padding: 0;
+  list-style: none;
+}
+
+.chipItem {
+  padding: 5px 10px;
+  border: 1px solid rgba(5, 35, 29, 0.14);
+  border-radius: 999px;
+  font-size: 12px;
+  line-height: 1.2;
+  animation: rise 0.5s var(--ease-out) both;
+  animation-delay: calc(var(--i, 0) * 70ms);
+}
+
+.chipOn {
+  border-color: transparent;
+  background: var(--c-lime);
+}
+
+.progressLabel {
+  margin: 0 0 8px;
+  font-size: 12px;
+  color: var(--c-grey-600);
+}
+
+.progress {
+  display: block;
+  height: 10px;
+  padding: 2px;
+  border-radius: 10px;
+  background: var(--c-grey-100);
+}
+
+.progressFill {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--c-accent), var(--c-primary));
+  transform-origin: left;
+  transform: scaleX(var(--p));
+  transition: transform 1s var(--ease-out);
+}
+
+/* ───── Side column ───── */
+.side {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: calc(14 * var(--u));
+  min-height: 0;
+}
+
+.sideCard {
+  padding: calc(34 * var(--u)) calc(30 * var(--u));
+  border-radius: var(--radius);
+  color: var(--c-ink);
+}
+
+.sideTitle {
+  margin: 0;
+  font-size: max(20px, calc(32 * var(--u)));
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+
+.sideBody {
+  margin: 12px 0 0;
+  font-size: var(--fs-small);
+  line-height: 1.5;
+  color: var(--c-grey-600);
+}
+
+.sidePhoto {
+  position: relative;
+  min-height: 0;
+  border-radius: var(--radius);
+  overflow: hidden;
+  overflow: clip;
+  isolation: isolate;
+  background: var(--c-slate);
+}
+
+.sidePhoto::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(0deg, rgba(3, 24, 19, 0.6) 0%, rgba(3, 24, 19, 0) 55%);
+  pointer-events: none;
+}
+
+.sidePhoto .slideImg img {
+  transform: none;
+  transition: transform 1.2s var(--ease-out);
+}
+
+.sidePhoto:hover .slideImg img {
+  transform: scale(1.05);
+}
+
+.sideCaption {
+  position: absolute;
+  z-index: 1;
+  left: calc(26 * var(--u));
+  right: calc(26 * var(--u));
+  bottom: calc(24 * var(--u));
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 0;
+  font-size: max(19px, calc(30 * var(--u)));
+  line-height: 1.12;
+  color: #fff;
+  text-decoration: none;
+}
+
+a.sideCaption::before {
+  content: "";
+  position: absolute;
+  inset: -100vh -100vw;
+}
+
+.sideArrow {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--c-lime);
+  color: var(--c-ink);
+  transition: transform var(--dur-hover) ease;
+}
+
+.sideArrow svg {
+  width: 14px;
+  height: 14px;
+}
+
+.sidePhoto:hover .sideArrow {
+  transform: rotate(45deg);
+}
+
+.note {
+  margin: 18px 0 0;
+  font-size: 13px;
+  color: var(--c-grey-600);
+  text-align: right;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .floats,
+  .kicker,
+  .slideTitle,
+  .counterNow,
+  .chipItem {
+    animation: none;
+  }
+
+  .slide,
+  .slideImg img,
+  .progressFill {
+    transition: none;
+  }
+}
+
+/* ───── Mobile ───── */
+@media (max-width: 900px) {
+  .section {
+    padding: 56px 12px 40px;
+  }
+
+  .eyebrow {
+    margin: 0 8px 24px;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+    height: auto;
+    gap: 10px;
+  }
+
+  .lead {
+    padding: 22px 22px 24px;
+  }
+
+  .leadBody {
+    padding: 28px 0;
+  }
+
+  .divider {
+    margin: 22px 0;
+  }
+
+  .main {
+    height: min(125vw, 640px);
+  }
+
+  .slideTitle {
+    font-size: 28px;
+  }
+
+  /* Caption sits at the top on mobile: darken both ends. */
+  .main::after {
+    background: linear-gradient(180deg, rgba(3, 24, 19, 0.6) 0%, rgba(3, 24, 19, 0) 34%, rgba(3, 24, 19, 0) 60%, rgba(3, 24, 19, 0.5) 100%);
+  }
+
+  .caption {
+    left: 18px;
+    right: 18px;
+    bottom: auto;
+    top: 20px;
+    max-width: none;
+  }
+
+  .counter {
+    left: 18px;
+    bottom: 18px;
+  }
+
+  .floats {
+    right: 12px;
+    bottom: 12px;
+    width: 58%;
+    min-width: 0;
+    gap: 8px;
+  }
+
+  .metric,
+  .routine {
+    padding: 14px;
+    border-radius: 14px;
+  }
+
+  .metricValue {
+    font-size: 30px;
+    margin: 6px 0 8px;
+  }
+
+  .side {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: none;
+    gap: 10px;
+  }
+
+  .sideCard {
+    padding: 20px 18px;
+  }
+
+  .sidePhoto {
+    min-height: 200px;
+  }
+
+  .sideCaption {
+    left: 14px;
+    right: 14px;
+    bottom: 14px;
+    font-size: 17px;
+  }
+
+  .sideArrow {
+    width: 32px;
+    height: 32px;
+  }
+
+  .note {
+    text-align: left;
+    padding: 0 8px;
+  }
+}

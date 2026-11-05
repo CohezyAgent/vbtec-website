@@ -6,9 +6,10 @@
 .header {
   --u: min(calc(100vw / 1842), calc(100svh / 1176));
   --fg: #fff;
-  --pill-bg: var(--glass-dark-bg);
-  --pill-border: var(--glass-dark-border);
-  --pill-blur: var(--glass-dark-blur);
+  /* Clear glass over photos: no green tint. */
+  --pill-bg: rgba(255, 255, 255, 0.1);
+  --pill-border: 1px solid rgba(255, 255, 255, 0.22);
+  --pill-blur: blur(14px) saturate(1.2);
   --active-bg: #fff;
   --active-fg: var(--c-ink);
   --cta-bg: #fff;
@@ -47,8 +48,6 @@
   --cta-arrow-bg: var(--c-primary);
   --cta-arrow-fg: #fff;
   --hover-bg: rgba(6, 20, 16, 0.07);
-  /* Lilac mark disappears on white: use the primary green there. */
-  --mark: var(--c-primary);
 }
 
 .header[data-hidden] {
@@ -156,7 +155,8 @@
   align-items: center;
   gap: calc(6 * var(--u));
   height: calc(46 * var(--u));
-  padding: calc(3 * var(--u)) calc(20 * var(--u)) 0;
+  padding: 0 calc(20 * var(--u));
+  line-height: 1;
   border: 0;
   border-radius: 999px;
   background: none;
@@ -435,7 +435,7 @@
 /* Medium desktops: tighten the nav so it never collides with logo/CTA. */
 @media (min-width: 901px) and (max-width: 1280px) {
   .navLink {
-    padding: calc(3 * var(--u)) calc(14 * var(--u)) 0;
+    padding: 0 calc(14 * var(--u));
     font-size: max(13px, calc(19.8 * var(--u)));
   }
   .ctaLong {

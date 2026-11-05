@@ -278,56 +278,522 @@
   display: none;
 }
 
+.steps {
+  position: relative;
+}
+
 .step {
   display: grid;
-  gap: 26px;
+  gap: 22px;
 }
 
 .step + .step {
-  margin-top: 30px;
+  margin-top: 40px;
+  padding-top: 32px;
+  border-top: var(--hairline-light);
 }
 
 .form[data-enhanced] .step + .step {
   margin-top: 0;
+  padding-top: 0;
+  border-top: 0;
+}
+
+/* Enhanced: one step at a time, stable height, slide-in transition. */
+.form[data-enhanced] .step {
+  grid-template-rows: auto 1fr auto;
+  min-height: 470px;
+  animation: stepInFwd 0.5s var(--ease-out) both;
+}
+
+.form[data-enhanced] .step[data-dir="back"] {
+  animation-name: stepInBack;
+}
+
+@keyframes stepInFwd {
+  from {
+    opacity: 0;
+    transform: translateX(28px);
+  }
+}
+
+@keyframes stepInBack {
+  from {
+    opacity: 0;
+    transform: translateX(-28px);
+  }
+}
+
+.stepHead {
+  display: grid;
+  gap: 8px;
+}
+
+.stepKicker {
+  font-family: var(--font-label);
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  color: var(--c-primary);
+}
+
+.stepKicker span {
+  color: var(--c-grey-quote);
 }
 
 .stepTitle {
-  font-family: var(--font-ui);
-  font-weight: 500;
-  font-size: 20px;
+  font-family: var(--font-text);
+  font-weight: 400;
+  font-size: max(24px, calc(34 * var(--u)));
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
 }
 
 .stepTitle:focus {
   outline: none;
 }
 
-/* Progress */
+.stepHelp {
+  font-weight: 300;
+  font-size: 14.5px;
+  line-height: 1.5;
+  color: var(--c-grey-600);
+}
+
+.stepBody {
+  display: grid;
+  align-content: start;
+  gap: 22px;
+  min-width: 0;
+}
+
+/* Step navigation */
+.nav {
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 20px;
+  padding-top: 18px;
+  border-top: var(--hairline-light);
+}
+
+/* Progress: segmented bar */
 .progress {
   flex-direction: column;
-  gap: 10px;
-  margin-bottom: 24px;
+  gap: 12px;
+  margin-bottom: 26px;
 }
 
 .progressLabel {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
   font-weight: 500;
-  font-size: 15px;
+  font-size: 14px;
 }
 
-.progressBar {
+.progressName {
+  font-weight: 300;
+  color: var(--c-grey-600);
+}
+
+.segments {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.segment {
   position: relative;
-  display: block;
-  height: 4px;
-  border-radius: 4px;
+  height: 5px;
+  border-radius: 5px;
   background: var(--c-grey-100);
   overflow: hidden;
 }
 
-.progressFill {
+.segment::after {
+  content: "";
   position: absolute;
   inset: 0;
-  background: var(--c-ink);
+  border-radius: inherit;
+  background: var(--c-primary);
+  transform: scaleX(0);
   transform-origin: left;
   transition: transform 0.5s var(--ease-inout);
+}
+
+.segment[data-state="done"]::after {
+  transform: scaleX(1);
+}
+
+.segment[data-state="current"]::after {
+  background: linear-gradient(90deg, var(--c-primary), var(--c-accent));
+  transform: scaleX(0.5);
+}
+
+/* Option cards (single + multi choice) */
+.options {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.option {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+  min-height: 128px;
+  padding: 16px;
+  border-radius: 18px;
+  background: var(--c-grey-100);
+  box-shadow: inset 0 0 0 1.5px transparent;
+  color: var(--c-ink);
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background-color var(--dur-hover),
+    box-shadow var(--dur-hover),
+    transform 0.25s var(--ease-out);
+}
+
+.form[data-enhanced] .step[data-active] .option {
+  animation: optionIn 0.5s var(--ease-out) both;
+  animation-delay: calc(var(--i, 0) * 40ms + 80ms);
+}
+
+@keyframes optionIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+
+.option:hover {
+  background: #fff;
+  box-shadow:
+    inset 0 0 0 1.5px rgba(15, 107, 90, 0.35),
+    0 10px 24px rgba(3, 24, 19, 0.06);
+  transform: translateY(-2px);
+}
+
+.option:active {
+  transform: scale(0.98);
+}
+
+.option:has(input:focus-visible) {
+  outline: 2px solid var(--c-ink);
+  outline-offset: 2px;
+}
+
+.optionIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  background: #fff;
+  color: var(--c-primary);
+  transition:
+    background-color var(--dur-hover),
+    color var(--dur-hover);
+}
+
+.optionIcon svg {
+  width: 28px;
+  height: 28px;
+}
+
+.optionText {
+  display: grid;
+  gap: 2px;
+}
+
+.optionLabel {
+  font-weight: 500;
+  font-size: 15.5px;
+  line-height: 1.25;
+}
+
+.optionSub {
+  font-weight: 300;
+  font-size: 13px;
+  line-height: 1.3;
+  color: var(--c-grey-600);
+}
+
+.optionCheck {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1.5px rgba(6, 20, 16, 0.18);
+  color: transparent;
+  transition:
+    background-color var(--dur-hover),
+    box-shadow var(--dur-hover),
+    transform 0.35s var(--ease-back);
+}
+
+.optionCheck svg {
+  width: 14px;
+  height: 14px;
+}
+
+.option.optionOn,
+.option.optionOn:hover {
+  background: var(--c-green);
+  box-shadow: 0 14px 30px rgba(11, 74, 63, 0.22);
+  color: #fff;
+}
+
+.optionOn .optionIcon {
+  background: rgba(255, 255, 255, 0.12);
+  color: var(--c-lime);
+}
+
+.optionOn .optionSub {
+  color: var(--c-on-green-2);
+}
+
+.optionOn .optionCheck {
+  background: var(--c-lime);
+  box-shadow: none;
+  color: var(--c-ink);
+  animation: checkPop 0.4s var(--ease-back);
+}
+
+@keyframes checkPop {
+  from {
+    transform: scale(0.3);
+  }
+}
+
+.optionWide {
+  grid-column: 1 / -1;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 14px;
+  padding-right: 48px;
+  min-height: 0;
+  background: transparent;
+  box-shadow: inset 0 0 0 1.5px rgba(6, 20, 16, 0.16);
+}
+
+.optionWide .optionCheck {
+  top: 50%;
+  margin-top: -12px;
+}
+
+/* Multi-select: denser cards */
+.optionsCompact .option {
+  min-height: 108px;
+  gap: 12px;
+  padding: 14px;
+}
+
+.optionsCompact .optionIcon {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+}
+
+.optionsCompact .optionIcon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.optionsCompact .optionLabel {
+  font-size: 14.5px;
+}
+
+.optionsCompact .optionWide {
+  min-height: 0;
+}
+
+.optionsInvalid .option {
+  box-shadow: inset 0 0 0 2px var(--c-error);
+}
+
+.cardFlat .option:not(.optionOn):not(.optionWide) {
+  background: #fff;
+}
+
+.cardFlat .bigInput {
+  background: #fff;
+}
+
+.cardFlat .option:not(.optionOn) .optionIcon {
+  background: var(--c-grey-100);
+}
+
+/* Big number input (verbruik) */
+.bigInput {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  padding: 14px 22px;
+  border-radius: 20px;
+  background: var(--c-grey-100);
+  transition:
+    background-color var(--dur-hover),
+    box-shadow var(--dur-hover);
+}
+
+.bigInput:focus-within {
+  background: #fff;
+  box-shadow:
+    0 0 0 2px var(--c-ink),
+    0 0 0 8px var(--c-lime-pale);
+}
+
+.bigInput.invalid {
+  box-shadow: 0 0 0 2px var(--c-error);
+}
+
+.bigPrefix {
+  font-family: var(--font-text);
+  font-size: 26px;
+  color: var(--c-primary);
+}
+
+.bigField {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  font-family: var(--font-text);
+  font-size: max(36px, calc(52 * var(--u)));
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  color: var(--c-ink);
+}
+
+.bigField:focus {
+  outline: none;
+}
+
+.bigField::placeholder {
+  color: #b9c2be;
+}
+
+.bigSuffix {
+  font-weight: 300;
+  font-size: 14px;
+  color: var(--c-grey-600);
+  white-space: nowrap;
+}
+
+.quick {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.quickLabel {
+  margin-right: 4px;
+  font-weight: 300;
+  font-size: 14px;
+  color: var(--c-grey-600);
+}
+
+.quickChip {
+  min-height: 38px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 999px;
+  background: #fff;
+  box-shadow: inset 0 0 0 1.5px rgba(6, 20, 16, 0.14);
+  font-family: var(--font-ui);
+  font-weight: 400;
+  font-size: 14px;
+  color: var(--c-ink);
+  cursor: pointer;
+  transition:
+    background-color var(--dur-hover),
+    box-shadow var(--dur-hover);
+}
+
+.quickChip:hover {
+  box-shadow: inset 0 0 0 1.5px var(--c-primary);
+}
+
+.quickChip.quickOn {
+  background: var(--c-lime);
+  box-shadow: none;
+  font-weight: 500;
+}
+
+/* Recap (final step) */
+.recap {
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 10px;
+  padding: 14px 16px;
+  border-radius: 16px;
+  background: var(--c-lime-pale);
+}
+
+.recapLabel {
+  font-weight: 500;
+  font-size: 13.5px;
+}
+
+.recapList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.recapList li {
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #fff;
+  font-weight: 300;
+  font-size: 13px;
+}
+
+.recapEdit {
+  margin-left: auto;
+  padding: 0;
+  border: 0;
+  background: none;
+  font-family: var(--font-ui);
+  font-weight: 500;
+  font-size: 13.5px;
+  color: var(--c-ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .form[data-enhanced] .step,
+  .form[data-enhanced] .step[data-active] .option,
+  .optionOn .optionCheck {
+    animation: none;
+  }
+  .segment::after,
+  .option {
+    transition: none;
+  }
 }
 
 /* Error summary */
@@ -817,6 +1283,29 @@
 @media (max-width: 600px) {
   .grid {
     grid-template-columns: 1fr;
+  }
+  .form[data-enhanced] .step {
+    min-height: 440px;
+  }
+  .options {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .option {
+    min-height: 112px;
+    padding: 14px;
+  }
+  .optionWide {
+    min-height: 0;
+  }
+  .nav .note {
+    display: none;
+  }
+  .nav {
+    justify-content: flex-end;
+  }
+  .nav:has(.back) {
+    justify-content: space-between;
   }
   .actionsFinal {
     flex-direction: column-reverse;

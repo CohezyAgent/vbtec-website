@@ -9,9 +9,9 @@
   --hd-panel-b: #3a4f57;
   --hd-text: var(--c-ink);
   --hd-text-2: var(--c-grey-600);
-  --hd-net: rgba(6, 20, 16, 0.42);
-  --hd-stroom: #a9c41f;
-  --hd-warmte: #e59b4b;
+  --hd-net: #8f7dff;
+  --hd-stroom: #1fc7a0;
+  --hd-warmte: #ff8a5c;
   --hd-card: var(--c-white);
   --hd-card-ring: inset 0 0 0 1px rgba(6, 20, 16, 0.08);
   position: relative;
@@ -27,18 +27,23 @@
   --hd-panel-b: #2c4148;
   --hd-text: var(--c-white);
   --hd-text-2: var(--c-on-green-2);
-  --hd-net: rgba(255, 255, 255, 0.55);
-  --hd-stroom: var(--c-lime);
-  --hd-warmte: #f0b06a;
   --hd-card: var(--c-green-card);
   --hd-card-ring: var(--ring-on-dark);
 }
 
 /* ───────── stage + svg ───────── */
+.stageWrap {
+  position: relative;
+  display: grid;
+  gap: 14px;
+}
+
 .stage {
   position: relative;
   width: 100%;
   aspect-ratio: 1000 / 640;
+  border-radius: calc(30 / 1000 * 100%) / calc(30 / 640 * 100%);
+  box-shadow: 0 30px 70px -30px rgba(3, 24, 19, 0.45), 0 8px 24px -12px rgba(3, 24, 19, 0.25);
 }
 
 .svg {
@@ -46,141 +51,71 @@
   inset: 0;
   width: 100%;
   height: 100%;
-  overflow: visible;
 }
 
-.ground {
-  stroke: var(--hd-line-soft);
-  stroke-width: 2;
-}
-
-.line path {
+.cardEdge {
   fill: none;
-  stroke: var(--hd-line-soft);
-  stroke-width: 2;
+  stroke: rgba(255, 255, 255, 0.35);
+  stroke-width: 1.5;
 }
 
 .svgLabel {
-  fill: var(--hd-text-2);
+  fill: rgba(5, 35, 29, 0.6);
   font-family: var(--font-label);
-  font-size: 20px;
-  stroke: none;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  transition: fill 1s;
 }
 
-.body {
-  fill: var(--hd-fill);
-  stroke: var(--hd-line);
-  stroke-width: 2.5;
+.root:is([data-scene="avond"], [data-scene="piek"]) .svgLabel {
+  fill: rgba(255, 255, 255, 0.7);
 }
 
-.roof {
-  fill: var(--hd-fill-strong);
-  stroke: var(--hd-line);
-  stroke-width: 2.5;
-  stroke-linejoin: round;
-}
-
-.panel {
-  stroke: var(--hd-line);
-  stroke-width: 1.5;
-}
-
-.panelGrid {
-  fill: none;
-  stroke: rgba(255, 255, 255, 0.28);
-  stroke-width: 1.5;
-}
-
-.pvtPipe {
-  fill: none;
-  stroke: var(--hd-warmte);
-  stroke-width: 5;
-  stroke-linecap: round;
-  opacity: 0.85;
-}
-
-.thin {
-  fill: none;
-  stroke: var(--hd-line);
-  stroke-width: 2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.window,
-.door {
-  fill: var(--hd-fill-strong);
-  stroke: var(--hd-line-soft);
-  stroke-width: 2;
-}
-
-.device {
-  fill: var(--hd-fill-strong);
-  stroke: var(--hd-line);
-  stroke-width: 2.5;
-}
-
-.batteryFill {
-  fill: var(--hd-stroom);
-  opacity: 0.85;
-}
-
-.car {
-  fill: var(--hd-fill-strong);
-  stroke: var(--hd-line);
-  stroke-width: 2.5;
-  stroke-linejoin: round;
-}
-
-.wheel {
-  fill: var(--hd-fill-strong);
-  stroke: var(--hd-line);
-  stroke-width: 2.5;
-}
-
-.fan {
-  fill: none;
-  stroke: var(--hd-line);
-  stroke-width: 2.5;
-}
-
-.fanBlades {
-  transform-origin: 850px 544px;
-  transform-box: view-box;
-}
-
-.root:is([data-scene="winter"], [data-scene="dag"]) .fanBlades {
-  animation: hd-spin 2.4s linear infinite;
-}
-
-.sun circle {
-  fill: var(--hd-stroom);
-  opacity: 0.9;
-}
-
-.sun line {
-  stroke: var(--hd-stroom);
-  stroke-width: 4;
-  stroke-linecap: round;
-}
-
-.sun,
-.moon {
-  transition: opacity var(--dur-reveal) var(--ease-out), transform var(--dur-reveal) var(--ease-out);
-}
-
-.moon path {
-  fill: var(--hd-line-soft);
-}
-
-.moon {
+/* sky per scene: cross-fade */
+.sky {
   opacity: 0;
-  transform: translateY(12px);
+  transition: opacity 1.4s var(--ease-inout);
+}
+
+.root:not([data-scene]) .skyDag,
+.root[data-scene="dag"] .skyDag,
+.root[data-scene="avond"] .skyAvond,
+.root[data-scene="winter"] .skyWinter,
+.root[data-scene="piek"] .skyPiek {
+  opacity: 1;
+}
+
+.skyDag {
+  opacity: 1;
+}
+
+/* sun travels on an arc: high at noon, low in winter, set at night */
+.sun {
+  transform: translate(0, 0);
+  transition: transform 1.6s var(--ease-inout), opacity 1.2s var(--ease-inout);
+}
+
+.root[data-scene="winter"] .sun {
+  transform: translate(90px, 120px) scale(0.85);
+  opacity: 0.75;
 }
 
 .root:is([data-scene="avond"], [data-scene="piek"]) .sun {
+  transform: translate(260px, 420px);
   opacity: 0;
-  transform: translateY(16px);
+}
+
+.sunHalo {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: hd-breathe 5s var(--ease-inout) infinite;
+}
+
+.moon {
+  opacity: 0;
+  transform: translate(-40px, 80px);
+  transition: transform 1.6s var(--ease-inout), opacity 1.2s var(--ease-inout);
 }
 
 .root:is([data-scene="avond"], [data-scene="piek"]) .moon {
@@ -188,24 +123,241 @@
   transform: none;
 }
 
-.root[data-scene="winter"] .sun {
-  opacity: 0.45;
-  transform: scale(0.8);
-  transform-origin: 120px 110px;
+.stars {
+  fill: #fff;
+  opacity: 0;
+  transition: opacity 1.4s;
 }
 
+.stars circle {
+  animation: hd-twinkle 3.2s ease-in-out infinite;
+}
+
+.root:is([data-scene="avond"], [data-scene="piek"]) .stars {
+  opacity: 1;
+}
+
+.clouds path {
+  fill: #fff;
+  opacity: 0.85;
+}
+
+.clouds {
+  transition: opacity 1.2s;
+}
+
+.root:is([data-scene="avond"], [data-scene="piek"]) .clouds {
+  opacity: 0.12;
+}
+
+.cloudA {
+  animation: hd-drift 26s ease-in-out infinite alternate;
+}
+
+.cloudB {
+  animation: hd-drift 34s ease-in-out infinite alternate-reverse;
+}
+
+.pylon path {
+  fill: none;
+  stroke: #6f8780;
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+.pylon .wire {
+  stroke: #4c5a56;
+  stroke-width: 1.5;
+  opacity: 0.6;
+}
+
+.panelGrid {
+  fill: none;
+  stroke: rgba(190, 230, 240, 0.32);
+  stroke-width: 1.5;
+}
+
+.sweep {
+  transform: translateX(0) skewX(-18deg);
+  animation: hd-sweep 6s var(--ease-inout) infinite;
+  transition: opacity 1s;
+}
+
+.root:is([data-scene="avond"], [data-scene="piek"]) .sweep {
+  opacity: 0;
+}
+
+.pvtPipe {
+  fill: none;
+  stroke: var(--hd-warmte);
+  stroke-width: 5;
+  stroke-linecap: round;
+}
+
+.roofSnow {
+  opacity: 0;
+  transition: opacity 1.4s;
+}
+
+.root[data-scene="winter"] .roofSnow {
+  opacity: 0.92;
+}
+
+.interiorWarm {
+  opacity: 0;
+  transition: opacity 1.4s;
+}
+
+.root:is([data-scene="avond"], [data-scene="piek"]) .interiorWarm {
+  opacity: 0.7;
+}
+
+/* night darkens everything except the lit interior */
+.night,
+.frost,
+.lights {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 1.4s var(--ease-inout);
+}
+
+.root[data-scene="avond"] .night {
+  opacity: 0.48;
+}
+
+.root[data-scene="piek"] .night {
+  opacity: 0.52;
+}
+
+.root[data-scene="winter"] .frost {
+  opacity: 0.22;
+}
+
+.root:is([data-scene="avond"], [data-scene="piek"]) .lights {
+  opacity: 1;
+}
+
+.snow {
+  fill: #fff;
+  opacity: 0;
+  transition: opacity 1.2s;
+}
+
+.snow circle {
+  animation: hd-fall 9s linear infinite;
+}
+
+.root[data-scene="winter"] .snow {
+  opacity: 0.9;
+}
+
+/* devices */
+.led {
+  fill: #22d3a6;
+  animation: hd-blink 1.8s ease-in-out infinite;
+}
+
+.chargeLed {
+  fill: #2c4a43;
+  transition: fill 0.6s;
+}
+
+.root:is([data-scene="dag"], [data-scene="avond"]) .chargeLed {
+  fill: #22d3a6;
+  animation: hd-blink 1.4s ease-in-out infinite;
+}
+
+.batteryLevel {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  transform: scaleY(var(--hd-battery, 0.7));
+  transition: transform 1.4s var(--ease-inout);
+}
+
+.bolt {
+  opacity: 0;
+  transition: opacity 0.6s;
+}
+
+.root:is([data-scene="dag"], [data-scene="winter"]) .bolt {
+  opacity: 0.95;
+  animation: hd-blink 1.6s ease-in-out infinite;
+}
+
+.tank {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  transform: scaleY(0.45);
+  transition: transform 1.6s var(--ease-inout);
+}
+
+.root:is([data-scene="dag"], [data-scene="winter"]) .tank {
+  transform: scaleY(1);
+}
+
+.fanBlades {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.root:is([data-scene="dag"], [data-scene="avond"], [data-scene="winter"]) .fanBlades {
+  animation: hd-spin 1.1s linear infinite;
+}
+
+/* peak alert */
+.peak {
+  opacity: 0;
+  transition: opacity 0.8s;
+}
+
+.root[data-scene="piek"] .peak {
+  opacity: 1;
+}
+
+.peakRing {
+  fill: none;
+  stroke: #ff7a6b;
+  stroke-width: 3;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: hd-ping 2s var(--ease-out) infinite;
+}
+
+.peakRing2 {
+  animation-delay: 1s;
+}
+
+/* focus glow */
 .glow {
-  animation: hd-pulse 2.6s var(--ease-inout) infinite;
+  animation: hd-in-fade 0.6s var(--ease-out);
+}
+
+.glowRing {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.85);
+  stroke-width: 1.5;
+  stroke-dasharray: 4 6;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: hd-spin 18s linear infinite;
 }
 
 /* flows */
-.flow {
+.flow,
+.flowGlow {
   fill: none;
-  stroke-width: 4;
   stroke-linecap: round;
-  stroke-dasharray: 2 4;
   opacity: 0;
-  transition: opacity 0.5s var(--ease-out), stroke-width 0.3s;
+  transition: opacity 0.6s var(--ease-out);
+}
+
+.flow {
+  stroke-width: 2.5;
+  stroke-dasharray: 0.6 2.4;
+}
+
+.flowGlow {
+  stroke-width: 12;
 }
 
 .flow_stroom {
@@ -214,32 +366,198 @@
 
 .flow_warmte {
   stroke: var(--hd-warmte);
-  stroke-width: 6;
-  stroke-dasharray: 3 3;
 }
 
 .flow_net {
   stroke: var(--hd-net);
-  stroke-width: 3;
 }
 
-.flowOn {
-  opacity: 1;
-  animation: hd-flow 1.6s linear infinite;
+.flow.flowOn {
+  opacity: 0.9;
+  animation: hd-flow 1.4s linear infinite;
 }
 
-.flowLow {
-  stroke-width: 2;
-  opacity: 0.55;
-  animation-duration: 3.2s;
+.flowGlow.flowOn {
+  opacity: 0.4;
+}
+
+.flow.flowLow {
+  opacity: 0.45;
+  animation-duration: 3s;
+}
+
+.flowGlow.flowLow {
+  opacity: 0.15;
 }
 
 .flowOn.flowDim {
-  opacity: 0.12;
+  opacity: 0.08;
 }
 
-.mini .flowOn {
-  opacity: 0.95;
+.particleGroup {
+  transition: opacity 0.4s;
+}
+
+/* entry animation (stage scrolled into view) */
+.scene > * {
+  transition-property: opacity, transform;
+}
+
+.house,
+.tree,
+.pylon,
+.particles,
+.stats {
+  transition: opacity 0.9s var(--ease-out), transform 1.1s var(--ease-out);
+}
+
+.root:not([data-in]) .house {
+  opacity: 0;
+  transform: translateY(40px);
+}
+
+.root:not([data-in]) .tree,
+.root:not([data-in]) .pylon {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.root:not([data-in]) .particles,
+.root:not([data-in]) .flow,
+.root:not([data-in]) .flowGlow {
+  opacity: 0;
+}
+
+.root:not([data-in]) .stats {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+.root[data-in] .tree {
+  transition-delay: 0.15s;
+}
+
+.root[data-in] .pylon {
+  transition-delay: 0.25s;
+}
+
+.root[data-in] .particles {
+  transition-delay: 0.9s;
+}
+
+.root[data-in] .stats {
+  transition-delay: 0.6s;
+}
+
+/* ───────── live stat chips ───────── */
+.stats {
+  position: absolute;
+  top: max(12px, calc(22 * var(--u)));
+  right: max(12px, calc(22 * var(--u)));
+  z-index: 1;
+  display: grid;
+  justify-items: end;
+  gap: 6px;
+  pointer-events: none;
+  --chip-bg: rgba(255, 255, 255, 0.5);
+  --chip-ring: rgba(255, 255, 255, 0.7);
+  --chip-text: var(--c-ink);
+  --chip-text-2: rgba(5, 35, 29, 0.62);
+}
+
+.root:is([data-scene="avond"], [data-scene="piek"]) .stats {
+  --chip-bg: rgba(12, 22, 40, 0.38);
+  --chip-ring: rgba(255, 255, 255, 0.18);
+  --chip-text: #fff;
+  --chip-text-2: rgba(255, 255, 255, 0.7);
+}
+
+.chips {
+  display: flex;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.chip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 118px;
+  padding: 10px 14px 10px 10px;
+  border-radius: 16px;
+  background: var(--chip-bg);
+  box-shadow: inset 0 0 0 1px var(--chip-ring), 0 10px 30px -12px rgba(3, 24, 19, 0.35);
+  backdrop-filter: blur(14px) saturate(1.3);
+  -webkit-backdrop-filter: blur(14px) saturate(1.3);
+  color: var(--chip-text);
+  transition: background 1.2s, color 1.2s, box-shadow 1.2s;
+}
+
+.chipIcon {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  flex: none;
+  border-radius: 10px;
+  background: rgba(15, 107, 90, 0.12);
+  color: var(--c-primary);
+  transition: background 0.6s, color 0.6s;
+}
+
+.root:is([data-scene="avond"], [data-scene="piek"]) .chipIcon {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+
+.chip[data-tone="good"] .chipIcon {
+  background: #22a68f;
+  color: #fff;
+}
+
+.chip[data-tone="warn"] .chipIcon {
+  background: #ff7a6b;
+  color: #fff;
+}
+
+.chipIcon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.chipBody {
+  display: grid;
+  line-height: 1.15;
+}
+
+.chipValue {
+  font-family: var(--font-label);
+  font-size: 17px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+
+.chipLabel {
+  font-family: var(--font-label);
+  font-size: 12px;
+  color: var(--chip-text-2);
+  white-space: nowrap;
+}
+
+.statsNote {
+  margin: 0;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--chip-bg);
+  color: var(--chip-text-2);
+  font-family: var(--font-label);
+  font-size: 11px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
 /* hotspots */
@@ -260,25 +578,46 @@
 }
 
 .hotspotDot {
-  width: 22px;
-  height: 22px;
+  position: relative;
+  width: 20px;
+  height: 20px;
   border-radius: 999px;
-  background: var(--hd-card);
-  box-shadow: 0 0 0 2px var(--hd-line), 0 6px 18px rgba(0, 0, 0, 0.18);
+  background: rgba(255, 255, 255, 0.85);
+  box-shadow: 0 0 0 1px rgba(5, 35, 29, 0.15), 0 6px 18px rgba(3, 24, 19, 0.3);
+  backdrop-filter: blur(6px);
   transition: transform var(--dur-hover) var(--ease-out), background var(--dur-hover);
 }
 
-.hotspotActive .hotspotDot {
-  background: var(--c-lime);
-  box-shadow: 0 0 0 2px var(--c-lime), 0 0 0 8px rgba(239, 217, 255, 0.25);
+.hotspotDot::after {
+  content: "";
+  position: absolute;
+  inset: 6px;
+  border-radius: inherit;
+  background: var(--c-primary);
+}
+
+.hotspotActive .hotspotDot::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  border: 2px solid rgba(255, 255, 255, 0.9);
+  animation: hd-ping-css 2.2s var(--ease-out) infinite;
+}
+
+.hotspotActive .hotspotDot::after {
+  background: #22d3a6;
 }
 
 .hotspot:hover .hotspotDot,
 .hotspot:focus-visible .hotspotDot,
 .hotspotSel .hotspotDot {
-  transform: scale(1.25);
-  background: var(--c-lime);
-  box-shadow: 0 0 0 3px var(--c-ink), 0 0 0 10px rgba(239, 217, 255, 0.35);
+  transform: scale(1.3);
+  background: #fff;
+}
+
+.hotspotSel .hotspotDot::after {
+  background: var(--c-ink);
 }
 
 .hotspot:focus-visible {
@@ -291,9 +630,10 @@
   left: 50%;
   bottom: calc(100% + 2px);
   transform: translate(-50%, 4px);
-  padding: 5px 10px;
+  padding: 6px 12px;
   border-radius: 999px;
-  background: var(--c-ink);
+  background: rgba(5, 35, 29, 0.82);
+  backdrop-filter: blur(10px);
   color: var(--c-white);
   font-family: var(--font-label);
   font-size: 13px;
@@ -302,11 +642,6 @@
   opacity: 0;
   pointer-events: none;
   transition: opacity var(--dur-hover), transform var(--dur-hover) var(--ease-out);
-}
-
-.dark .hotspotLabel {
-  background: var(--c-white);
-  color: var(--c-ink);
 }
 
 .hotspot:hover .hotspotLabel,
@@ -318,44 +653,44 @@
 
 /* legend */
 .legend {
-  position: absolute;
-  left: 0;
-  bottom: -6px;
   display: flex;
   flex-wrap: wrap;
-  gap: 6px 16px;
+  gap: 6px 18px;
   margin: 0;
   padding: 0;
   list-style: none;
   font-family: var(--font-label);
   font-size: 13px;
   color: var(--hd-text-2);
-  transform: translateY(100%);
 }
 
 .legend li {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
 }
 
 .swatch {
-  width: 18px;
-  height: 4px;
-  border-radius: 4px;
+  width: 22px;
+  height: 6px;
+  border-radius: 6px;
 }
 
 .swatchStroom {
   background: var(--hd-stroom);
+  box-shadow: 0 0 10px var(--hd-stroom);
 }
 
 .swatchWarmte {
   background: var(--hd-warmte);
+  box-shadow: 0 0 10px var(--hd-warmte);
 }
 
 .swatchNet {
   background: var(--hd-net);
+  box-shadow: 0 0 10px var(--hd-net);
 }
+
 
 /* ───────── tabs ───────── */
 .tabs {
@@ -487,9 +822,7 @@
   animation: hd-in 0.6s var(--ease-out);
 }
 
-.teaser .stage {
-  margin-bottom: 30px;
-}
+
 
 /* ───────── full ───────── */
 .fullTop {
@@ -514,9 +847,7 @@
   align-items: start;
 }
 
-.full .stage {
-  margin-bottom: 36px;
-}
+
 
 .side {
   display: grid;
@@ -738,13 +1069,88 @@
   }
 }
 
-@keyframes hd-pulse {
+@keyframes hd-breathe {
   0%,
   100% {
-    opacity: 0.55;
+    transform: scale(1);
+    opacity: 0.85;
+  }
+  50% {
+    transform: scale(1.08);
+    opacity: 1;
+  }
+}
+
+@keyframes hd-twinkle {
+  0%,
+  100% {
+    opacity: 0.35;
   }
   50% {
     opacity: 1;
+  }
+}
+
+@keyframes hd-drift {
+  to {
+    transform: translateX(60px);
+  }
+}
+
+@keyframes hd-sweep {
+  0% {
+    transform: translateX(0) skewX(-18deg);
+  }
+  55%,
+  100% {
+    transform: translateX(1000px) skewX(-18deg);
+  }
+}
+
+@keyframes hd-fall {
+  from {
+    transform: translate(0, 0);
+  }
+  to {
+    transform: translate(-40px, 660px);
+  }
+}
+
+@keyframes hd-blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+
+@keyframes hd-ping {
+  from {
+    transform: scale(0.6);
+    opacity: 1;
+  }
+  to {
+    transform: scale(1.9);
+    opacity: 0;
+  }
+}
+
+@keyframes hd-ping-css {
+  from {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+  to {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}
+
+@keyframes hd-in-fade {
+  from {
+    opacity: 0;
   }
 }
 
@@ -762,12 +1168,20 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .flowOn,
-  .glow,
-  .root .fanBlades,
-  .teaserPanel,
-  .detailCard {
+  .root *,
+  .root *::before,
+  .root *::after {
     animation: none !important;
+  }
+
+  .root .sweep,
+  .root .snow circle {
+    display: none;
+  }
+
+  .root:not([data-in]) :is(.house, .tree, .pylon, .stats, .flow, .flowGlow) {
+    opacity: revert-layer;
+    transform: none;
   }
 }
 
@@ -779,8 +1193,54 @@
     gap: 28px;
   }
 
-  .teaser .stage {
+  .teaser .stageWrap {
     order: -1;
+  }
+
+  .stats {
+    position: static;
+    justify-items: stretch;
+    --chip-bg: var(--hd-fill-strong);
+    --chip-ring: transparent;
+    --chip-text: var(--hd-text);
+    --chip-text-2: var(--hd-text-2);
+  }
+
+  .root:is([data-scene="avond"], [data-scene="piek"]) .stats {
+    --chip-bg: var(--hd-fill-strong);
+    --chip-ring: transparent;
+    --chip-text: var(--hd-text);
+    --chip-text-2: var(--hd-text-2);
+  }
+
+  .root:is([data-scene="avond"], [data-scene="piek"]) .chipIcon {
+    background: rgba(15, 107, 90, 0.12);
+    color: var(--c-primary);
+  }
+
+  .dark .chipIcon,
+  .dark.root:is([data-scene="avond"], [data-scene="piek"]) .chipIcon {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+  }
+
+  .chips {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .chip {
+    min-width: 0;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    box-shadow: none;
+  }
+
+  .statsNote {
+    justify-self: start;
+    padding: 0;
+    background: none;
+    backdrop-filter: none;
   }
 
   .teaserPanel {

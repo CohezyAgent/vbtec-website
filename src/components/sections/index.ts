@@ -19,3 +19,5 @@ export { default as ArticleBody, buildToc, inline } from "./ArticleBody";
 export { default as MythBuster, MythList, getMyths } from "./MythBuster";
 export { default as RelatedLinks } from "./RelatedLinks";
 export { default as LeadSection, default as LeadFormSection } from "@/components/lead/LeadSection";
+export { default as SplitShowcase, type ShowcaseStat } from "./SplitShowcase";
+export { default as BentoShowcase, type BentoSlide } from "./BentoShowcase";

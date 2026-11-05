@@ -1,4 +1,4 @@
-/* ---------- Image hero (framed, 78svh) ---------- */
+/* ---------- Image hero (framed, full screen) ---------- */
 .frame {
   --u: min(var(--ux), calc(100svh / 1176));
   padding: calc(10 * var(--u)) calc(12.5 * var(--u)) calc(14 * var(--u));
@@ -10,7 +10,8 @@
   isolation: isolate;
   display: flex;
   flex-direction: column;
-  min-height: 78svh;
+  /* Full screen minus the frame padding (10u + 14u). */
+  min-height: calc(100svh - 24 * var(--u));
   overflow: hidden;
   overflow: clip;
   border-radius: calc(22 * var(--u));
@@ -33,8 +34,17 @@
     linear-gradient(0deg, rgba(6, 20, 16, 0.7) 0%, rgba(6, 20, 16, 0.15) 55%, rgba(6, 20, 16, 0) 75%);
 }
 
-.crumbs {
-  padding: calc(150 * var(--u)) calc(88 * var(--u)) 0;
+.below {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 24px;
+  padding: calc(26 * var(--u)) calc(88 * var(--u)) 0;
+}
+
+.below p {
+  margin: 0;
 }
 
 .bottom {
@@ -43,7 +53,7 @@
   justify-content: space-between;
   gap: calc(60 * var(--u));
   margin-top: auto;
-  padding: calc(60 * var(--u)) calc(90 * var(--u)) calc(80 * var(--u)) calc(88 * var(--u));
+  padding: calc(170 * var(--u)) calc(90 * var(--u)) calc(90 * var(--u)) calc(88 * var(--u));
 }
 
 .copy {
@@ -81,7 +91,8 @@
 }
 
 .leadImage {
-  max-width: calc(820 * var(--u));
+  /* Wide enough that the lead stays on two lines. */
+  max-width: calc(1000 * var(--u));
   font-size: max(17px, calc(25.5 * var(--u)));
   line-height: 1.45;
   color: rgba(255, 255, 255, 0.86);
@@ -108,7 +119,163 @@
   margin-top: calc(-6 * var(--u));
 }
 
-/* Glass fact card (HighlightsSlider look) */
+/* ---------- Showcase: Google badge + stained-glass product card ---------- */
+.showcase {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: calc(16 * var(--u));
+  width: calc(500 * var(--u));
+}
+
+.google {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(12 * var(--u));
+  padding: calc(10 * var(--u)) calc(20 * var(--u)) calc(10 * var(--u)) calc(12 * var(--u));
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  backdrop-filter: blur(16px) saturate(1.2);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
+}
+
+.googleIcon {
+  width: max(26px, calc(34 * var(--u)));
+  height: max(26px, calc(34 * var(--u)));
+  padding: 5px;
+  border-radius: 50%;
+  background: #fff;
+  box-sizing: border-box;
+  flex: none;
+}
+
+.googleText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: max(13px, calc(16 * var(--u)));
+  line-height: 1.2;
+  color: rgba(255, 255, 255, 0.86);
+}
+
+.googleText strong {
+  color: #fff;
+  font-weight: 700;
+}
+
+.stars {
+  color: #fbbc04;
+  letter-spacing: 2px;
+  font-size: max(12px, calc(15 * var(--u)));
+}
+
+.glassCard {
+  display: flex;
+  align-items: stretch;
+  gap: calc(14 * var(--u));
+  width: 100%;
+  padding: calc(12 * var(--u));
+  border-radius: calc(26 * var(--u));
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  backdrop-filter: blur(18px) saturate(1.25);
+  -webkit-backdrop-filter: blur(18px) saturate(1.25);
+  box-shadow: 0 calc(30 * var(--u)) calc(70 * var(--u)) rgba(0, 0, 0, 0.25);
+}
+
+.glassStat {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  flex-direction: column;
+  justify-content: center;
+  padding: calc(10 * var(--u)) calc(6 * var(--u)) calc(10 * var(--u)) calc(14 * var(--u));
+}
+
+.glassValue {
+  font-size: max(30px, calc(52 * var(--u)));
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: #fff;
+  white-space: nowrap;
+}
+
+.glassLabel {
+  margin-top: calc(8 * var(--u));
+  font-size: max(13px, calc(16 * var(--u)));
+  line-height: 1.3;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.people {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: calc(16 * var(--u));
+}
+
+.avatars {
+  display: flex;
+}
+
+.avatar {
+  display: grid;
+  place-items: center;
+  width: max(26px, calc(34 * var(--u)));
+  height: max(26px, calc(34 * var(--u)));
+  margin-left: -8px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.85);
+  background: var(--c-highlight);
+  color: var(--c-ink);
+  font-size: max(10px, calc(13 * var(--u)));
+  font-weight: 700;
+}
+
+.avatar:first-child {
+  margin-left: 0;
+}
+
+.avatar:nth-child(2) {
+  background: #d6f0e9;
+}
+
+.avatar:nth-child(3) {
+  background: #fff;
+}
+
+.avatar:nth-child(4) {
+  background: var(--c-accent);
+  color: #fff;
+}
+
+.peopleLabel {
+  max-width: 11ch;
+  font-size: max(12px, calc(14 * var(--u)));
+  line-height: 1.2;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+/* Product photo zoomed in so the device fills the tile. */
+.productBox {
+  position: relative;
+  flex: none;
+  width: calc(190 * var(--u));
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: calc(16 * var(--u));
+  background: #f3f5f4;
+}
+
+.product {
+  object-fit: cover;
+  transform: scale(var(--zoom, 1.45));
+}
+
+/* Fact card (pages without a product), same stained glass */
 .factCard {
   display: flex;
   flex: none;
@@ -116,9 +283,11 @@
   width: calc(520 * var(--u));
   padding: calc(14 * var(--u));
   border-radius: calc(22 * var(--u));
-  background: rgba(255, 255, 255, 0.94);
-  color: var(--c-ink);
-  box-shadow: var(--shadow-lift);
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  backdrop-filter: blur(18px) saturate(1.25);
+  -webkit-backdrop-filter: blur(18px) saturate(1.25);
+  color: #fff;
 }
 
 .factThumb {
@@ -143,7 +312,7 @@
 .factUnit {
   font-size: 0.4em;
   letter-spacing: 0;
-  color: var(--c-grey-600);
+  color: rgba(255, 255, 255, 0.7);
 }
 
 .factTitle {
@@ -167,17 +336,28 @@
     padding: 8px;
   }
   .hero {
-    min-height: 70svh;
+    min-height: calc(100svh - 16px);
     border-radius: 20px;
   }
-  .crumbs {
-    padding: 92px 20px 0;
+  .below {
+    padding: 16px 12px 0;
   }
   .bottom {
     flex-direction: column;
     align-items: stretch;
     gap: 28px;
-    padding: 48px 20px 24px;
+    padding: 110px 20px 24px;
+  }
+  .showcase {
+    width: 100%;
+  }
+  .glassCard {
+    padding: 8px;
+    border-radius: 18px;
+  }
+  .productBox {
+    width: 120px;
+    border-radius: 12px;
   }
   .copy {
     gap: 18px;
@@ -305,4 +485,9 @@
   .typeChildren {
     margin-top: 48px;
   }
+}
+
+.factNote,
+.factNote * {
+  color: rgba(255, 255, 255, 0.7);
 }

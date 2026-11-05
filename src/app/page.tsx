@@ -4,7 +4,7 @@ import MissionSection from "@/components/mission/MissionSection";
 import ProductsSection from "@/components/products/ProductsSection";
 import ServicesSection from "@/components/services/ServicesSection";
 import LeadSection from "@/components/lead/LeadSection";
-import { DataBand, Faq, ImagePanel, ProjectsRail, ReviewWall, StackCards, Statement } from "@/components/sections";
+import { BentoShowcase, DataBand, Faq, ImagePanel, ReviewWall, SplitShowcase, StackCards, Statement } from "@/components/sections";
 import HouseDiagram from "@/components/sections/house-diagram/HouseDiagram";
 import { JsonLd, Section, SectionIntro } from "@/components/ui";
 import { comparisonLink } from "@/lib/links";
@@ -12,9 +12,11 @@ import { buildMetadata } from "@/lib/seo";
 import { localBusiness } from "@/lib/schema";
 import { routes } from "@/lib/routes";
 import { featuredProjects } from "@/content/projects";
+import { SERVICES } from "@/content/registry";
 import { reviews } from "@/content/reviews";
 import { v } from "@/content/comparisons";
-import { DATA, DOUBT, HOME_FAQ, LEAD_HEADING, MYTH, PAIN, PROJECTS_INTRO, PVT, REVIEWS_INTRO, SYSTEM_TEASER } from "@/content/home";
+import { DATA, DOUBT, HOME_FAQ, LEAD_HEADING, MYTH, PAIN, PROJECTS_BENTO, PVT, REVIEWS_INTRO, SMART_SPLIT, SYSTEM_TEASER } from "@/content/home";
+import { BatteryIcon, BoltIcon, EyeIcon, FanIcon, SolarPanelIcon, SunIcon } from "@/components/ui/icons";
 import styles from "./home.module.css";
 
 // Home – section order per docs/spec/05-pages.md §1 (00 §2.6):
@@ -62,6 +64,27 @@ export default function Home() {
         scrub
       />
 
+      <SplitShowcase
+        id="zon-eerst"
+        badge={SMART_SPLIT.badge}
+        title={SMART_SPLIT.title}
+        lead={SMART_SPLIT.lead}
+        points={[
+          { icon: SolarPanelIcon, label: SMART_SPLIT.points[0] },
+          { icon: FanIcon, label: SMART_SPLIT.points[1] },
+          { icon: BatteryIcon, label: SMART_SPLIT.points[2] },
+          { icon: EyeIcon, label: SMART_SPLIT.points[3] },
+        ]}
+        cta={{ label: "Bekijk hoe het werkt", href: routes.hoeHetWerkt(), variant: "ink" }}
+        image="omvormer-app-klant"
+        chip={SMART_SPLIT.chip}
+        stats={[
+          { icon: SunIcon, value: 32.4, decimals: 1, suffix: " kWh", label: "Productie" },
+          { icon: BoltIcon, value: 21.8, decimals: 1, suffix: " kWh", label: "Verbruik" },
+          { icon: BatteryIcon, value: 86, suffix: "%", label: "Batterij", meter: 0.86 },
+        ]}
+      />
+
       <DataBand
         id="cijfers"
         intro={{ eyebrow: DATA.eyebrow, title: DATA.title, lead: DATA.lead }}
@@ -82,7 +105,6 @@ export default function Home() {
           { k: "voorbeeldBesparingWarmtepomp", label: "Besparing per jaar in ons rekenvoorbeeld (zonder zonnepanelen)", prefix: "€ " },
           { k: "btwWarmtepomp", label: "Btw op een warmtepomp tegenover een nieuwe gasketel", display: `${v("btwWarmtepomp")}% vs ${v("btwGasketel")}%` },
         ]}
-        whenTrue={DATA.whenTrue}
         urgency={[
           { k: "ets2Start", label: "Europese CO₂-prijs op gas (ETS2) vanaf" },
           { k: "verbodGasNieuwbouw", label: "Geen gasaansluiting meer bij nieuwbouw sinds" },
@@ -110,7 +132,33 @@ export default function Home() {
         </div>
       </Section>
 
-      <ProjectsRail id="projecten" projects={featuredProjects} intro={PROJECTS_INTRO} />
+      <BentoShowcase
+        id="projecten"
+        eyebrow={PROJECTS_BENTO.eyebrow}
+        title={PROJECTS_BENTO.title}
+        body={PROJECTS_BENTO.body}
+        cta={{ label: "Alle projecten", href: routes.projecten(), variant: "white" }}
+        slides={featuredProjects.map((p) => {
+          const before = Number(p.headline.before.replace(/\D/g, ""));
+          const after = Number(p.headline.after.replace(/\D/g, ""));
+          const drop = Math.round((1 - after / before) * 100);
+          return {
+            image: p.image,
+            kicker: `${p.place} · ${p.homeType}`,
+            title: p.shortTitle,
+            href: routes.project(p.slug),
+            metric: { label: "Energiefactuur na", value: after, prefix: "€ ", suffix: p.headline.unit, trend: `was ${p.headline.before}` },
+            card: {
+              title: "Wat we plaatsten",
+              chips: p.products.map((slug) => SERVICES.find((x) => x.slug === slug)?.shortTitle ?? slug),
+              progressLabel: `${drop}% lager per maand`,
+              progress: drop / 100,
+            },
+          };
+        })}
+        side={{ ...PROJECTS_BENTO.side, image: "ingenieur-aan-tafel", href: routes.hoeWeWerken() }}
+        note={PROJECTS_BENTO.note}
+      />
 
       <ReviewWall bg="W" variant="marquee" id="reviews" intro={REVIEWS_INTRO} reviews={reviews} />
 
