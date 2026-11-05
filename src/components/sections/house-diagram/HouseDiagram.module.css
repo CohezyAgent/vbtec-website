@@ -749,26 +749,58 @@
   box-shadow: var(--hd-card-ring);
 }
 
-.detail {
-  min-height: 120px;
+/* Scene card + detail card in one cell; the cell is as tall as the taller of the two. */
+.cardStack {
+  display: grid;
 }
 
-.detailEmpty {
-  margin: 0;
-  padding: var(--card-pad);
-  border-radius: var(--radius);
-  border: 1px dashed var(--hd-line-soft);
-  color: var(--hd-text-2);
-  font-size: var(--fs-small);
-  line-height: 1.5;
+.cardStack > * {
+  grid-area: 1 / 1;
+  min-width: 0;
+}
+
+.scenePanel {
+  transition: opacity 0.35s var(--ease-out), transform 0.35s var(--ease-out);
+}
+
+.scenePanel[data-covered] {
+  opacity: 0;
+  transform: scale(0.97);
+}
+
+.detail:empty {
+  pointer-events: none;
 }
 
 .detailCard {
+  /* Light-tone variables, so effect lines and footnotes read on white in the dark diagram too. */
+  --hd-line-soft: rgba(6, 20, 16, 0.12);
+  --hd-fill-strong: rgba(6, 20, 16, 0.07);
+  --hd-text: var(--c-ink);
+  --hd-text-2: var(--c-grey-600);
+  height: 100%;
   padding: var(--card-pad);
   border-radius: var(--radius);
-  background: var(--hd-card);
-  box-shadow: var(--hd-card-ring), var(--shadow-lift);
-  animation: hd-in 0.45s var(--ease-out);
+  background: var(--c-white);
+  color: var(--c-ink);
+  box-shadow: 0 0 0 1px rgba(6, 20, 16, 0.06), var(--shadow-lift);
+  animation: hd-card-in 0.4s var(--ease-out);
+}
+
+@keyframes hd-card-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scenePanel {
+    transition: none;
+  }
+  .detailCard {
+    animation: none;
+  }
 }
 
 .detailHead {
@@ -791,8 +823,8 @@
   flex: none;
   border: 0;
   border-radius: 999px;
-  background: var(--hd-fill-strong);
-  color: inherit;
+  background: var(--c-grey-100);
+  color: var(--c-ink);
   font-size: 22px;
   line-height: 1;
   cursor: pointer;
@@ -806,7 +838,7 @@
 .detailRole {
   margin: 10px 0 0;
   font-size: var(--fs-small);
-  color: var(--hd-text-2);
+  color: var(--c-grey-600);
   line-height: 1.5;
 }
 

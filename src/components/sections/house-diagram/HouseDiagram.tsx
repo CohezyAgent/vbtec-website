@@ -485,35 +485,40 @@ export default function HouseDiagram({
       <div className={styles.fullGrid}>
         {stage}
         <div ref={panelRef} className={styles.side}>
-          <div
-            id={`${idBase}-panel`}
-            role="tabpanel"
-            aria-labelledby={`${idBase}-tab-${scene}`}
-            className={styles.scenePanel}
-          >
-            <p className={styles.sceneEyebrow}>{sceneData.label}</p>
-            <h3 className={styles.sceneTitle}>{sceneData.title}</h3>
-            <p className={styles.sceneCaption}>{sceneData.caption}</p>
-            <SceneFact sceneKey={scene} tone={tone} />
-          </div>
-          <div
-            id={`${idBase}-detail`}
-            className={styles.detail}
-            aria-live="polite"
-          >
-            {sel ? (
-              <HotspotDetail
-                h={sel}
-                scene={scene}
-                tone={tone}
-                onClose={() => setSelected(null)}
-              />
-            ) : (
-              <p className={styles.detailEmpty}>
-                Kies een onderdeel in de woning: je ziet wat het in dit moment
-                doet, en wat het je oplevert.
-              </p>
-            )}
+          {/* Scene card and detail card share one grid cell: a selected part's white card
+              covers the scene card; closing it (×) reveals the scene card again. */}
+          <div className={styles.cardStack}>
+            <div
+              id={`${idBase}-panel`}
+              role="tabpanel"
+              aria-labelledby={`${idBase}-tab-${scene}`}
+              className={styles.scenePanel}
+              data-covered={sel ? true : undefined}
+              inert={sel ? true : undefined}
+            >
+              <p className={styles.sceneEyebrow}>{sceneData.label}</p>
+              <h3 className={styles.sceneTitle}>{sceneData.title}</h3>
+              <p className={styles.sceneCaption}>{sceneData.caption}</p>
+              <SceneFact sceneKey={scene} tone={tone} />
+            </div>
+            <div
+              id={`${idBase}-detail`}
+              className={styles.detail}
+              aria-live="polite"
+            >
+              {sel && (
+                <HotspotDetail
+                  key={sel.slug}
+                  h={sel}
+                  scene={scene}
+                  onClose={() => {
+                    const btn = rootRef.current?.querySelector<HTMLButtonElement>(`[data-hotspot="${sel.slug}"]`);
+                    setSelected(null);
+                    btn?.focus({ preventScroll: true });
+                  }}
+                />
+              )}
+            </div>
           </div>
           {cta && (
             <div
@@ -634,17 +639,17 @@ function Builder({
   );
 }
 
+/** White card that covers the scene card while a part is selected (always light-toned). */
 function HotspotDetail({
   h,
   scene,
-  tone,
   onClose,
 }: {
   h: Hotspot;
   scene: SceneKey;
-  tone: "light" | "dark";
   onClose: () => void;
 }) {
+  const tone = "light";
   return (
     <div className={styles.detailCard}>
       <div className={styles.detailHead}>
