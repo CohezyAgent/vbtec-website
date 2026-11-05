@@ -75,7 +75,7 @@ export const PVT = {
 export const SYSTEM_TEASER = {
   eyebrow: "Hoe het samenwerkt",
   title: "Je woning als één systeem: zon eerst in huis, de rest slim gestuurd.",
-  lead: "Elk toestel alleen doet het goed. Samen vangen ze elkaars overschot op – en daar zit de echte winst.",
+  lead: "Een warmtepomp, panelen of een batterij alleen doen het goed. Samen doen ze het veel beter, omdat elk toestel het overschot van het andere opvangt. Kies een moment van de dag en zie waar je stroom en je warmte naartoe gaan.",
 };
 
 export const SMART_SPLIT = {

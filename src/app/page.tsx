@@ -5,7 +5,7 @@ import ProductsSection from "@/components/products/ProductsSection";
 import ServicesSection from "@/components/services/ServicesSection";
 import LeadSection from "@/components/lead/LeadSection";
 import { BentoShowcase, DataBand, Faq, ImagePanel, ReviewWall, SplitShowcase, StackCards, Statement } from "@/components/sections";
-import SystemPhoto from "@/components/sections/system-photo/SystemPhoto";
+import HouseDiagram from "@/components/sections/house-diagram/HouseDiagram";
 import { JsonLd, Section, SectionIntro } from "@/components/ui";
 import { comparisonLink } from "@/lib/links";
 import { buildMetadata } from "@/lib/seo";
@@ -19,10 +19,11 @@ import { DATA, DOUBT, HOME_FAQ, LEAD_HEADING, MYTH, PAIN, PROJECTS_BENTO, PVT, R
 import { BatteryIcon, BoltIcon, EyeIcon, FanIcon, SolarPanelIcon, SunIcon } from "@/components/ui/icons";
 import styles from "./home.module.css";
 import LatestPosts from "@/components/sections/LatestPosts";
+import RealProjects from "@/components/sections/RealProjects";
 
 // Home – section order per docs/spec/05-pages.md §1 (00 §2.6), updated: on every page the lead
 // form comes before the FAQ, with the latest blog posts in between.
-// Hero(I) · Products(W strip) · Herken je dit?(D, pinned) · Mission(W) + Services slide-over(D) ·
+// Hero(I) · Products(W strip) · Realisaties (photos) · Herken je dit?(D, pinned) · Mission(W) + Services slide-over(D) ·
 // Mythe(W) · Zon eerst · Cijfers(D) · PVT(I) · Hoe het samenwerkt(W) · Projecten · Reviews(W) ·
 // Twijfel je nog?(L) · Lead(I) · Blog(W) · FAQ(W).
 export const metadata = buildMetadata({
@@ -38,6 +39,9 @@ export default function Home() {
     <>
       <Hero />
       <ProductsSection />
+
+      {/* Image-led break before the green: real VB-TEC installations. */}
+      <RealProjects />
 
       <StackCards
         bg="D"
@@ -114,6 +118,7 @@ export default function Home() {
         assumptions={["gasprijsAllIn", "stroomprijsAllIn", "rendementGascondensatieketel", "scopRekenwaarde", "warmtekostGasPerKwhWarmte", "warmtekostWarmtepompPerKwhWarmte", "breakEvenScop", "voorbeeldBesparingWarmtepomp", "btwWarmtepomp", "btwGasketel"]}
         assumptionsNote="Kost per kWh warmte = energieprijs gedeeld door het rendement: gas met een condensatieketel, stroom met de SCOP van een goed ontworpen warmtepomp. Vlakke prijzen, gemiddeld contract."
         cta={{ label: "Bereken wat jouw woning kan besparen", href: routes.lead(), variant: "lime" }}
+        image={{ src: "/images/vbtec/warmtepomp-buitenunit.jpg", alt: "Buitenunit van een warmtepomp naast een woning", width: 1253, height: 834 }}
       />
 
       <ImagePanel
@@ -130,7 +135,7 @@ export default function Home() {
       <Section bg="W" id="hoe-het-samenwerkt" labelledBy="systeem-title">
         <SectionIntro eyebrow={SYSTEM_TEASER.eyebrow} title={SYSTEM_TEASER.title} lead={SYSTEM_TEASER.lead} titleId="systeem-title" />
         <div className={styles.teaser}>
-          <SystemPhoto mode="teaser" cta={{ label: "Stel je eigen systeem samen", href: routes.hoeHetWerkt(), variant: "ink" }} />
+          <HouseDiagram mode="teaser" cta={{ label: "Bekijk hoe het werkt", href: routes.hoeHetWerkt(), variant: "ink" }} />
         </div>
       </Section>
 

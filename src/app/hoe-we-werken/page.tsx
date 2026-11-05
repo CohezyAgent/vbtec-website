@@ -3,7 +3,7 @@ import { reviews } from "@/content/reviews";
 import { site } from "@/content/site";
 import { team } from "@/content/team";
 import PageHero from "@/components/sections/PageHero";
-import Timeline from "@/components/sections/Timeline";
+import MediaSplit from "@/components/sections/MediaSplit";
 import Bento from "@/components/sections/Bento";
 import Rail from "@/components/sections/Rail";
 import Faq from "@/components/sections/Faq";
@@ -15,8 +15,9 @@ import { routes } from "@/lib/routes";
 import { howTo } from "@/lib/schema";
 import { buildMetadata } from "@/lib/seo";
 import LatestPosts from "@/components/sections/LatestPosts";
+import styles from "./page.module.css";
 
-// /hoe-we-werken (05 §7.1): Hero type (W) → Timeline (E · D) → Bento (F · W) → Team rail (I · D) → FAQ (W) → Lead (I).
+// /hoe-we-werken (05 §7.1, round 4): Hero type (W) → six photo step rows (MediaSplit, W) → Bento (F · W) → Team rail (I · D) → FAQ (W) → Lead (I).
 export const metadata = buildMetadata({ title: c.title, description: c.description, path: routes.hoeWeWerken() });
 
 const processReview = reviews.find((r) => r.id === "r14") ?? reviews[0];
@@ -37,18 +38,37 @@ export default function HoeWeWerkenPage() {
         trustLine
       />
 
-      <Timeline
+      <MediaSplit
         id="stappen"
-        bg="D"
-        intro={{ eyebrow: c.timelineIntro.eyebrow, twoTone: true, title: c.timelineIntro.title, lead: <p>{c.timelineIntro.lead}</p> }}
-        steps={c.steps}
-        cta={{ label: "Start met stap 1", href: routes.lead() }}
+        start="right"
+        intro={{ eyebrow: c.timelineIntro.eyebrow, title: "Zes stappen.", titleMuted: "Geen kleine lettertjes." }}
+        items={c.steps.map((step, i) => ({
+          eyebrow: `Stap ${i + 1}`,
+          title: step.title,
+          text: (
+            <>
+              <p>{c.stepVisuals[i].short}</p>
+              <details className={`${styles.who} desktop-only`}>
+                <summary>Wie doet wat?</summary>
+                <p>
+                  <strong>Jij:</strong> {step.whoDoesWhat?.jij}
+                </p>
+                <p>
+                  <strong>Wij:</strong> {step.whoDoesWhat?.wij}
+                </p>
+              </details>
+            </>
+          ),
+          image: c.stepVisuals[i].image,
+          chip: { value: step.cost ?? "", label: step.duration ?? "" },
+          cta: i === 0 ? { label: "Start met stap 1", href: routes.lead() } : undefined,
+        }))}
       />
 
       <Bento
         id="niet-loont"
         bg="W"
-        intro={{ eyebrow: c.bento.eyebrow, twoTone: true, title: c.bento.title, lead: <p>{c.bento.lead}</p> }}
+        intro={{ eyebrow: c.bento.eyebrow, twoTone: true, title: c.bento.title }}
         tiles={[
           {
             kind: "stat",

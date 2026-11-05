@@ -1,11 +1,9 @@
 import { CardRow, DataBand, Faq, ImagePanel, PageHero, Statement, StickySplit } from "@/components/sections";
 import HouseDiagram from "@/components/sections/house-diagram/HouseDiagram";
-import SystemPhoto from "@/components/sections/system-photo/SystemPhoto";
 import LeadSection from "@/components/lead/LeadSection";
 import { JsonLd, Section, SectionIntro } from "@/components/ui";
 import { getProject } from "@/content/projects";
-import { BUILDER_INTRO } from "@/content/system-builder";
-import { CHAPTERS, EXAMPLE, FAQ, HERO, HONEST, LEAD_HEADING, PROFILES, STORY_PROJECT, TRAP, UPDATED_AT } from "@/content/hoe-het-werkt";
+import { CHAPTERS, DIAGRAM_INTRO, EXAMPLE, FAQ, HERO, HONEST, LEAD_HEADING, PROFILES, STORY_PROJECT, TRAP, UPDATED_AT } from "@/content/hoe-het-werkt";
 import { comparisonLink, projectLink, relatedLinks, serviceLink } from "@/lib/links";
 import { routes } from "@/lib/routes";
 import { article } from "@/lib/schema";
@@ -16,7 +14,7 @@ import styles from "./hoe-het-werkt.module.css";
 import LatestPosts from "@/components/sections/LatestPosts";
 
 // /hoe-het-werkt – pillar (05 §2): Hero(I) · Waar komt de winst vandaan?(W) · Huisdiagram(D) ·
-// Systeembouwer(D, foto) · Hoofdstukken(W, pinned) · Rekenvoorbeeld(D) · Profielen(W) · Eerlijk(L) · Klantverhaal(I) · FAQ(W) · Lead(I).
+// Huisdiagram(D) · Hoofdstukken(W, pinned) · Rekenvoorbeeld(D) · Profielen(W) · Eerlijk(L) · Klantverhaal(I) · FAQ(W) · Lead(I).
 const PATH = routes.hoeHetWerkt();
 
 export const metadata = buildMetadata({
@@ -41,7 +39,7 @@ export default function HoeHetWerkt() {
         lead={HERO.lead}
         image="jaren70-woning"
         cta={{ label: "Bereken wat jouw woning kan besparen", href: routes.lead() }}
-        secondaryCta={{ label: "Stel je systeem samen", href: "#diagram" }}
+        secondaryCta={{ label: "Naar het huisdiagram", href: "#diagram" }}
         trustLine
         factCard={{ title: HERO.factTitle, value: HERO.factValue }}
         updatedAt={UPDATED_AT}
@@ -64,9 +62,9 @@ export default function HoeHetWerkt() {
       />
 
       <Section bg="D" id="diagram" labelledBy="diagram-title">
-        <SectionIntro eyebrow={BUILDER_INTRO.eyebrow} title={BUILDER_INTRO.title} lead={BUILDER_INTRO.lead} tone="dark" titleId="diagram-title" />
+        <SectionIntro eyebrow={DIAGRAM_INTRO.eyebrow} title={DIAGRAM_INTRO.title} lead={DIAGRAM_INTRO.lead} tone="dark" titleId="diagram-title" />
         <div className={styles.diagram}>
-          <SystemPhoto mode="builder" cta={{ label: "Bereken het voor mijn woning", href: routes.lead(), variant: "lime" }} />
+          <HouseDiagram mode="full" cta={{ label: "Gratis berekening", href: routes.lead(), variant: "lime" }} />
         </div>
       </Section>
 

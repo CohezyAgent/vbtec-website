@@ -1,0 +1,16 @@
+/* "Wie doet wat?" fold-out inside each step row (desktop only). */
+.who {
+  margin-top: 14px;
+  font-size: var(--fs-body);
+}
+
+.who summary {
+  cursor: pointer;
+  font-family: var(--font-ui);
+  font-weight: 500;
+  color: var(--c-primary);
+}
+
+.who p {
+  margin-top: 8px;
+}

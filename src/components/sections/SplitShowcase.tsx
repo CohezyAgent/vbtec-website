@@ -51,7 +51,7 @@ export default function SplitShowcase({ id, badge, title, lead, points, cta, sec
           <h2 id={titleId} className={styles.title}>
             {title}
           </h2>
-          {lead && <p className={styles.lead}>{lead}</p>}
+          {lead && <p className={`${styles.lead} desktop-only`}>{lead}</p>}
           <ul className={styles.points}>
             {points.map(({ label, icon: Icon = CheckIcon }, i) => (
               <li key={label} className={styles.point} style={{ "--i": i } as CSSProperties}>

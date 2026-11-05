@@ -39,6 +39,47 @@
   font-size: 0.8em;
 }
 
+/* Phones: the source note as a small "bron" toggle (see FactNote). */
+.noteToggle {
+  font-family: var(--font-text);
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--c-grey-600);
+}
+
+.noteToggle.dark {
+  color: var(--c-on-green-3);
+}
+
+.noteSummary {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px 3px 6px;
+  border-radius: 999px;
+  background: rgba(6, 20, 16, 0.05);
+  cursor: pointer;
+  list-style: none;
+}
+
+.noteSummary::-webkit-details-marker {
+  display: none;
+}
+
+.noteToggle.dark .noteSummary {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.noteToggle .noteIcon {
+  width: 14px;
+  height: 14px;
+}
+
+.noteToggleBody {
+  display: block;
+  margin-top: 6px;
+}
+
 .noteLink {
   color: inherit;
   text-decoration: underline;

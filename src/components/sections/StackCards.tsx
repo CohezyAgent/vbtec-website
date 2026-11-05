@@ -70,7 +70,7 @@ export default function StackCards({ intro, aside, cards, bg, pinned = true, id 
                     {card.title}
                   </h3>
                   {card.body && (
-                    <div className={styles.body} data-reveal-item>
+                    <div className={`${styles.body} desktop-only`} data-reveal-item>
                       {card.body}
                     </div>
                   )}

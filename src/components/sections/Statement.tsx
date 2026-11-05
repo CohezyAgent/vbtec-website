@@ -57,7 +57,7 @@ export default function Statement({ eyebrow, text, textAs, heading, highlight, s
             {heading}
           </h2>
         )}
-        {support && <div className={styles.support}>{support}</div>}
+        {support && <div className={`${styles.support} desktop-only`}>{support}</div>}
         {kortAntwoord && (
           <div className={styles.kort}>
             <KortAntwoord tone={tone}>{kortAntwoord}</KortAntwoord>

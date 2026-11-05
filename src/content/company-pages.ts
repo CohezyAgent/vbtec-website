@@ -106,6 +106,15 @@ export const hoeWeWerken = {
       body: `${site.guarantees.join(" · ")}. Voor een lucht-water warmtepomp vragen we je premie aan (${eur("premieLuchtWaterCat12")} in inkomenscategorie 1 en 2). Garantietermijnen per toestel staan in je offerte.`,
     },
   },
+  /** Round 4: one short line + photo per step (same order as `steps`). */
+  stepVisuals: [
+    { short: "Vul in een minuut in hoe je woont. Een ingenieur belt je terug.", image: "vbtec-app-smartphone-verbruik" },
+    { short: "We meten wat je niet op papier ziet: dak, schaduw, meterkast.", image: "vbtec-dakrij-zonnepanelen-luchtfoto" },
+    { short: "Scenario's naast elkaar – altijd ook 'niets doen'.", image: "ingenieur-aan-tafel" },
+    { short: "Premie, btw en netbeheerder: wij regelen het papierwerk.", image: "gezin-keuken-factuur" },
+    { short: "Onze eigen ploeg plaatst wat de ingenieur berekende.", image: "vbtec-installateurs-panelen" },
+    { short: "We volgen je opbrengst op en sturen bij waar nodig.", image: "vbtec-app-tablet" },
+  ] as const,
   teamIntro: {
     eyebrow: "Wie je onderweg ontmoet",
     title: "De ingenieurs en vakmensen achter elke stap",
@@ -197,6 +206,33 @@ export const overOns = {
       body: "Zonnepanelen, warmtepomp, batterij en laadpaal werken pas echt als ze samenwerken. Daarom rekenen we je woning als één geheel – en sturen we alles slim aan, zodat je zoveel mogelijk zelf verbruikt en je piek laag blijft.",
     },
   },
+  /** Round 4: the story in three photo rows instead of a statement + timeline. */
+  splits: [
+    {
+      eyebrow: "Ons verhaal",
+      title: "Drie verkopers, drie verhalen.",
+      titleMuted: "Wij beginnen bij je woning.",
+      text: "Geen product uit de bestelwagen: eerst je verbruik, je dak en je factuur. Pas als de cijfers kloppen, stellen we iets voor.",
+      points: ["Altijd een scenario 'niets doen'", "Merkonafhankelijk", "Geen voorschot vóór akkoord"],
+      image: "vbtec-gezin-zetel",
+      chip: { value: "Eerlijk", label: "ook als het antwoord 'nee' is" },
+    },
+    {
+      eyebrow: "Eén team",
+      title: "Ingenieurs die rekenen.",
+      titleMuted: "Ploegen die plaatsen.",
+      text: "Wie je woning doorrekent, werkt samen met wie installeert. Wat op papier klopt, komt zo ook op je dak.",
+      image: "vbtec-installateurs-plat-dak",
+      chip: { value: "Eigen ploegen", label: "geen onderaannemers" },
+    },
+    {
+      eyebrow: "Onderzoek",
+      title: "Meer uit hetzelfde dak.",
+      titleMuted: "Daarom testen we PVT.",
+      text: "PVT-panelen maken stroom én warmte. Weinig installateurs bieden ze aan – wij meten wat ze echt opleveren.",
+      image: "pvt-dak-detail",
+    },
+  ] as const,
   teamIntro: { eyebrow: "Ons team", title: "Ons team: ingenieurs eerst" },
   storyTitle: "Een fermette in Brugge: koel in de zomer, warm in de winter",
   storyBody: "Ze belden voor zonnepanelen. Ze kregen ook een eerlijk antwoord over de airco die ze al jaren wilden.",

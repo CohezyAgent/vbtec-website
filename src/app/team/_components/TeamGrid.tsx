@@ -25,7 +25,7 @@ export default function TeamGrid({ members }: { members: TeamMemberContent[] }) 
               <h2 id={`team-${g.key}`} className={styles.groupTitle}>
                 {g.title}
               </h2>
-              <p className={styles.groupIntro}>{g.intro}</p>
+              <p className={`${styles.groupIntro} desktop-only`}>{g.intro}</p>
             </div>
             <Reveal as="ul" mode="group" stagger={110} className={`${styles.grid} ${g.key === "ingenieurs" ? styles.gridLead : ""}`}>
               {list.map((m, i) => (
@@ -42,12 +42,12 @@ export default function TeamGrid({ members }: { members: TeamMemberContent[] }) 
                       <h3 className={styles.name}>{m.name}</h3>
                       <p className={styles.role}>{m.role}</p>
                       {m.personalLine && <p className={styles.quote}>“{m.personalLine}”</p>}
-                      <p className={styles.home}>
+                      <p className={`${styles.home} desktop-only`}>
                         <span className={styles.homeLabel}>Bij jou thuis</span>
                         {m.atYourHome}
                       </p>
                       {m.certifications && (
-                        <ul className={styles.tags}>
+                        <ul className={`${styles.tags} desktop-only`}>
                           {m.certifications.map((c) => (
                             <li key={c}>
                               <Tag size="sm" tone="light">

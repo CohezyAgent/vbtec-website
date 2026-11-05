@@ -55,7 +55,7 @@ export default function LeadSection({
           <h2 id={`${LEAD_ANCHOR}-title`} tabIndex={-1} className={styles.cardTitle}>
             {title}
           </h2>
-          <p className={styles.cardIntro}>Minder dan een minuut · 7 korte vragen</p>
+          <p className={styles.cardIntro}>Ongeveer een minuut · 8 korte vragen</p>
           <LeadForm bron={bron} defaultInteresse={defaultInteresse} variant="contact" />
         </div>
       </div>
@@ -94,7 +94,7 @@ export default function LeadSection({
           <p className={styles.disclaimer}>{FACTS_DISCLAIMER}</p>
         </div>
         <div className={styles.card}>
-          <p className={styles.cardIntro}>Minder dan een minuut · 7 korte vragen</p>
+          <p className={styles.cardIntro}>Ongeveer een minuut · 8 korte vragen</p>
           <LeadForm bron={bron} defaultInteresse={defaultInteresse} variant="full" />
         </div>
       </div>

@@ -65,12 +65,12 @@ function ImageHero({ breadcrumb, path, eyebrow, title, lead, image, cta, seconda
               {title}
             </h1>
             {lead && (
-              <div className={styles.leadImage} data-reveal-item>
+              <div className={`${styles.leadImage} desktop-only`} data-reveal-item>
                 {lead}
               </div>
             )}
             {chips && chips.length > 0 && (
-              <ul className={styles.chips} data-reveal-item>
+              <ul className={`${styles.chips} desktop-only`} data-reveal-item>
                 {chips.map((c) => (
                   <li key={c}>
                     <Tag tone="ring" size="sm">
@@ -88,14 +88,17 @@ function ImageHero({ breadcrumb, path, eyebrow, title, lead, image, cta, seconda
                   </CtaPill>
                 )}
                 {secondaryCta && (
-                  <TextLink href={secondaryCta.href} tone="dark">
-                    {secondaryCta.label}
-                  </TextLink>
+                  <span className="desktop-only">
+                    <TextLink href={secondaryCta.href} tone="dark">
+                      {secondaryCta.label}
+                    </TextLink>
+                  </span>
                 )}
               </div>
             )}
           </Reveal>
-          {showcase ? <Showcase {...showcase} /> : factCard && <FactCard {...factCard} />}
+          {/* Phones: badge, heading and CTA only – the glass card is desktop-only. */}
+          <div className="desktop-only" style={{ display: "contents" }}>{showcase ? <Showcase {...showcase} /> : factCard && <FactCard {...factCard} />}</div>
         </div>
       </div>
       {(breadcrumb || updatedAt) && (
@@ -191,7 +194,7 @@ function TypeHero({ breadcrumb, path, eyebrow, title, lead, cta, secondaryCta, t
               {title}
             </h1>
             {lead && (
-              <div className={styles.leadType} data-reveal-item>
+              <div className={`${styles.leadType} desktop-only`} data-reveal-item>
                 {lead}
               </div>
             )}
@@ -210,7 +213,7 @@ function TypeHero({ breadcrumb, path, eyebrow, title, lead, cta, secondaryCta, t
               </div>
             )}
             {kortAntwoord && (
-              <div className={styles.kort} data-reveal-item>
+              <div className={`${styles.kort} desktop-only`} data-reveal-item>
                 <KortAntwoord factKeys={kortAntwoordFacts}>{kortAntwoord}</KortAntwoord>
               </div>
             )}
@@ -221,11 +224,15 @@ function TypeHero({ breadcrumb, path, eyebrow, title, lead, cta, secondaryCta, t
                     {cta.label}
                   </CtaPill>
                 )}
-                {secondaryCta && <TextLink href={secondaryCta.href}>{secondaryCta.label}</TextLink>}
+                {secondaryCta && (
+                  <span className="desktop-only">
+                    <TextLink href={secondaryCta.href}>{secondaryCta.label}</TextLink>
+                  </span>
+                )}
               </div>
             )}
             {trustLine && (
-              <div data-reveal-item>
+              <div className="desktop-only" data-reveal-item>
                 <TrustLine className={styles.trust} />
               </div>
             )}

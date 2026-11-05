@@ -282,16 +282,29 @@
     line-height: 1.25;
   }
 
+  /* Phones: the three cards swipe sideways instead of stacking ~1300px tall. */
   .cards {
-    grid-template-columns: 1fr;
-    gap: 16px;
-    margin-top: 40px;
+    grid-template-columns: none;
+    grid-auto-flow: column;
+    grid-auto-columns: 82%;
+    gap: 12px;
+    margin: 28px calc(-1 * var(--side)) 0;
+    padding: 0 var(--side) 4px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--side);
+    scrollbar-width: none;
+  }
+
+  .cards::-webkit-scrollbar {
+    display: none;
   }
 
   .card {
     height: auto;
-    min-height: 420px;
+    min-height: 360px;
     border-radius: 20px;
+    scroll-snap-align: start;
   }
 
   .statCard,
@@ -301,7 +314,7 @@
 
   .visionCard {
     padding: 0 28px 28px;
-    min-height: 480px;
+    min-height: 360px;
   }
 
   .iconCircle {

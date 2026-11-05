@@ -73,8 +73,8 @@ export default function VergelijkenHub() {
         id="hoe-we-vergelijken"
         intro={{
           eyebrow: "Hoe we vergelijken",
-          title: "Hoe we vergelijken: dezelfde cijfers voor elke keuze",
-          lead: "Elke vergelijking rekent met dezelfde, gedateerde rekenwaarden voor een gemiddeld Vlaams gezin. Zo kan je de keuzes eerlijk naast elkaar leggen. Kosten over 20 jaar tonen we met vlakke prijzen: we voorspellen geen prijsstijgingen, en waar een betrouwbare prijs ontbreekt, tonen we geen curve.",
+          title: "Dezelfde cijfers voor elke keuze.",
+          lead: "Gedateerde rekenwaarden voor een gemiddeld Vlaams gezin, vlakke prijzen, geen voorspellingen.",
         }}
         mode="stats"
         stats={[
@@ -83,7 +83,7 @@ export default function VergelijkenHub() {
           { k: "scopRekenwaarde", label: "Rekenwaarde SCOP warmtepomp" },
           { k: "injectievergoeding", label: "Injectievergoeding", suffix: " c/kWh" },
         ]}
-        whenTrue="Een gemiddelde is nooit jouw woning. Met een heel goedkoop gascontract, een slecht geïsoleerd huis of weinig verbruik overdag kan de uitkomst kantelen. Dat staat bij elke vergelijking, onder 'Wanneer geen van beide?'."
+        whenTrue="Een gemiddelde is nooit jouw woning: een goedkoop gascontract of weinig verbruik overdag kan de uitkomst kantelen."
         assumptions={["stroomprijsAllIn", "gasprijsAllIn", "scopRekenwaarde", "injectievergoeding", "gasverbruikGezin", "stroomverbruikGezin"]}
         assumptionsNote={`Rekenwaarden voor een standaardgezin met ${v("gasverbruikGezin")} kWh gas en ${v("stroomverbruikGezin")} kWh stroom per jaar. We herzien ze elk kwartaal.`}
         cta={{ label: "Laat jouw situatie doorrekenen", href: routes.lead(), variant: "lime" }}

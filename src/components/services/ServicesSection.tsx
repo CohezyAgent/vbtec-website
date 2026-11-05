@@ -82,7 +82,7 @@ export default function ServicesSection() {
                   <h3 className={styles.cardTitle}>
                     {i + 1}. {title}
                   </h3>
-                  <p className={styles.cardBody}>{body}</p>
+                  <p className={`${styles.cardBody} mobile-clamp-2`}>{body}</p>
                 </div>
               </article>
               <span className={styles.stepBar} aria-hidden="true">

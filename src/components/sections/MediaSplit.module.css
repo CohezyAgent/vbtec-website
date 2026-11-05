@@ -1,0 +1,207 @@
+/* MediaSplit – photo left/right, short copy on the other side (round 4). */
+
+.section {
+  overflow: hidden;
+}
+
+.intro {
+  max-width: calc(1140 * var(--u));
+  margin-bottom: calc(90 * var(--u));
+}
+
+.introTitle {
+  margin-top: calc(14 * var(--u));
+  font-weight: 400;
+  font-size: var(--fs-h2);
+  line-height: var(--lh-h2);
+}
+
+.eyebrow {
+  font-size: var(--fs-eyebrow);
+  line-height: 1.2;
+  color: var(--c-grey-600);
+}
+
+.muted {
+  display: block;
+  color: var(--c-grey-quote);
+}
+
+.rows {
+  display: grid;
+  gap: calc(150 * var(--u));
+}
+
+.row {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  align-items: center;
+  gap: calc(110 * var(--u));
+}
+
+.imageLeft {
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+}
+
+.imageLeft .media {
+  order: -1;
+}
+
+.copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  max-width: calc(640 * var(--u));
+}
+
+.imageLeft .copy {
+  justify-self: end;
+}
+
+.title {
+  margin-top: calc(18 * var(--u));
+  font-weight: 400;
+  font-size: var(--fs-h2);
+  line-height: var(--lh-h2);
+  letter-spacing: -0.01em;
+  color: var(--c-ink);
+}
+
+.copy > .title:first-child {
+  margin-top: 0;
+}
+
+.text {
+  margin-top: calc(26 * var(--u));
+  font-size: var(--fs-body-lg);
+  line-height: 1.5;
+  color: var(--c-grey-600);
+}
+
+.text p + p {
+  margin-top: 0.6em;
+}
+
+.points {
+  margin-top: calc(30 * var(--u));
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: calc(28 * var(--u));
+  margin-top: calc(40 * var(--u));
+}
+
+.media {
+  position: relative;
+  aspect-ratio: 5 / 4;
+  border-radius: calc(28 * var(--u));
+  overflow: hidden;
+  background: var(--c-grey-100);
+  box-shadow: var(--shadow-lift);
+}
+
+.photo {
+  position: absolute;
+  inset: 0;
+}
+
+.img {
+  transition: transform 1.2s var(--ease-out);
+}
+
+.media:hover .img {
+  transform: scale(1.04);
+}
+
+.chip {
+  position: absolute;
+  left: calc(28 * var(--u));
+  bottom: calc(28 * var(--u));
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  max-width: 70%;
+  padding: calc(18 * var(--u)) calc(24 * var(--u));
+  border-radius: calc(18 * var(--u));
+  background: rgba(5, 35, 29, 0.42);
+  backdrop-filter: blur(14px) saturate(1.2);
+  -webkit-backdrop-filter: blur(14px) saturate(1.2);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18);
+  color: #fff;
+}
+
+.chipValue {
+  font-size: max(22px, calc(40 * var(--u)));
+  line-height: 1.05;
+  font-variant-numeric: tabular-nums;
+}
+
+.chipLabel {
+  font-size: var(--fs-small);
+  line-height: 1.3;
+  color: rgba(255, 255, 255, 0.82);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .img,
+  .media:hover .img {
+    transition: none;
+    transform: none;
+  }
+}
+
+/* Phones: photo on top, heading, one line, CTA. */
+@media (max-width: 900px) {
+  .intro {
+    margin-bottom: 28px;
+  }
+  .rows {
+    gap: 48px;
+  }
+  .row,
+  .imageLeft {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .media,
+  .imageLeft .media {
+    order: -1;
+    aspect-ratio: 4 / 3;
+    border-radius: 18px;
+  }
+  .imageLeft .copy {
+    justify-self: start;
+  }
+  .copy {
+    max-width: none;
+  }
+  .title {
+    margin-top: 8px;
+  }
+  .text {
+    margin-top: 10px;
+    font-size: 16px;
+  }
+  /* One sentence on phones. */
+  .text p + p {
+    display: none;
+  }
+  .text p {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .actions {
+    margin-top: 18px;
+  }
+  .chip {
+    left: 12px;
+    bottom: 12px;
+    padding: 10px 14px;
+    border-radius: 12px;
+  }
+}

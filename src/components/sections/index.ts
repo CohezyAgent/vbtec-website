@@ -22,3 +22,5 @@ export { default as LeadSection, default as LeadFormSection } from "@/components
 export { default as SplitShowcase, type ShowcaseStat } from "./SplitShowcase";
 export { default as BentoShowcase, type BentoSlide } from "./BentoShowcase";
 export { default as LatestPosts } from "./LatestPosts";
+export { default as RealProjects } from "./RealProjects";
+export { default as MediaSplit, type MediaSplitItem, type MediaSplitProps } from "./MediaSplit";

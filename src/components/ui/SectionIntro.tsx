@@ -102,7 +102,8 @@ export default function SectionIntro({
             );
           })()
         )}
-        {lead && <div className={`${styles.lead} ${tone === "dark" ? styles.onDark : ""}`}>{lead}</div>}
+        {/* Phones: heading only – the lead is desktop-only (round 4). */}
+        {lead && <div className={`${styles.lead} ${tone === "dark" ? styles.onDark : ""} desktop-only`}>{lead}</div>}
       </div>
       {aside && <div className={styles.introAside}>{aside}</div>}
     </div>

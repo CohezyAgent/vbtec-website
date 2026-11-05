@@ -136,10 +136,10 @@ const luchtWater: ServiceContent = {
   productName: "een lucht-water warmtepomp",
   serviceType: "Plaatsing lucht-water warmtepomp",
   hubLine: "Zinvol als je gasketel aan vervanging toe is of je van het gas af wil.",
-  hubImage: "warmtepomp-tuin",
+  hubImage: "vbtec-warmtepomp-buitenunit",
   heroLead:
     "Je gasketel is aan vervanging toe. Wat als je volgende 'ketel' uit elke kWh stroom een veelvoud aan warmte haalt – en je gasfactuur gewoon verdwijnt?",
-  image: "warmtepomp-tuin",
+  image: "vbtec-architectwoning-warmtepomp",
   heroFact: {
     k: "warmtekostWarmtepompPerKwhWarmte",
     value: cent("warmtekostWarmtepompPerKwhWarmte"),
@@ -215,7 +215,7 @@ const luchtWater: ServiceContent = {
       `Hoe lager de temperatuur van het water dat naar je radiatoren gaat, hoe zuiniger de warmtepomp draait. Bij vloerverwarming haalt een goed toestel een SCOP rond ${fx("scopLuchtWater35", { single: true })}; met klassieke radiatoren die heel warm water vragen eerder ${fx("scopLuchtWater55", { single: true })}. Dat verschil is precies waarom we jouw woning eerst doorrekenen.`,
       "Je hebt geen schoorsteen, geen gasaansluiting en geen jaarlijkse ketelkeuring meer nodig. Wat overblijft, is een buitenunit in de tuin of tegen de gevel en een binnenunit met boiler, vaak op de plek van je oude ketel.",
     ],
-    image: "warmtepomp-tuin",
+    image: "vbtec-warmtepomp-buitenunit",
     factKeys: ["scopLuchtWater35", "scopLuchtWater55"],
   },
   systemSteps: [
@@ -280,7 +280,7 @@ const luchtWater: ServiceContent = {
         body: "Dakisolatie, dubbel glas en een paar grotere of lage-temperatuurradiatoren in de leefruimtes: vaak is dat al genoeg om met een warmtepomp comfortabel te verwarmen.",
         tags: ["Dakisolatie", "Dubbel glas", "LT-radiatoren", "Kierdicht"],
       },
-      { kind: "photo", image: "warmtepomp-tuin", title: "Buitenunit in de tuin", body: "We kiezen samen een plek met weinig geluidshinder voor jou en je buren." },
+      { kind: "photo", image: "vbtec-warmtepomp-tuin-unit", title: "Buitenunit in de tuin", body: "We kiezen samen een plek met weinig geluidshinder voor jou en je buren." },
       { kind: "stat", k: "scopLuchtWater55", label: "SCOP bij hoge temperatuur (klassieke radiatoren)", decimals: 1, factKeys: ["scopLuchtWater55"] },
       {
         kind: "wide",
@@ -608,9 +608,9 @@ const zonnepanelen: ServiceContent = {
   productName: "zonnepanelen",
   serviceType: "Plaatsing zonnepanelen",
   hubLine: "Zinvol als je overdag stroom kan gebruiken – of dat kan leren.",
-  hubImage: "rijwoning-zonnepanelen",
+  hubImage: "vbtec-woning-zonnepanelen-dakkapellen",
   heroLead: "De terugdraaiende teller is weg. Je buren zeggen dat panelen niet meer lonen. Wij zeggen: ze lonen anders – als je je eigen stroom zelf gebruikt.",
-  image: "rijwoning-zonnepanelen",
+  image: "vbtec-woning-zonnepanelen-oprit",
   heroFact: {
     k: "pvOpbrengstPerKwp",
     value: fx("pvOpbrengstPerKwp", { single: true }),
@@ -682,7 +682,7 @@ const zonnepanelen: ServiceContent = {
       `In Vlaanderen levert elke kWp ${fx("pvOpbrengstPerKwp")} kWh per jaar, afhankelijk van richting, helling en schaduw. Een oost-west dak levert iets minder per paneel, maar spreidt de productie beter over de dag – vaak net handig voor je zelfverbruik.`,
       "Het juiste aantal panelen is niet 'zo veel mogelijk'. Het is zoveel als jij – nu en straks met warmtepomp of elektrische auto – zelf kan gebruiken, plus een marge die nog iets opbrengt.",
     ],
-    image: "rijwoning-zonnepanelen",
+    image: "vbtec-installateurs-panelen",
     factKeys: ["pvOpbrengstPerKwp"],
   },
   systemSteps: [
@@ -1070,7 +1070,7 @@ const omvormers: ServiceContent = {
       "Er zijn drie soorten. Een string-omvormer verwerkt een hele rij panelen tegelijk: eenvoudig en betaalbaar. Micro-omvormers zitten onder elk paneel, handig bij schaduw of daken met veel richtingen. Een hybride omvormer kan daarnaast een thuisbatterij laden en ontladen.",
       "Moderne omvormers worden gestuurd: ze kunnen injectie beperken als stroom op dat moment een negatieve prijs heeft, en geven je in een app per dag weer wat je panelen opbrengen.",
     ],
-    image: "omvormer-app-klant",
+    image: "vbtec-app-smartphone-verbruik",
   },
   systemSteps: [
     {
@@ -1185,9 +1185,9 @@ const laadpalen: ServiceContent = {
   productName: "een laadpaal",
   serviceType: "Plaatsing slimme laadpaal",
   hubLine: "Zinvol als je elektrisch rijdt of dat binnenkort gaat doen.",
-  hubImage: "laadpaal-oprit-avond",
+  hubImage: "vbtec-laadpaal-oprit-auto",
   heroLead: "Je wil elektrisch rijden, maar vreest dat laden thuis je capaciteitstarief opblaast. Dat hoeft niet – als je laadpaal weet wanneer hij moet laden.",
-  image: "laadpaal-oprit-avond",
+  image: "vbtec-laadpaal-oprit-auto",
   heroFact: {
     k: "kostPer100kmZonOverschot",
     value: fx("kostPer100kmZonOverschot", { euro: true, single: true }),
@@ -1215,7 +1215,7 @@ const laadpalen: ServiceContent = {
       title: "Welke laadpaal? Welk contract? Welke aansluiting?",
       body: "Eén- of driefasig, 7 of 11 kW, met of zonder MID-meter voor je werkgever. Iedereen verkoopt een paal. Bijna niemand kijkt naar je hele installatie.",
       tone: "I",
-      image: "laadpaal-oprit-avond",
+      image: "vbtec-auto-laden-hand",
     },
   ],
   mythKey: "capaciteitstarief-straf",
@@ -1258,7 +1258,7 @@ const laadpalen: ServiceContent = {
       "Met zonnepanelen kan de laadpaal enkel laden op overschot: zodra je panelen meer maken dan je huis gebruikt, gaat het verschil naar je auto. Met een dynamisch contract kan hij wachten tot de goedkope uren van de nacht.",
       "Rijd je met een bedrijfswagen, dan heb je vaak een MID-gecertificeerde meter nodig zodat je werkgever het thuisladen correct kan terugbetalen. We plaatsen die mee.",
     ],
-    image: "laadpaal-oprit-avond",
+    image: "vbtec-laadpaal-gebruik",
   },
   systemSteps: [
     {

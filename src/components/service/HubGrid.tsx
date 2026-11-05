@@ -27,7 +27,7 @@ export default function HubGrid({ groups }: { groups: HubGroup[] }) {
             <h2 id={`groep-${g.key}`} className={styles.groupTitle}>
               {g.title}
             </h2>
-            <p className={styles.groupIntro}>{g.intro}</p>
+            <p className={`${styles.groupIntro} desktop-only`}>{g.intro}</p>
           </div>
           <Reveal as="ul" mode="group" stagger={120} className={styles.items}>
             {g.items.map((s, i) => (
@@ -39,7 +39,7 @@ export default function HubGrid({ groups }: { groups: HubGroup[] }) {
                   <span className={styles.text}>
                     <span className={styles.name}>{s.name}</span>
                     <span className={styles.tagline}>{s.tagline}</span>
-                    <span className={styles.line}>{s.line}</span>
+                    <span className={`${styles.line} desktop-only`}>{s.line}</span>
                   </span>
                   <span className={styles.arrow} aria-hidden="true">
                     <ArrowUpRight className={styles.arrowIcon} />

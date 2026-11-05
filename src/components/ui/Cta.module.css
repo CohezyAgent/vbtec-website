@@ -183,11 +183,15 @@
   .hero {
     height: auto;
     padding: 0;
-    font-size: 17px;
+    font-size: 16px;
   }
+  /* Long labels ("Bereken of zonnepanelen lonen voor jou") wrap to two tidy lines. */
   .heroLabel {
-    height: 60px;
-    padding: 0 26px;
+    height: auto;
+    min-height: 60px;
+    padding: 8px 24px;
+    line-height: 1.2;
+    text-align: center;
   }
   .heroCircle {
     width: 60px;

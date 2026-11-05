@@ -1431,3 +1431,127 @@
   text-decoration: underline;
   text-underline-offset: 4px;
 }
+
+/* ───────────── Adres (straat-combobox + nr · postcode · gemeente) ───────────── */
+.adres {
+  margin: 0;
+}
+
+.adresGrid {
+  display: grid;
+  grid-template-columns: 150px minmax(0, 1fr) 110px;
+  grid-template-areas:
+    "street street nr"
+    "zip city city";
+  gap: 18px 14px;
+}
+
+.adresStreet {
+  grid-area: street;
+}
+
+.adresNr {
+  grid-area: nr;
+}
+
+.adresZip {
+  grid-area: zip;
+}
+
+.adresCity {
+  grid-area: city;
+}
+
+.combo {
+  position: relative;
+}
+
+.comboSpinner {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  width: 18px;
+  height: 18px;
+  margin-top: -9px;
+  border: 2px solid var(--c-grey-150);
+  border-top-color: var(--c-primary);
+  border-radius: 50%;
+  animation: comboSpin 0.7s linear infinite;
+}
+
+@keyframes comboSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.comboList {
+  position: absolute;
+  z-index: 20;
+  left: 0;
+  right: 0;
+  top: calc(100% + 8px);
+  margin: 0;
+  padding: 6px;
+  list-style: none;
+  max-height: 264px;
+  overflow-y: auto;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow:
+    0 0 0 1px rgba(6, 20, 16, 0.08),
+    0 18px 44px rgba(3, 24, 19, 0.16);
+  animation: comboIn 0.18s var(--ease-out);
+}
+
+.comboList[hidden] {
+  display: none;
+}
+
+@keyframes comboIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
+.comboOption {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 12px;
+  border-radius: 12px;
+  font-family: var(--font-ui);
+  font-weight: 300;
+  font-size: 15px;
+  line-height: 1.3;
+  color: var(--c-ink);
+  cursor: pointer;
+}
+
+.comboOption[data-active] {
+  background: var(--c-lime-pale);
+}
+
+.comboPin {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  color: var(--c-primary);
+}
+
+@media (max-width: 600px) {
+  .adresGrid {
+    grid-template-columns: 104px minmax(0, 1fr) 84px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .comboList {
+    animation: none;
+  }
+
+  .comboSpinner {
+    animation-duration: 2s;
+  }
+}

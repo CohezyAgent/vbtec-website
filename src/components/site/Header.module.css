@@ -54,10 +54,11 @@
   transform: translateY(-110%);
 }
 
-/* Floating glass bar once scrolled */
+/* Floating glass bar once scrolled. Centred on the items' line (logo, nav pill and CTA all
+   centre at 70.5u from the top), so they sit in the middle of the bar, not low in it. */
 .backing {
   position: absolute;
-  top: calc(18 * var(--u));
+  top: calc(27.5 * var(--u));
   left: calc(12.5 * var(--u) + 64 * var(--u));
   right: calc(12.5 * var(--u) + 62 * var(--u));
   height: calc(86 * var(--u));
@@ -92,7 +93,7 @@
 .logo {
   position: absolute;
   left: calc(12.5 * var(--u) + 94 * var(--u));
-  top: calc(10 * var(--u) + 44 * var(--u));
+  top: calc(10 * var(--u) + 44.5 * var(--u));
   display: flex;
   align-items: center;
   gap: calc(17 * var(--u));
@@ -464,7 +465,7 @@
   }
   .logo {
     left: 24px;
-    top: 26px;
+    top: 25px;
     height: 26px;
     gap: 10px;
     font-size: 24px;

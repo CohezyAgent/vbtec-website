@@ -70,7 +70,7 @@ export default function MissionSection() {
           </span>
           <div className={styles.visionText}>
             <h3 className={styles.visionTitle}>Ingenieurs, geen verkopers</h3>
-            <p className={styles.visionBody}>
+            <p className={`${styles.visionBody} desktop-only`}>
               Een ingenieur rekent jouw woning door: dak, verbruik, isolatie en tarieven. Pas daarna praten we over toestellen.
             </p>
           </div>

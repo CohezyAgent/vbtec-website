@@ -33,22 +33,37 @@ export function FactNote({
   const latest = facts.map((f) => f.asOf).sort().at(-1)!;
   const sources = [...new Map(facts.map((f) => [shortSource(f), f])).values()];
   const Tag = variant === "inline" ? "span" : "p";
+  const body = (
+    <span>
+      indicatief{estimate ? " (schatting)" : ""} · bron:{" "}
+      {sources.map((f, i) => (
+        <span key={f.key}>
+          {i > 0 && ", "}
+          <a href={f.sourceUrl} target="_blank" rel="noopener noreferrer" className={styles.noteLink}>
+            {shortSource(f)}
+          </a>
+        </span>
+      ))}
+      , stand {formatAsOf(latest)}
+    </span>
+  );
+  const cls = `${styles.note} ${styles[`note_${variant}`]} ${tone === "dark" ? styles.dark : ""} ${className ?? ""}`;
+  if (variant === "inline") return <Tag className={cls}>{body}</Tag>;
+  // Phones: the note folds into a small "bron" toggle (round 4: less text on mobile).
   return (
-    <Tag className={`${styles.note} ${styles[`note_${variant}`]} ${tone === "dark" ? styles.dark : ""} ${className ?? ""}`}>
-      {variant === "pill" && <InfoIcon className={styles.noteIcon} />}
-      <span>
-        indicatief{estimate ? " (schatting)" : ""} · bron:{" "}
-        {sources.map((f, i) => (
-          <span key={f.key}>
-            {i > 0 && ", "}
-            <a href={f.sourceUrl} target="_blank" rel="noopener noreferrer" className={styles.noteLink}>
-              {shortSource(f)}
-            </a>
-          </span>
-        ))}
-        , stand {formatAsOf(latest)}
-      </span>
-    </Tag>
+    <>
+      <Tag className={`${cls} desktop-only`}>
+        {variant === "pill" && <InfoIcon className={styles.noteIcon} />}
+        {body}
+      </Tag>
+      <details className={`${styles.noteToggle} ${tone === "dark" ? styles.dark : ""} ${className ?? ""} mobile-only`}>
+        <summary className={styles.noteSummary}>
+          <InfoIcon className={styles.noteIcon} />
+          bron
+        </summary>
+        <span className={styles.noteToggleBody}>{body}</span>
+      </details>
+    </>
   );
 }
 

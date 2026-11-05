@@ -1,20 +1,47 @@
+/* DataBand – editorial data bento on paper (geometry H). */
+.section {
+  background: var(--c-paper);
+}
+
+/* ---------- Head: myth + "Indicatief" ---------- */
 .head {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
   gap: 20px;
-  margin-bottom: calc(40 * var(--u));
+  margin-bottom: calc(44 * var(--u));
 }
 
 .myth {
-  max-width: calc(1100 * var(--ux));
-  font-size: var(--fs-body-lg);
-  line-height: 1.4;
-  color: var(--c-on-green-2);
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  max-width: calc(1180 * var(--ux));
+  padding: 8px 20px 8px 8px;
+  border-radius: 999px;
+  background: #fff;
+  box-shadow: inset 0 0 0 1px rgba(6, 20, 16, 0.08);
+  font-size: var(--fs-small);
+  line-height: 1.35;
+  color: var(--c-ink);
 }
 
 .mythLabel {
-  color: var(--c-on-green-3);
+  flex: none;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: var(--c-ink);
+  color: #fff;
+  font-family: var(--font-label);
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.02em;
+}
+
+.mythText {
+  font-style: italic;
+  color: var(--c-grey-600);
 }
 
 .indicatief {
@@ -22,187 +49,656 @@
   margin-left: auto;
   display: inline-flex;
   align-items: center;
+  gap: 8px;
   height: 32px;
   padding: 0 14px;
   border-radius: 999px;
-  box-shadow: var(--ring-on-dark);
+  box-shadow: inset 0 0 0 1px rgba(6, 20, 16, 0.14);
   font-family: var(--font-label);
   font-weight: 600;
   font-size: 13px;
-  color: var(--c-lime);
+  color: var(--c-grey-600);
 }
 
-.block {
+.indicatief::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--c-accent);
+  box-shadow: 0 0 0 4px rgba(34, 166, 143, 0.18);
+}
+
+/* ---------- Bento grid ---------- */
+.bento {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: var(--gap-cards);
   margin-top: calc(64 * var(--u));
 }
 
-/* ---------- White cards on the green band ---------- */
+.cHero {
+  grid-column: span 7;
+  display: flex;
+}
+
+.cPhoto {
+  grid-column: span 5;
+  display: flex;
+}
+
+.cFull {
+  grid-column: 1 / -1;
+}
+
+.cell {
+  grid-column: span var(--cols, 4);
+  display: flex;
+}
+
+.cHero > *,
+.cPhoto > *,
+.cell > * {
+  flex: 1;
+  min-width: 0;
+}
+
 .card {
-  padding: calc(44 * var(--u)) calc(48 * var(--u));
-  border-radius: var(--radius);
+  position: relative;
+  overflow: hidden;
+  padding: calc(40 * var(--u)) calc(44 * var(--u));
+  border-radius: calc(28 * var(--u));
   background: #fff;
   color: var(--c-ink);
-  box-shadow: 0 calc(20 * var(--u)) calc(60 * var(--u)) rgba(3, 24, 19, 0.18);
+  box-shadow:
+    0 1px 0 rgba(6, 20, 16, 0.04),
+    0 calc(18 * var(--u)) calc(50 * var(--u)) rgba(3, 24, 19, 0.06);
 }
 
-/* Big numbers sit inside a card here, so they run a size smaller than on a bare band. */
-.statsCard {
-  --fs-stat: calc(78 * var(--u));
-  padding-top: calc(48 * var(--u));
-  padding-bottom: calc(40 * var(--u));
-}
-
-.panelTitle {
-  margin-bottom: calc(30 * var(--u));
-  font-size: var(--fs-h4);
+.subTitle {
+  font-family: var(--font-ui);
+  font-size: var(--fs-card-title);
   line-height: 1.25;
-  font-weight: 400;
+  font-weight: 500;
   color: var(--c-ink);
 }
 
-.cardExtra {
-  margin-top: 14px;
+.ca {
+  margin-right: 0.18em;
+  font-size: 0.36em;
+  font-weight: 500;
+  letter-spacing: 0;
+  vertical-align: 0.95em;
+  opacity: 0.6;
 }
 
-/* Chart card + photo card side by side. */
-.duo {
-  display: grid;
-  grid-template-columns: minmax(0, 1.65fr) minmax(0, 1fr);
-  gap: var(--gap-cards);
-  align-items: stretch;
+/* ---------- Hero comparison card (dark) ---------- */
+.hero {
+  min-height: calc(470 * var(--u));
+  padding: calc(48 * var(--u)) calc(52 * var(--u));
+  background:
+    radial-gradient(ellipse 70% 80% at 100% 0%, rgba(34, 166, 143, 0.32), transparent 62%),
+    radial-gradient(ellipse 60% 70% at 0% 110%, rgba(239, 217, 255, 0.12), transparent 60%),
+    linear-gradient(160deg, #0a3a31 0%, var(--c-ink) 70%);
+  color: #fff;
+  box-shadow: 0 calc(30 * var(--u)) calc(70 * var(--u)) rgba(3, 24, 19, 0.22);
 }
 
-.photo {
-  position: relative;
-  display: flex;
-  align-items: flex-end;
-  min-height: calc(440 * var(--u));
-  padding: calc(24 * var(--u));
-  overflow: hidden;
-  overflow: clip;
-  border-radius: var(--radius);
-  background: var(--c-slate);
-  isolation: isolate;
-}
-
-.photoImg {
-  z-index: -1;
-}
-
-.photo::after {
+.hero::after {
+  /* Fine grid texture, like graph paper. */
   content: "";
   position: absolute;
   inset: 0;
-  z-index: -1;
-  background: linear-gradient(0deg, rgba(3, 24, 19, 0.5) 0%, rgba(3, 24, 19, 0) 55%);
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-size: calc(48 * var(--u)) calc(48 * var(--u));
+  mask-image: linear-gradient(180deg, transparent, #000 40%, #000 70%, transparent);
+  pointer-events: none;
 }
 
-.photoGlass {
-  width: 100%;
-  padding: calc(24 * var(--u)) calc(26 * var(--u));
-  border-radius: calc(16 * var(--u));
-  background: rgba(255, 255, 255, 0.9);
+.heroFigure {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.heroHead {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: calc(44 * var(--u));
+}
+
+.heroTitle {
+  max-width: 28ch;
+  font-family: var(--font-ui);
+  font-size: var(--fs-card-title);
+  line-height: 1.3;
+  color: var(--c-on-green-2);
+}
+
+.delta {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  height: 34px;
+  padding: 0 16px;
+  border-radius: 999px;
+  background: var(--c-lime);
   color: var(--c-ink);
-  backdrop-filter: blur(14px) saturate(1.2);
-  -webkit-backdrop-filter: blur(14px) saturate(1.2);
+  font-family: var(--font-label);
+  font-weight: 700;
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+  box-shadow: 0 0 0 6px rgba(239, 217, 255, 0.12);
 }
 
-.photoGlass .honestLabel {
-  color: var(--c-primary);
+.heroBars {
+  display: flex;
+  flex-direction: column;
+  gap: calc(34 * var(--u));
 }
 
-.photoGlass .honestText {
+.heroRowHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.heroLabel {
+  font-size: var(--fs-body);
+  color: var(--c-on-green-3);
+}
+
+.heroValue {
+  font-family: var(--font-display);
+  font-size: calc(58 * var(--u));
+  line-height: 1;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  color: #fff;
+}
+
+.heroTrack {
+  position: relative;
+  display: block;
+  height: calc(18 * var(--u));
+  min-height: 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.07);
+  overflow: hidden;
+}
+
+.heroFill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: calc(var(--v) * 100%);
+  border-radius: inherit;
+  background: rgba(255, 255, 255, 0.34);
+  transform-origin: left center;
+  transition: transform 1.3s var(--ease-out) calc(0.25s + var(--i) * 0.18s);
+}
+
+.hs_good .heroFill {
+  background: linear-gradient(90deg, #c9a6f5, var(--c-lime));
+  box-shadow: 0 0 24px rgba(239, 217, 255, 0.55);
+}
+
+.hs_good .heroLabel {
+  color: var(--c-lime);
+}
+
+.hs_mid .heroFill {
+  background: linear-gradient(90deg, #178a76, var(--c-accent));
+}
+
+.heroNote {
+  display: block;
+  margin-top: 8px;
+  font-size: var(--fs-small);
+  color: var(--c-on-green-3);
+}
+
+[data-ready]:not([data-visible]) > .heroRow .heroFill {
+  transform: scaleX(0);
+}
+
+[data-ready]:not([data-visible]) > .heroRow .heroValue {
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+.heroValue {
+  transition:
+    opacity 0.6s ease calc(0.5s + var(--i) * 0.18s),
+    transform 0.6s var(--ease-out) calc(0.5s + var(--i) * 0.18s);
+}
+
+.heroCaption {
+  margin-top: auto;
+  padding-top: calc(40 * var(--u));
+  max-width: 60ch;
+  font-size: var(--fs-small);
+  line-height: 1.5;
+  color: var(--c-on-green-2);
+}
+
+.heroFact {
+  margin-top: 10px;
+}
+
+.heroExtra {
+  margin-top: 10px;
+}
+
+/* ---------- Photo card with the key number ---------- */
+.photo {
+  display: flex;
+  align-items: flex-end;
+  min-height: calc(470 * var(--u));
+  padding: calc(20 * var(--u));
+  background: var(--c-grey-150);
+}
+
+.photoImg {
+  object-fit: cover;
+  transition: transform 1.6s var(--ease-out);
+}
+
+.photo:hover .photoImg {
+  transform: scale(1.03);
+}
+
+.photo::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(180deg, transparent 45%, rgba(3, 24, 19, 0.45));
+  pointer-events: none;
+}
+
+.photoStat {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  padding: calc(26 * var(--u)) calc(28 * var(--u));
+  border-radius: calc(20 * var(--u));
+  background: rgba(5, 35, 29, 0.55);
+  backdrop-filter: blur(16px) saturate(1.2);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.14);
+  color: #fff;
+}
+
+.photoNumber {
+  font-family: var(--font-display);
+  font-size: calc(64 * var(--u));
+  line-height: 1;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+.photoLabel {
+  margin-top: 10px;
+  max-width: 34ch;
+  font-size: var(--fs-small);
+  line-height: 1.4;
+  color: var(--c-on-green-2);
+}
+
+.photoFact {
+  margin-top: 6px;
+}
+
+/* ---------- Stat cards ---------- */
+.stat {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(300 * var(--u));
+}
+
+.statNumber {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-display);
+  font-size: calc(72 * var(--u));
+  line-height: 1;
+  letter-spacing: -0.025em;
+  font-variant-numeric: tabular-nums;
+  color: var(--c-ink);
+}
+
+.statLabel {
+  position: relative;
+  z-index: 1;
+  margin-top: auto;
+  padding-top: calc(28 * var(--u));
+  max-width: 30ch;
+  font-size: var(--fs-small);
+  line-height: 1.45;
   color: var(--c-grey-600);
 }
 
-.lower {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr));
-  gap: var(--gap-cards);
-  margin-top: var(--gap-cards);
+.statFact {
+  position: relative;
+  z-index: 1;
+  margin-top: 6px;
 }
 
+.statNumber[data-size="s"],
+.photoNumber[data-size="s"] {
+  font-size: calc(56 * var(--u));
+}
+
+.statNumber[data-size="xs"],
+.photoNumber[data-size="xs"] {
+  font-size: calc(44 * var(--u));
+  white-space: nowrap;
+}
+
+/* Variant A: white with a drawn sparkline. */
+.statSpark .spark {
+  display: block;
+  width: 40%;
+  max-width: 140px;
+  height: auto;
+  margin-top: calc(26 * var(--u));
+  overflow: visible;
+}
+
+.sparkLine {
+  fill: none;
+  stroke: var(--c-accent);
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 1.6s var(--ease-out) 0.3s;
+}
+
+.sparkDot {
+  fill: var(--c-accent);
+  stroke: #fff;
+  stroke-width: 2;
+  transition: opacity 0.4s ease 1.6s;
+}
+
+[data-ready]:not([data-visible]) .sparkLine {
+  stroke-dashoffset: 1;
+}
+
+[data-ready]:not([data-visible]) .sparkDot {
+  opacity: 0;
+}
+
+/* Variant B: mint card with a soft ring. */
+.statMint {
+  background: linear-gradient(160deg, #e3f3ee, #d3ece5);
+}
+
+.statMint .statNumber {
+  color: var(--c-primary);
+}
+
+.statRing {
+  position: absolute;
+  right: calc(-70 * var(--u));
+  bottom: calc(-70 * var(--u));
+  width: calc(260 * var(--u));
+  height: calc(260 * var(--u));
+  border-radius: 50%;
+  border: calc(26 * var(--u)) solid rgba(15, 107, 90, 0.1);
+  box-shadow: 0 0 0 calc(34 * var(--u)) rgba(15, 107, 90, 0.05);
+  pointer-events: none;
+}
+
+/* ---------- Honesty note (lilac) ---------- */
 .honest {
-  padding: calc(40 * var(--u)) calc(44 * var(--u));
-  border-radius: var(--radius);
+  min-height: calc(300 * var(--u));
   background: var(--c-lime);
-  color: var(--c-ink);
+  box-shadow: none;
 }
 
-.subTitle,
+.honestMark {
+  position: absolute;
+  top: calc(-30 * var(--u));
+  right: calc(24 * var(--u));
+  font-family: Georgia, serif;
+  font-size: calc(220 * var(--u));
+  line-height: 1;
+  color: rgba(5, 35, 29, 0.08);
+  pointer-events: none;
+}
+
 .honestLabel {
-  font-family: var(--font-ui);
-  font-weight: 500;
-  font-size: var(--fs-ui);
+  position: relative;
+  font-family: var(--font-label);
+  font-weight: 700;
+  font-size: var(--fs-small);
+  letter-spacing: 0.02em;
+  color: var(--c-ink);
 }
 
 .honestText {
-  margin-top: 10px;
+  position: relative;
+  margin-top: 14px;
   font-size: var(--fs-body);
-  line-height: 1.55;
+  line-height: 1.5;
+  color: var(--c-ink);
 }
 
-.rows {
-  display: grid;
-  margin: 14px 0;
+/* ---------- Receipt (premies, btw) ---------- */
+.receipt {
+  padding-bottom: calc(52 * var(--u));
+  /* Torn-paper bottom edge. */
+  --tooth: calc(14 * var(--u));
+  mask:
+    linear-gradient(#000 0 0) top / 100% calc(100% - var(--tooth)) no-repeat,
+    radial-gradient(circle at 50% 100%, transparent calc(var(--tooth) * 0.62), #000 calc(var(--tooth) * 0.66)) bottom / calc(var(--tooth) * 2) var(--tooth) repeat-x;
+  border-radius: calc(28 * var(--u)) calc(28 * var(--u)) 0 0;
 }
 
-.rowItem {
+.receiptHead {
   display: flex;
+  align-items: baseline;
   justify-content: space-between;
-  gap: 20px;
-  padding: 12px 0;
-  border-bottom: var(--hairline-light);
+  gap: 12px;
+  padding-bottom: calc(22 * var(--u));
+  border-bottom: 1.5px dashed rgba(6, 20, 16, 0.16);
+}
+
+.receiptTag {
+  flex: none;
+  font-family: var(--font-label);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--c-grey-quote);
+}
+
+.receiptRows {
+  margin-top: calc(10 * var(--u));
+}
+
+.receiptRow {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: calc(16 * var(--u)) 0;
   font-size: var(--fs-body);
 }
 
-.rowItem dt {
+.receiptRow dt {
   color: var(--c-grey-600);
 }
 
-.rowItem dd {
-  margin: 0;
-  text-align: right;
-  white-space: nowrap;
+.leader {
+  flex: 1;
+  min-width: 20px;
+  border-bottom: 2px dotted rgba(6, 20, 16, 0.18);
+  transform: translateY(-4px);
+}
+
+.receiptRow dd {
+  flex: none;
+  font-family: var(--font-ui);
   font-weight: 600;
-  color: var(--c-primary);
+  font-variant-numeric: tabular-nums;
+  color: var(--c-ink);
+}
+
+.receiptFact {
+  margin-top: calc(14 * var(--u));
+}
+
+/* ---------- Timeline (Waarom nu?) ---------- */
+.timeline {
+  background: var(--c-ink);
+  color: #fff;
+}
+
+.timeline .subTitle {
+  color: #fff;
+}
+
+.tl {
+  position: relative;
+  display: grid;
+  gap: calc(26 * var(--u));
+  margin-top: calc(30 * var(--u));
+  padding-left: 28px;
+  list-style: none;
+}
+
+.tl::before {
+  content: "";
+  position: absolute;
+  left: 6px;
+  top: 8px;
+  bottom: 8px;
+  width: 2px;
+  background: linear-gradient(180deg, var(--c-accent), rgba(239, 217, 255, 0.6));
+}
+
+.tlItem {
+  position: relative;
+  display: grid;
+  gap: 4px;
+}
+
+.tlDot {
+  position: absolute;
+  left: -28px;
+  top: 6px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--c-ink);
+  box-shadow:
+    inset 0 0 0 3px var(--c-lime),
+    0 0 0 5px rgba(239, 217, 255, 0.14);
+}
+
+.tlYear {
+  font-family: var(--font-display);
+  font-size: calc(46 * var(--u));
+  line-height: 1;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  color: var(--c-lime);
+}
+
+.tlLabel {
+  font-size: var(--fs-small);
+  line-height: 1.45;
+  color: var(--c-on-green-2);
+}
+
+.tlFact {
+  margin-top: calc(24 * var(--u));
+  color: var(--c-on-green-3);
+}
+
+.tlFact a {
+  color: inherit;
+}
+
+/* Wide timeline (own row): years side by side on a horizontal rail. */
+@media (min-width: 901px) {
+  .cell[data-wide] .timeline {
+    display: grid;
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 2.2fr);
+    align-items: center;
+    column-gap: calc(48 * var(--u));
+  }
+  .cell[data-wide] .tl {
+    grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+    grid-auto-flow: column;
+    margin-top: 0;
+    padding-left: 0;
+    padding-top: 30px;
+  }
+  .cell[data-wide] .tl::before {
+    left: 7px;
+    right: 0;
+    top: 6px;
+    bottom: auto;
+    width: auto;
+    height: 2px;
+    background: linear-gradient(90deg, var(--c-accent), rgba(239, 217, 255, 0.6), transparent);
+  }
+  .cell[data-wide] .tlDot {
+    left: 0;
+    top: -30px;
+  }
+  .cell[data-wide] .tlFact {
+    grid-column: 1;
+    margin-top: 10px;
+  }
+}
+
+/* ---------- Table card ---------- */
+.tableCard {
+  padding: calc(36 * var(--u)) calc(40 * var(--u));
 }
 
 /* ---------- Foot: assumptions drawer + CTA ---------- */
 .foot {
   display: flex;
-  flex-wrap: wrap;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 20px 40px;
+  gap: 20px;
   margin-top: calc(48 * var(--u));
 }
 
 .assumptions {
-  flex: 0 1 auto;
-  min-width: 0;
-}
-
-.assumptions[open] {
-  flex: 1 1 560px;
-  max-width: 920px;
+  flex: 1;
+  max-width: calc(1100 * var(--ux));
 }
 
 .assumptionsToggle {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  min-height: 48px;
-  padding: 0 18px 0 8px;
+  padding: 7px 18px 7px 7px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.1);
-  box-shadow: var(--ring-on-dark);
+  background: #fff;
+  box-shadow: inset 0 0 0 1px rgba(6, 20, 16, 0.1);
   font-family: var(--font-ui);
   font-size: var(--fs-small);
-  color: #fff;
+  color: var(--c-ink);
   cursor: pointer;
   list-style: none;
-  transition: background var(--dur-hover) ease;
+  transition: box-shadow var(--dur-hover) ease;
 }
 
 .assumptionsToggle::-webkit-details-marker {
@@ -210,22 +706,22 @@
 }
 
 .assumptionsToggle:hover {
-  background: rgba(255, 255, 255, 0.18);
+  box-shadow: inset 0 0 0 1px rgba(6, 20, 16, 0.3);
 }
 
 .assumptionsToggle:focus-visible {
-  outline: 2px solid var(--c-lime);
+  outline: 2px solid var(--c-ink);
   outline-offset: 3px;
 }
 
 .assumptionsIcon {
   display: grid;
   place-items: center;
-  width: 32px;
-  height: 32px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
-  background: var(--c-lime);
-  color: var(--c-ink);
+  background: var(--c-ink);
+  color: #fff;
   font-family: Georgia, serif;
   font-style: italic;
   font-weight: 700;
@@ -238,7 +734,7 @@
   height: 24px;
   padding: 0 7px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.16);
+  background: var(--c-grey-100);
   font-size: 12px;
 }
 
@@ -262,11 +758,11 @@
   overflow-y: auto;
   overscroll-behavior: contain;
   padding: 26px 28px;
-  border-radius: calc(18 * var(--u));
+  border-radius: calc(20 * var(--u));
   background: #fff;
   color: var(--c-ink);
   font-size: 15px;
-  box-shadow: 0 calc(20 * var(--u)) calc(60 * var(--u)) rgba(3, 24, 19, 0.18);
+  box-shadow: 0 calc(20 * var(--u)) calc(60 * var(--u)) rgba(3, 24, 19, 0.1);
 }
 
 .assumptions[open] .assumptionsPanel {
@@ -293,44 +789,133 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .heroFill,
+  .heroValue,
+  .sparkLine,
+  .sparkDot,
+  .photoImg {
+    transition: none;
+  }
+  [data-ready]:not([data-visible]) > .heroRow .heroFill {
+    transform: none;
+  }
+  [data-ready]:not([data-visible]) > .heroRow .heroValue,
+  [data-ready]:not([data-visible]) .sparkDot {
+    opacity: 1;
+    transform: none;
+  }
+  [data-ready]:not([data-visible]) .sparkLine {
+    stroke-dashoffset: 0;
+  }
   .assumptions[open] .assumptionsPanel {
     animation: none;
+  }
+}
+
+@media (max-width: 1200px) and (min-width: 901px) {
+  .cHero,
+  .cPhoto {
+    grid-column: span 6;
   }
 }
 
 @media (max-width: 900px) {
   .head {
     flex-direction: column-reverse;
+    align-items: flex-start;
     margin-bottom: 24px;
+  }
+  .myth {
+    border-radius: 18px;
+    padding: 10px 14px 12px 10px;
   }
   .indicatief {
     margin-left: 0;
   }
-  .block {
+  .bento {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
     margin-top: 32px;
+  }
+  .cHero,
+  .cPhoto,
+  .cell {
+    grid-column: 1 / -1;
   }
   .card {
     padding: 24px 20px;
-    border-radius: 18px;
+    border-radius: 22px;
   }
-  .statsCard {
-    --fs-stat: 48px;
+  .hero {
+    min-height: 0;
+    padding: 26px 20px;
   }
-  .duo {
-    grid-template-columns: minmax(0, 1fr);
+  .heroHead {
+    flex-direction: column;
+    margin-bottom: 26px;
+  }
+  .heroBars {
+    gap: 22px;
+  }
+  .heroValue {
+    font-size: 34px;
+  }
+  .heroRowHead {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+  .heroCaption {
+    padding-top: 22px;
   }
   .photo {
-    min-height: 340px;
+    min-height: 360px;
     padding: 12px;
-    border-radius: 18px;
   }
-  .photoGlass {
+  .photoStat {
     padding: 18px;
-    border-radius: 14px;
+    border-radius: 16px;
   }
+  .stat,
   .honest {
-    padding: 24px 20px;
-    border-radius: 18px;
+    min-height: 0;
+  }
+  .statNumber,
+  .photoNumber {
+    font-size: 42px;
+  }
+  .statNumber[data-size],
+  .photoNumber[data-size] {
+    font-size: 32px;
+  }
+  .statSpark .spark {
+    margin-top: 16px;
+  }
+  .statLabel {
+    padding-top: 18px;
+  }
+  .statRing {
+    width: 180px;
+    height: 180px;
+    right: -60px;
+    bottom: -60px;
+    border-width: 18px;
+  }
+  .honestMark {
+    font-size: 140px;
+    top: -14px;
+  }
+  .receipt {
+    --tooth: 10px;
+    border-radius: 22px 22px 0 0;
+    padding-bottom: 36px;
+  }
+  .receiptRow {
+    padding: 12px 0;
+    font-size: 15px;
+  }
+  .tlYear {
+    font-size: 32px;
   }
   .foot {
     flex-direction: column;

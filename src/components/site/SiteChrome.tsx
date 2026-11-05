@@ -6,6 +6,7 @@ import { useCallback, useEffect, useRef, useState, type FocusEvent } from "react
 import { navigation, site, type NavItem } from "@/content/site";
 import { LEAD_ANCHOR, routes } from "@/lib/routes";
 import { ArrowUpRight, ChevronDownIcon, VbtecMark } from "@/components/ui/icons";
+import FloatingLead from "@/components/lead/FloatingLead";
 import MobileMenu from "./MobileMenu";
 import MobileStickyCta from "./MobileStickyCta";
 import styles from "./Header.module.css";
@@ -47,6 +48,8 @@ function useLeadAnchor() {
 export default function SiteChrome({ pathname }: { pathname: string }) {
   const headerRef = useRef<HTMLElement>(null);
   const [menuOpen, setMenuOpen] = useState(false);
+  // The floating mini form takes the sticky CTA bar's place on mobile while it shows.
+  const [leadPeek, setLeadPeek] = useState(false);
   const [openPanel, setOpenPanel] = useState<string | null>(null);
   const triggerRefs = useRef<Record<string, HTMLButtonElement | null>>({});
   const hoverTimer = useRef<number>(0);
@@ -254,7 +257,8 @@ export default function SiteChrome({ pathname }: { pathname: string }) {
         </div>
       </header>
       <MobileMenu open={menuOpen} onClose={closeMenu} pathname={pathname} />
-      {!onContact && <MobileStickyCta key={pathname} hidden={menuOpen} />}
+      {!onContact && <MobileStickyCta key={`cta-${pathname}`} hidden={menuOpen || leadPeek} />}
+      {!onContact && <FloatingLead key={`lead-${pathname}`} suppressed={menuOpen} onShowChange={setLeadPeek} />}
     </>
   );
 }

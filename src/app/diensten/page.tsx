@@ -2,7 +2,6 @@ import { SERVICE_GROUPS, SERVICE_TAGLINES, SERVICES, COMPARISONS } from "@/conte
 import { dienstenHub, services } from "@/content/services";
 import { featuredProjects } from "@/content/projects";
 import PageHero from "@/components/sections/PageHero";
-import Statement from "@/components/sections/Statement";
 import ProjectsRail from "@/components/sections/ProjectsRail";
 import Faq from "@/components/sections/Faq";
 import LeadSection from "@/components/lead/LeadSection";
@@ -12,6 +11,7 @@ import { comparisonLink } from "@/lib/links";
 import { routes } from "@/lib/routes";
 import { itemList } from "@/lib/schema";
 import { buildMetadata } from "@/lib/seo";
+import MediaSplit from "@/components/sections/MediaSplit";
 import LatestPosts from "@/components/sections/LatestPosts";
 
 // /diensten hub (05 §5.1): Hero + groups (W) → Statement (L) → Projects rail (D) → FAQ (W) → Lead (I).
@@ -44,18 +44,20 @@ export default function DienstenPage() {
         <HubGrid groups={groups} />
       </PageHero>
 
-      <Statement
+      <MediaSplit
         id="waarom-rekenen"
-        bg="L"
-        eyebrow="Systeem, geen product"
-        text={dienstenHub.statement}
-        highlight={["rekenen"]}
-        heading={dienstenHub.statementHeading}
-        support={<p>{dienstenHub.statementSupport}</p>}
-        pills={[
-          { label: "Zo werkt je woning als één systeem", href: routes.hoeHetWerkt() },
-          { label: "Lees hoe we werken", href: routes.hoeWeWerken() },
-          { label: "Twijfel je? Vergelijk eerlijk", href: routes.vergelijken() },
+        start="left"
+        items={[
+          {
+            eyebrow: "Systeem, geen product",
+            title: "We duwen geen product.",
+            titleMuted: "We rekenen wat je woning nodig heeft.",
+            text: "Panelen, warmtepomp, batterij en laadpaal werken pas echt als ze samenwerken. Daarom rekenen we je woning als één geheel.",
+            points: ["Altijd een scenario 'niets doen'", "Merkonafhankelijk", "Slim aangestuurd: meer zelf verbruiken"],
+            image: "vbtec-woning-zonnepanelen-oprit",
+            cta: { label: "Zo werkt je woning als één systeem", href: routes.hoeHetWerkt(), variant: "ink" },
+            secondary: { href: routes.hoeWeWerken(), label: "Lees hoe we werken" },
+          },
         ]}
       />
 

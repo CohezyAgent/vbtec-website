@@ -70,9 +70,9 @@ export default function Timeline({ intro, steps, bg, cta, id }: TimelineProps) {
                       )}
                     </ul>
                   )}
-                  <div className={styles.body}>{step.body}</div>
+                  <div className={`${styles.body} mobile-clamp-2`}>{step.body}</div>
                   {step.whoDoesWhat && (
-                    <dl className={styles.who}>
+                    <dl className={`${styles.who} desktop-only`}>
                       <div>
                         <dt>Wat jij doet</dt>
                         <dd>{step.whoDoesWhat.jij}</dd>

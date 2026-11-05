@@ -80,7 +80,7 @@ export default function KennisbankBrowser({ categories, contactHref }: { categor
               <h2 id={`${c.key}-title`} className={styles.catTitle}>
                 {c.title}
               </h2>
-              <p className={styles.catIntro}>{c.intro}</p>
+              <p className={`${styles.catIntro} desktop-only`}>{c.intro}</p>
             </div>
             <ol className={styles.list}>
               {c.entries.map((e, i) => (

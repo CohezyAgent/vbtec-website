@@ -42,6 +42,18 @@ const HERO_STAT: Record<string, { value: string; label: string; zoom?: number }>
   omvormers: { value: fx("levensduurOmvormer", { suffix: " jaar", single: true, exact: true }), label: "gaat een omvormer gemiddeld mee" },
 };
 
+/** Real VB-TEC project photo (public/images/vbtec) for the photo card in "Kost & opbrengst". */
+const vb = (file: string, alt: string, width: number, height: number): ImageInput => ({ src: `/images/vbtec/${file}`, alt, width, height });
+const DATA_PHOTO: Record<string, ImageInput> = {
+  "lucht-water-warmtepomp": vb("warmtepomp-tuin-unit.jpg", "Buitenunit van een lucht-water warmtepomp in de tuin", 2000, 2000),
+  "lucht-lucht-warmtepomp": vb("warmtepomp-architectuur.jpg", "Buitenunit van een lucht-lucht warmtepomp naast een moderne woning", 1280, 1920),
+  zonnepanelen: vb("installateurs-panelen.jpg", "Installateurs van VB-TEC leggen zonnepanelen op een dak", 2000, 1333),
+  "pvt-panelen": vb("dakrij-zonnepanelen-luchtfoto.jpg", "Rij woningen met panelen op het dak, van bovenaf", 1600, 1200),
+  thuisbatterij: vb("app-smartphone-verbruik.jpg", "Verbruik en batterij volgen in de app op een smartphone", 1920, 1280),
+  omvormers: vb("app-tablet.jpg", "Opbrengst van de omvormer bekijken op een tablet", 1280, 1920),
+  laadpalen: vb("laadpaal-oprit-auto.jpg", "Elektrische auto aan de laadpaal op de oprit", 1920, 1280),
+};
+
 /** Studio product photo for the hero glass card (public/images/products), else the service photo. */
 function productImage(slug: string, name: string, fallback: ImageInput): ImageInput {
   const src = `/images/products/product-${slug}.jpg`;
@@ -191,9 +203,9 @@ export default function ServiceView({ s }: { s: ServiceContent }) {
         assumptions={s.dataBand.assumptions}
         assumptionsNote={s.dataBand.assumptionsNote}
         cta={{ label: ctaLabel, href: routes.lead() }}
-        image={productImage(s.slug, s.shortTitle, s.image)}
+        image={DATA_PHOTO[s.slug] ?? productImage(s.slug, s.shortTitle, s.image)}
       >
-        {s.dataBand.chartFactKeys && <FactNote keys={s.dataBand.chartFactKeys} />}
+        {s.dataBand.chartFactKeys && <FactNote keys={s.dataBand.chartFactKeys} tone="dark" variant="footnote" />}
       </DataBand>
 
       {/* 4 · Hoe werkt het & hoe past het in je systeem (D · W, pinned) */}

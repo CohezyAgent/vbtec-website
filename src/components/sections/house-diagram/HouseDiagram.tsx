@@ -1,9 +1,10 @@
 "use client";
 
-// HouseDiagram – the whole-home energy system as one SVG (05 §8.4, owner: Builder 1).
+// HouseDiagram – the whole-home energy system on a cutaway house photo (05 §8.4).
 //   mode="full"   → scene tabs (Dag · Avond · Winter · Piekmoment), 7 hotspot buttons with a
 //                   detail panel (what it does in this scene + € effect + link), animated
-//                   flows, and a crawlable text alternative under the diagram.
+//                   flows, "Stel je systeem samen" (toggle parts → indicative yearly bill) and a
+//                   crawlable text alternative under the diagram.
 //   mode="teaser" → 3 scene tabs (auto-advance once on view, desktop only), caption + fact.
 //   mode="mini"   → static picture that highlights `highlight` components and their flows
 //                   (used by service pages inside StickySplit media).
@@ -28,9 +29,17 @@ import { useInView } from "@/components/motion/useInView";
 import type { Cta } from "@/content/types";
 import type { ServiceSlug } from "@/content/registry";
 import {
+  ADD_ITEMS,
+  ADD_ORDER,
+  BAR_MAX,
+  BASELINE,
+  BUILDER_NOTE,
+  builderFlows,
   FLOW_OWNERS,
   HOTSPOTS,
+  scenario,
   SCENES,
+  type AddKey,
   type FlowKey,
   type Hotspot,
   type HotspotEffect,
@@ -195,6 +204,7 @@ export default function HouseDiagram({
   );
   const [hovered, setHovered] = useState<ServiceSlug | null>(null);
   const [touched, setTouched] = useState(false);
+  const [built, setBuilt] = useState<{ on: ReadonlySet<AddKey>; last: AddKey | null }>({ on: new Set(), last: null });
   const rootRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
   const idBase = useId().replace(/:/g, "");
@@ -263,9 +273,12 @@ export default function HouseDiagram({
         focusFlows: null,
       };
     }
-    const active = new Set(sceneData.flows);
-    const glowSet = new Set(
-      HOTSPOTS.filter((h) => h.activeIn.includes(scene)).map((h) => h.slug),
+    const building = mode === "full" && built.on.size > 0;
+    const active = new Set(building ? builderFlows(built.on) : sceneData.flows);
+    const glowSet = new Set<ServiceSlug>(
+      building
+        ? [...built.on].map((k) => ADD_ITEMS[k].slug)
+        : HOTSPOTS.filter((h) => h.activeIn.includes(scene)).map((h) => h.slug),
     );
     const focusSlug = hovered ?? selected;
     const focus = focusSlug
@@ -277,11 +290,11 @@ export default function HouseDiagram({
     }
     return {
       activeFlows: active,
-      lowFlows: new Set(sceneData.lowValueFlows ?? []),
+      lowFlows: new Set(building ? [] : (sceneData.lowValueFlows ?? [])),
       glow: glowSet,
       focusFlows: focus,
     };
-  }, [mode, highlight, scenes, sceneData, scene, hovered, selected]);
+  }, [mode, highlight, scenes, sceneData, scene, hovered, selected, built]);
 
   const rootStyle = { "--hd-battery": BATTERY_LEVEL[scene] } as CSSProperties;
   const ordered = useMemo(
@@ -333,6 +346,7 @@ export default function HouseDiagram({
             glow={glow}
             focusFlows={null}
             tone={tone}
+            sizes="(max-width: 900px) 100vw, 45vw"
           />
           {labels.map((h) => (
             <span
@@ -519,8 +533,104 @@ export default function HouseDiagram({
           )}
         </div>
       </div>
+      <Builder
+        built={built}
+        onToggle={(k) => {
+          setTouched(true);
+          setBuilt((b) => {
+            const on = new Set(b.on);
+            if (on.has(k)) on.delete(k);
+            else on.add(k);
+            return { on, last: on.has(k) ? k : null };
+          });
+        }}
+        onReset={() => setBuilt({ on: new Set(), last: null })}
+      />
       <TextAlternative tone={tone} list={sceneList} />
     </div>
+  );
+}
+
+const nf = new Intl.NumberFormat("nl-BE", { maximumFractionDigits: 0 });
+
+/** "Stel je systeem samen": toggle parts, the photo shows their flows, the bars show the bill. */
+function Builder({
+  built,
+  onToggle,
+  onReset,
+}: {
+  built: { on: ReadonlySet<AddKey>; last: AddKey | null };
+  onToggle: (k: AddKey) => void;
+  onReset: () => void;
+}) {
+  const now = scenario(built.on);
+  const saving = BASELINE.factuur - now.factuur;
+  const last = built.last;
+  const lastGain = last
+    ? scenario(new Set([...built.on].filter((k) => k !== last))).factuur - now.factuur
+    : 0;
+  const bars = [
+    { label: "Stroom van het net", value: `${nf.format(now.netKwh)} kWh`, frac: now.netKwh / BAR_MAX.netKwh, kind: "net" },
+    { label: "Gas", value: `${nf.format(now.gasM3)} m³`, frac: now.gasM3 / BAR_MAX.gasM3, kind: "gas" },
+    { label: "Energiefactuur", value: `€ ${nf.format(now.factuur)} /jaar`, frac: now.factuur / BAR_MAX.factuur, kind: "geld" },
+  ];
+  return (
+    <section className={styles.builder} aria-label="Stel je systeem samen">
+      <div className={styles.builderMain}>
+        <p className={styles.sceneEyebrow}>Stel je systeem samen</p>
+        <p className={styles.builderLead}>
+          Vandaag: gasketel + net. Voeg toe en zie op de foto wat het doet – en wat het je oplevert.
+        </p>
+        <div className={styles.builderChips} role="group" aria-label="Onderdelen toevoegen">
+          {ADD_ORDER.map((k) => {
+            const on = built.on.has(k);
+            return (
+              <button key={k} type="button" aria-pressed={on} className={styles.builderChip} onClick={() => onToggle(k)}>
+                <span className={styles.builderMark} aria-hidden="true">
+                  {on ? "✓" : "+"}
+                </span>
+                {ADD_ITEMS[k].label}
+              </button>
+            );
+          })}
+          {built.on.size > 0 && (
+            <button type="button" className={styles.builderReset} onClick={onReset}>
+              Wissen
+            </button>
+          )}
+        </div>
+        <p className={styles.builderBoost} aria-live="polite">
+          {last ? (
+            <>
+              <strong>{ADD_ITEMS[last].label}:</strong> {ADD_ITEMS[last].boost}
+            </>
+          ) : (
+            "Kies een onderdeel om te beginnen."
+          )}
+        </p>
+      </div>
+      <div className={styles.builderResult}>
+        <p className={styles.builderSavingLabel}>Je bespaart per jaar</p>
+        <p className={styles.builderSaving} aria-live="polite">
+          € {nf.format(Math.max(0, saving))}
+          {last && lastGain > 0 && <span className={styles.builderGain}>+€ {nf.format(lastGain)}</span>}
+        </p>
+        <ul className={styles.bars}>
+          {bars.map((b) => (
+            <li key={b.label} className={styles.bar} data-kind={b.kind}>
+              <span className={styles.barTop}>
+                <span>{b.label}</span>
+                <span className={styles.barValue}>{b.value}</span>
+              </span>
+              <span className={styles.barTrack} aria-hidden="true">
+                <span className={styles.barFill} style={{ transform: `scaleX(${Math.min(1, Math.max(0.02, b.frac))})` }} />
+              </span>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <p className={styles.builderNote}>{BUILDER_NOTE}</p>
+    </section>
   );
 }
 

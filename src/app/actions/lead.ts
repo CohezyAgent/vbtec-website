@@ -36,7 +36,10 @@ export async function submitLeadAction(_prev: LeadState, formData: FormData): Pr
       naam: values.naam.trim(),
       email: values.email.trim(),
       telefoon: values.telefoon.trim(),
+      straat: values.straat.trim(),
+      huisnummer: values.huisnummer.trim(),
       postcode: values.postcode.trim(),
+      gemeente: values.gemeente.trim(),
       opmerking: values.opmerking.trim(),
       verbruikWaarde: values.verbruikOnbekend || !raw ? null : Number(raw),
     });

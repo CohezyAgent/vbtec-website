@@ -149,11 +149,11 @@
     --fs-small: 14px;
     --fs-ui: 16px;
 
-    --pad-top: 72px;
-    --pad-bottom: 64px;
-    --pad-screen-top: 72px;
-    --pad-screen-bottom: 64px;
-    --gap-intro: 40px;
+    --pad-top: 56px;
+    --pad-bottom: 48px;
+    --pad-screen-top: 56px;
+    --pad-screen-bottom: 48px;
+    --gap-intro: 28px;
     --gap-cards: 16px;
     --gap-steps: 32px;
     --gap-cta: 36px;
@@ -269,5 +269,31 @@ body {
   [data-reveal][data-visible],
   [data-reveal][data-visible] [data-reveal-item] {
     transition: none !important;
+  }
+}
+
+/* ==========================================================================
+   Mobile simplification (round 4): phones get headings, one line and the CTA.
+   `.desktop-only` hides secondary copy below 900px (still in the DOM for SEO);
+   `.mobile-only` is its counterpart; `.mobile-clamp-2` trims a lead to two lines.
+   ========================================================================== */
+.mobile-only {
+  display: none !important;
+}
+
+@media (max-width: 900px) {
+  .desktop-only {
+    display: none !important;
+  }
+
+  .mobile-only {
+    display: revert !important;
+  }
+
+  .mobile-clamp-2 {
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 }

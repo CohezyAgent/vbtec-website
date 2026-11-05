@@ -91,7 +91,7 @@ function Tile({ tile, index }: { tile: BentoTile; index: number }) {
           {tile.icon && <IconCircle icon={tile.icon} fill="glass" size="lg" className={`${styles.photoIcon} ${styles.pop}`} />}
           <div className={styles.photoText}>
             <h3 className={styles.photoTitle}>{tile.title}</h3>
-            {tile.body && <div className={styles.photoBody}>{tile.body}</div>}
+            {tile.body && <div className={`${styles.photoBody} desktop-only`}>{tile.body}</div>}
           </div>
         </article>
       );
@@ -99,7 +99,7 @@ function Tile({ tile, index }: { tile: BentoTile; index: number }) {
       return (
         <article className={`${styles.tile} ${styles.grey}`} style={style} data-reveal-item>
           <h3 className={styles.greyTitle}>{tile.title}</h3>
-          {tile.body && <div className={styles.greyBody}>{tile.body}</div>}
+          {tile.body && <div className={`${styles.greyBody} desktop-only`}>{tile.body}</div>}
           {tile.tags && (
             <ul className={styles.tags}>
               {tile.tags.map((t, ti) => (
@@ -131,7 +131,7 @@ function Tile({ tile, index }: { tile: BentoTile; index: number }) {
           )}
           <div className={styles.wideText}>
             <h3 className={styles.greyTitle}>{tile.title}</h3>
-            <div className={styles.greyBody}>{tile.body}</div>
+            <div className={`${styles.greyBody} mobile-clamp-2`}>{tile.body}</div>
             {tile.cta && (
               <CtaPill href={tile.cta.href} variant={tile.cta.variant ?? (tile.tone === "dark" ? "lime" : "ink")} size="sm">
                 {tile.cta.label}

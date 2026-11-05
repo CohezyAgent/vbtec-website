@@ -107,7 +107,7 @@ export default function ImagePanel({ image, align, eyebrow, title, titleAs = "h2
           <H id={titleId} className={styles.title}>
             {title}
           </H>
-          {body && <div className={styles.body}>{body}</div>}
+          {body && <div className={`${styles.body} desktop-only`}>{body}</div>}
           {(cta || secondary) && (
             <div className={styles.actions}>
               {cta && (

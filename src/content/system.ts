@@ -1,10 +1,12 @@
 // Data for the whole-home HouseDiagram (05 §8.4, owner: Builder 1).
-// The SVG geometry lives in src/components/sections/house-diagram/HouseDiagram.tsx;
+// The photo + flow geometry lives in src/components/sections/house-diagram/HouseScene.tsx
+// (hotspot `pos` below = % of that photo);
 // this file holds the words, the scenes, which energy flows are active per scene and the
 // € effect per component. Every number is a FactKey from facts.ts (never a literal).
 // PVT: no yield or price numbers (00 §3) – only "per project berekend".
 
-import type { FactKey } from "./facts";
+import { fact, type FactKey } from "./facts";
+import { v } from "./comparisons";
 import type { ServiceSlug } from "./registry";
 
 export type SceneKey = "dag" | "avond" | "winter" | "piek";
@@ -162,7 +164,7 @@ export const HOTSPOTS: Hotspot[] = [
       suffix: " €/kWh",
       compare: { label: "geïnjecteerd krijg je", k: "injectievergoeding", suffix: " c/kWh" },
     },
-    pos: [41, 34.4],
+    pos: [40.5, 29.7],
   },
   {
     slug: "pvt-panelen",
@@ -176,7 +178,7 @@ export const HOTSPOTS: Hotspot[] = [
     },
     activeIn: ["dag", "winter"],
     effectText: "Opbrengst per project berekend. Hangt af van je dak, je warmtepomp en je warmwaterverbruik.",
-    pos: [66.2, 34.4],
+    pos: [68.6, 30],
   },
   {
     slug: "omvormers",
@@ -190,7 +192,7 @@ export const HOTSPOTS: Hotspot[] = [
     },
     activeIn: ["dag", "avond", "winter", "piek"],
     effect: { label: "Gebruikelijke levensduur", k: "levensduurOmvormer", suffix: " jaar" },
-    pos: [60, 57],
+    pos: [60, 54.1],
   },
   {
     slug: "thuisbatterij",
@@ -204,7 +206,7 @@ export const HOTSPOTS: Hotspot[] = [
     },
     activeIn: ["dag", "avond", "winter", "piek"],
     effect: { label: "Per kW lagere maandpiek bespaar je per jaar", k: "capaciteitstariefPerKw", suffix: " €" },
-    pos: [32.8, 80.6],
+    pos: [67, 55],
   },
   {
     slug: "laadpalen",
@@ -223,7 +225,7 @@ export const HOTSPOTS: Hotspot[] = [
       suffix: " €",
       compare: { label: "aan de netprijs", k: "kostPer100kmThuisNet", suffix: " €" },
     },
-    pos: [21.5, 76.6],
+    pos: [24.6, 79],
   },
   {
     slug: "lucht-water-warmtepomp",
@@ -242,7 +244,7 @@ export const HOTSPOTS: Hotspot[] = [
       suffix: " €",
       compare: { label: "met gas", k: "warmtekostGasPerKwhWarmte", suffix: " €" },
     },
-    pos: [86.8, 85.3],
+    pos: [87.8, 83],
   },
   {
     slug: "lucht-lucht-warmtepomp",
@@ -261,7 +263,7 @@ export const HOTSPOTS: Hotspot[] = [
       suffix: " €",
       compare: { label: "elektrisch vuurtje", k: "warmtekostElektrischPerKwhWarmte", suffix: " €" },
     },
-    pos: [43, 54],
+    pos: [47.3, 49.2],
   },
 ];
 
@@ -271,3 +273,93 @@ export function getScene(key: SceneKey): Scene {
 export function getHotspot(slug: ServiceSlug): Hotspot {
   return HOTSPOTS.find((h) => h.slug === slug)!;
 }
+
+// ───────────────────────── "Stel je systeem samen" (full mode) ─────────────────────────
+// Toggle components on the photo and see an indicative yearly bill. Voorbeeldgezin: 3.500 kWh
+// huishouden + elektrische wagen (15.000 km/jaar) + 1.700 m³ gas. Prijzen, rendementen en
+// zelfverbruik komen uit facts.ts; installatiegroottes en de stappen per toestel zijn aannames.
+
+export type AddKey = "zon" | "batterij" | "warmtepomp" | "pvt" | "laadpaal" | "sturing";
+export const ADD_ORDER: AddKey[] = ["zon", "batterij", "warmtepomp", "pvt", "laadpaal", "sturing"];
+
+const STROOM = v("stroomprijsAllIn", { scale: 100 });
+const INJECTIE = v("injectievergoeding");
+
+export const ADD_ITEMS: Record<AddKey, { label: string; slug: ServiceSlug; boost: string }> = {
+  zon: { label: "Zonnepanelen", slug: "zonnepanelen", boost: `Eigen stroom kost niets: elke kWh die je zelf gebruikt spaart ${STROOM} cent.` },
+  batterij: { label: "Thuisbatterij", slug: "thuisbatterij", boost: "Je zonnestroom ook 's avonds gebruiken – en lagere pieken." },
+  warmtepomp: { label: "Warmtepomp", slug: "lucht-water-warmtepomp", boost: "Je gasfactuur valt weg. Met zon verwarm je op eigen stroom." },
+  pvt: { label: "PVT-panelen", slug: "pvt-panelen", boost: "Stroom én warmte: je warmtepomp draait zuiniger." },
+  laadpaal: { label: "Laadpaal", slug: "laadpalen", boost: `Laden op zonne-overschot: ${v("kostPer100kmZonOverschot", { pre: "€ " })} per 100 km.` },
+  sturing: { label: "Slimme sturing", slug: "omvormers", boost: `Toestellen draaien op je overschot: zelfverbruik tot ${v("zelfverbruikMet")}%.` },
+};
+
+/** Flows that run for a built set (stroom from the panels when there are panels, else from the net). */
+export function builderFlows(on: ReadonlySet<AddKey>): FlowKey[] {
+  const pv = on.has("zon") || on.has("pvt");
+  const f: FlowKey[] = ["net-huis"];
+  if (on.has("zon")) f.push("zon-omvormer");
+  if (on.has("pvt")) f.push("pvt-omvormer");
+  if (pv) f.push("omvormer-huis", "omvormer-net");
+  if (on.has("batterij")) f.push(pv ? "omvormer-batterij" : "net-batterij", "batterij-huis");
+  if (on.has("warmtepomp")) f.push(pv ? "omvormer-warmtepomp" : "net-warmtepomp", "warmtepomp-huis");
+  if (on.has("pvt") && on.has("warmtepomp")) f.push("pvt-warmtepomp");
+  if (on.has("laadpaal")) f.push(pv ? "omvormer-auto" : "net-auto");
+  return f;
+}
+
+const STROOMPRIJS = fact("stroomprijsAllIn").value; // €/kWh
+const GASPRIJS = fact("gasprijsAllIn").value; // €/kWh
+const INJECTIE_EUR = fact("injectievergoeding").value / 100; // €/kWh
+const SCOP = fact("scopRekenwaarde").value;
+const PV_PER_KWP = fact("pvOpbrengstPerKwp").value;
+const EV_PER_100 = fact("evVerbruikPer100km").value;
+const PIEK_PER_KW = fact("capaciteitstariefPerKw").value; // € per kW maandpiek per jaar
+const ZELF_ZONDER = fact("zelfverbruikZonder").value / 100;
+
+export const MODEL = {
+  huisKwh: 3500,
+  evKm: 15000,
+  gasM3: 1700,
+  kwhPerM3: 10,
+  gasVast: 175,
+  rendementKetel: 0.9,
+  pvKwp: 6,
+  pvtKwp: 2,
+  /** PVT-bron: warmtepomp verbruikt zoveel minder stroom. */
+  pvtWpWinst: 0.15,
+  /** Extra zelfverbruik per toestel (aanname), bovenop ZELF_ZONDER. */
+  zelfStap: { batterij: 0.15, warmtepomp: 0.1, laadpaal: 0.08, sturing: 0.07 } as const,
+  zelfMax: 0.75,
+  /** Lagere maandpiek in kW (aanname): slim laden en sturing/batterij. */
+  piekMinder: { laadpaal: 0.5, sturing: 1, batterij: 0.5 } as const,
+  /** Hogere maandpiek in kW door de warmtepomp (aanname). */
+  piekWarmtepomp: 1,
+};
+
+export type Scenario = { netKwh: number; gasM3: number; factuur: number };
+
+export function scenario(on: ReadonlySet<AddKey>): Scenario {
+  const m = MODEL;
+  const gasKwh = m.gasM3 * m.kwhPerM3;
+  const wpKwh = on.has("warmtepomp") ? ((gasKwh * m.rendementKetel) / SCOP) * (on.has("pvt") ? 1 - m.pvtWpWinst : 1) : 0;
+  const vraag = m.huisKwh + (m.evKm / 100) * EV_PER_100 + wpKwh;
+  const productie = (on.has("zon") ? m.pvKwp * PV_PER_KWP : 0) + (on.has("pvt") ? m.pvtKwp * PV_PER_KWP : 0);
+  let frac = ZELF_ZONDER;
+  for (const k of Object.keys(m.zelfStap) as (keyof typeof m.zelfStap)[]) if (on.has(k)) frac += m.zelfStap[k];
+  frac = Math.min(frac, m.zelfMax);
+  const zelf = Math.min(productie * frac, vraag);
+  const netKwh = vraag - zelf;
+  const injectie = productie - zelf;
+  let piek = on.has("warmtepomp") ? m.piekWarmtepomp : 0;
+  for (const k of Object.keys(m.piekMinder) as (keyof typeof m.piekMinder)[]) if (on.has(k)) piek -= m.piekMinder[k];
+  const gas = on.has("warmtepomp") ? 0 : gasKwh * GASPRIJS + m.gasVast;
+  const factuur = netKwh * STROOMPRIJS - injectie * INJECTIE_EUR + gas + piek * PIEK_PER_KW;
+  return { netKwh: Math.round(netKwh), gasM3: on.has("warmtepomp") ? 0 : m.gasM3, factuur: Math.round(factuur) };
+}
+
+export const BASELINE = scenario(new Set());
+/** Bar scales (max of each bar). */
+export const BAR_MAX = { netKwh: 12000, gasM3: MODEL.gasM3, factuur: BASELINE.factuur };
+
+export const BUILDER_NOTE = `Indicatief rekenvoorbeeld: gezin met ${MODEL.huisKwh.toLocaleString("nl-BE")} kWh stroom, een elektrische wagen (${MODEL.evKm.toLocaleString("nl-BE")} km/jaar) en ${MODEL.gasM3.toLocaleString("nl-BE")} m³ gas; ${MODEL.pvKwp} kWp panelen, ${MODEL.pvtKwp} kWp PVT. Stroom ${STROOM} c/kWh, injectie ${INJECTIE} c/kWh, SCOP ${v("scopRekenwaarde")}. De extra winst per toestel is onze aanname – jouw cijfers rekenen we apart uit.`;

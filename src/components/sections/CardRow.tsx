@@ -92,7 +92,7 @@ function PhotoCard({ item, index, numbered }: { item: CardRowItem; index: number
           {numbered && `${index + 1}. `}
           {item.title}
         </h3>
-        {item.body && <div className={styles.panelBody}>{item.body}</div>}
+        {item.body && <div className={`${styles.panelBody} mobile-clamp-2`}>{item.body}</div>}
         {item.tags && item.tags.length > 0 && (
           <ul className={styles.tags}>
             {item.tags.map((t) => (
@@ -121,7 +121,7 @@ function Tile({ item, index, numbered, dark }: { item: CardRowItem; index: numbe
         </h3>
         {Icon ? <IconCircle icon={Icon} fill={dark ? "lime" : "pale"} size="sm" /> : item.href ? <ArrowUpRight className={styles.tileArrow} /> : null}
       </div>
-      {item.body && <div className={styles.tileBody}>{item.body}</div>}
+      {item.body && <div className={`${styles.tileBody} mobile-clamp-2`}>{item.body}</div>}
       {item.tags && item.tags.length > 0 && (
         <ul className={styles.tags}>
           {item.tags.map((t) => (

@@ -25,7 +25,10 @@ export type LeadValues = {
   naam: string;
   email: string;
   telefoon: string;
+  straat: string;
+  huisnummer: string;
   postcode: string;
+  gemeente: string;
   opmerking: string;
   toestemming: boolean;
   voorkeur: string;
@@ -38,7 +41,8 @@ export type LeadField = Exclude<keyof LeadValues, "bron" | "variant" | "verbruik
 export type FieldErrors = Partial<Record<LeadField, string>>;
 
 export const STEP1_FIELDS: LeadField[] = ["woningtype", "bouwjaar", "verwarming", "verbruikWaarde", "interesse"];
-export const STEP2_FIELDS: LeadField[] = ["naam", "email", "telefoon", "postcode", "opmerking", "toestemming"];
+export const ADRES_FIELDS: LeadField[] = ["straat", "huisnummer", "postcode", "gemeente"];
+export const STEP2_FIELDS: LeadField[] = [...ADRES_FIELDS, "naam", "email", "telefoon", "opmerking", "toestemming"];
 
 export const MAX_OPMERKING = 1000;
 
@@ -58,7 +62,10 @@ export function emptyLead(bron: string, variant: LeadVariant, interesse: string[
     naam: "",
     email: "",
     telefoon: "",
+    straat: "",
+    huisnummer: "",
     postcode: "",
+    gemeente: "",
     opmerking: "",
     toestemming: false,
     voorkeur: "Maakt niet uit",
@@ -114,6 +121,21 @@ export function validateField(field: LeadField, v: LeadValues): string | undefin
       const be = /^(\+32|0032|0)[1-9]\d{7,8}$/.test(t);
       const foreign = /^(\+|00)(31|33|49|352)\d{8,12}$/.test(t);
       return be || foreign ? undefined : "Dit nummer lijkt niet te kloppen. Bv. 0470 12 34 56.";
+    }
+    case "straat": {
+      const t = v.straat.trim();
+      if (!t) return "Vul de straat van je woning in.";
+      return t.length <= 120 ? undefined : "Deze straatnaam is te lang.";
+    }
+    case "huisnummer": {
+      const t = v.huisnummer.trim();
+      if (!t) return "Vul je huisnummer in.";
+      return /^\d{1,5}\s?[a-zA-Z0-9/\-. ]{0,10}$/.test(t) ? undefined : "Vul een geldig huisnummer in (bv. 12 of 12A bus 3).";
+    }
+    case "gemeente": {
+      const t = v.gemeente.trim();
+      if (!t) return "Vul je gemeente in.";
+      return t.length <= 80 ? undefined : "Deze gemeentenaam is te lang.";
     }
     case "postcode": {
       const p = v.postcode.trim();
@@ -177,7 +199,10 @@ export function leadFromFormData(fd: FormData): LeadValues {
     naam: s("naam"),
     email: s("email"),
     telefoon: s("telefoon"),
+    straat: s("straat").slice(0, 200),
+    huisnummer: s("huisnummer").slice(0, 40),
     postcode: s("postcode"),
+    gemeente: s("gemeente").slice(0, 200),
     opmerking: s("opmerking"),
     toestemming: s("toestemming") === "on" || s("toestemming") === "1",
     voorkeur: s("voorkeur"),

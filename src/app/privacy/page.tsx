@@ -62,7 +62,7 @@ export default function PrivacyPage() {
         <p>Wanneer je een berekening aanvraagt, vragen we alleen wat we nodig hebben om die berekening te maken en je te contacteren:</p>
         <ul>
           <li>je voornaam en naam, je e-mailadres en je telefoonnummer;</li>
-          <li>je postcode, je woningtype en je bouwjaar (bij benadering);</li>
+          <li>het adres van je woning (straat, huisnummer, postcode en gemeente), je woningtype en je bouwjaar (bij benadering);</li>
           <li>je verbruik of voorschotbedrag, als je dat invult, en de technieken waarin je interesse hebt;</li>
           <li>eventuele opmerkingen die je zelf toevoegt.</li>
         </ul>

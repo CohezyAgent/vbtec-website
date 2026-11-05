@@ -27,6 +27,8 @@ import {
 import { routes } from "@/lib/routes";
 import CtaPill from "@/components/ui/CtaPill";
 import { AlertIcon, ArrowLeftIcon, CheckIcon, InfoIcon } from "@/components/ui/icons";
+import AddressFields from "./AddressFields";
+import { clearPrefill, subscribePrefill, takePrefill, type LeadPrefill } from "./lead-bridge";
 import { BOUWJAAR_ICONS, INTERESSE_ICONS, VERWARMING_ICONS, WONINGTYPE_ICONS, type LeadIcon } from "./LeadIcons";
 import styles from "./Lead.module.css";
 
@@ -50,7 +52,8 @@ function stepsFor(variant: LeadVariant): StepDef[] {
     { key: "verwarming", label: "Verwarming", fields: ["verwarming"] },
     { key: "verbruik", label: "Verbruik", fields: ["verbruikWaarde"] },
     { key: "interesse", label: "Interesse", fields: ["interesse"] },
-    { key: "gegevens", label: "Jouw gegevens", fields: ["naam", "email", "telefoon", "postcode", ...(variant === "contact" ? (["voorkeur", "moment"] as LeadField[]) : [])] },
+    { key: "adres", label: "Adres", fields: ["straat", "huisnummer", "postcode", "gemeente"] },
+    { key: "gegevens", label: "Jouw gegevens", fields: ["naam", "email", "telefoon", ...(variant === "contact" ? (["voorkeur", "moment"] as LeadField[]) : [])] },
     { key: "afronden", label: "Afronden", fields: ["opmerking", "toestemming"] },
   ];
 }
@@ -61,7 +64,7 @@ const AUTO_ADVANCE_MS = 280;
 const reducedMotion = () => typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 /**
- * Multi-step lead form (03 §6): one question per screen, 7 steps. One <form>, one Server
+ * Multi-step lead form (03 §6): one question per screen, 8 steps. One <form>, one Server
  * Action (useActionState). All steps stay in the DOM; only the active one shows once JS runs.
  * Without JS every step renders with one submit; the server validates everything. Client
  * checks use the same rules as the server.
@@ -108,6 +111,28 @@ export default function LeadForm({ bron, defaultInteresse = [], variant = "full"
     return () => window.clearTimeout(advanceTimer.current);
   }, []);
 
+  // First answer picked in the floating mini form (same page, or carried over via sessionStorage).
+  useEffect(() => {
+    const apply = (p: LeadPrefill) => {
+      if (!(WONINGTYPES as readonly string[]).includes(p.woningtype)) return;
+      clearPrefill();
+      setValues((v) => ({ ...v, woningtype: p.woningtype }));
+      setErrors((errs) => {
+        const copy = { ...errs };
+        delete copy.woningtype;
+        return copy;
+      });
+      setSummary(null);
+      window.clearTimeout(advanceTimer.current);
+      stepChanged.current = true;
+      setDir("fwd");
+      setStep((s) => (s === 0 ? 1 : s));
+    };
+    const stored = takePrefill();
+    if (stored) apply(stored);
+    return subscribePrefill(apply);
+  }, []);
+
   useEffect(() => {
     if (summary) summaryRef.current?.focus();
   }, [summary]);
@@ -145,6 +170,22 @@ export default function LeadForm({ bron, defaultInteresse = [], variant = "full"
       });
     }
     return next;
+  };
+
+  /** Several fields at once (address pick); re-validates the ones that show an error. */
+  const setMany = (patch: Partial<LeadValues>) => {
+    const next = { ...values, ...patch };
+    setValues(next);
+    setErrors((errs) => {
+      const copy = { ...errs };
+      for (const k of Object.keys(patch) as LeadField[]) {
+        if (!(k in copy)) continue;
+        const e = validateField(k, next);
+        if (e) copy[k] = e;
+        else delete copy[k];
+      }
+      return copy;
+    });
   };
 
   const blur = (field: LeadField) => {
@@ -242,7 +283,8 @@ export default function LeadForm({ bron, defaultInteresse = [], variant = "full"
     </StepFrame>
   );
 
-  const recap = [values.woningtype, values.bouwjaar !== "Weet ik niet" ? values.bouwjaar : "", values.verwarming, verbruikLabel(values)].filter(Boolean);
+  const adres = [[values.straat, values.huisnummer].filter(Boolean).join(" "), [values.postcode, values.gemeente].filter(Boolean).join(" ")].filter(Boolean).join(", ");
+  const recap = [values.woningtype, values.bouwjaar !== "Weet ik niet" ? values.bouwjaar : "", values.verwarming, verbruikLabel(values), adres].filter(Boolean);
 
   return (
     <form
@@ -401,8 +443,21 @@ export default function LeadForm({ bron, defaultInteresse = [], variant = "full"
           />
         </StepFrame>
 
+        {/* ── Adres ── */}
+        <StepFrame {...frame} i={5} title="Waar staat je woning?" help="Zo kennen we je dak, je netbeheerder en je premies.">
+          <AddressFields
+            values={{ straat: values.straat, huisnummer: values.huisnummer, postcode: values.postcode, gemeente: values.gemeente }}
+            errors={errors}
+            fid={fid}
+            onChange={(k, v) => set(k, v)}
+            onPick={setMany}
+            onBlur={blur}
+            info={!err("postcode") ? info : undefined}
+          />
+        </StepFrame>
+
         {/* ── Gegevens ── */}
-        <StepFrame {...frame} i={5} title="Waar mogen we je berekening naartoe sturen?" help="Een ingenieur belt je om een paar details te checken. Geen callcenter, geen verkooppraatjes.">
+        <StepFrame {...frame} i={6} title="Waar mogen we je berekening naartoe sturen?" help="Een ingenieur belt je om een paar details te checken. Geen callcenter, geen verkooppraatjes.">
           <div className={styles.grid}>
             <TextField
               label="Je naam"
@@ -444,23 +499,6 @@ export default function LeadForm({ bron, defaultInteresse = [], variant = "full"
               error={err("telefoon")}
               errorId={fid("telefoon-error")}
             />
-            <TextField
-              label="Postcode van de woning"
-              id={fid("postcode")}
-              name="postcode"
-              inputMode="numeric"
-              autoComplete="postal-code"
-              maxLength={4}
-              placeholder="9000"
-              help="Voor je netbeheerder en premies."
-              helpId={fid("postcode-help")}
-              value={values.postcode}
-              onChange={(v) => set("postcode", v)}
-              onBlur={() => blur("postcode")}
-              error={err("postcode")}
-              errorId={fid("postcode-error")}
-              info={!err("postcode") ? info : undefined}
-            />
           </div>
 
           {variant === "contact" && (
@@ -497,7 +535,7 @@ export default function LeadForm({ bron, defaultInteresse = [], variant = "full"
         </StepFrame>
 
         {/* ── Afronden ── */}
-        <StepFrame {...frame} i={6} title="Nog iets dat we moeten weten?">
+        <StepFrame {...frame} i={7} title="Nog iets dat we moeten weten?">
           {recap.length > 0 && (
             <div className={`${styles.recap} ${styles.jsOnly}`}>
               <p className={styles.recapLabel}>Jouw situatie</p>
